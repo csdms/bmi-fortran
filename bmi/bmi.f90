@@ -1,4 +1,4 @@
-module bmi
+module bmi_def
 
   implicit none
 
@@ -36,4 +36,21 @@ module bmi
   integer, parameter :: BMI_FAILURE = 0
   integer, parameter :: BMI_SUCCESS = 1
 
-end module bmi
+  type, abstract :: bmi
+     contains
+       procedure (bmi_get_component_name), deferred :: get_component_name
+  end type bmi
+
+  abstract interface
+
+     ! Get the name of the model.
+     function bmi_get_component_name(self, name) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (in) :: self
+       character (len=*), pointer, intent (out) :: name
+       integer :: bmi_status
+     end function bmi_get_component_name
+
+  end interface
+
+end module bmi_def
