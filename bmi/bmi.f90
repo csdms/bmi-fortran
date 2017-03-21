@@ -41,6 +41,8 @@ module bmif
        procedure (bmi_get_component_name), deferred :: get_component_name
        procedure (bmi_get_input_var_names), deferred :: get_input_var_names
        procedure (bmi_get_output_var_names), deferred :: get_output_var_names
+       procedure (bmi_initialize), deferred :: initialize
+       procedure (bmi_finalize), deferred :: finalize
   end type bmi
 
   abstract interface
@@ -68,6 +70,21 @@ module bmif
        character (*), pointer, intent (out) :: names(:)
        integer :: bmi_status
      end function bmi_get_output_var_names
+
+     ! Perform startup tasks for the model.
+     function bmi_initialize(self, config_file) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (out) :: self
+       character (len=*), intent (in) :: config_file
+       integer :: bmi_status
+     end function bmi_initialize
+
+     ! Perform teardown tasks for the model.
+     function bmi_finalize(self) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (inout) :: self
+       integer :: bmi_status
+     end function bmi_finalize
 
   end interface
 

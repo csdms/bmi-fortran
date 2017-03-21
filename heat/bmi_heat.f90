@@ -4,13 +4,18 @@ module bmiheatf
   use bmif
 
   type, extends (bmi) :: bmi_heat
+     private
+     type (heat_model) :: model
    contains
      procedure :: get_component_name => heat_component_name
      procedure :: get_input_var_names => heat_input_var_names
      procedure :: get_output_var_names => heat_output_var_names
+     procedure :: initialize => heat_initialize
+     procedure :: finalize => heat_finalize
   end type bmi_heat
 
   private :: heat_component_name, heat_input_var_names, heat_output_var_names
+  private :: heat_initialize, heat_finalize
 
   character (len=BMI_MAXCOMPNAMESTR), target :: &
        component_name = "The 2D Heat Equation"
@@ -56,5 +61,28 @@ contains
     names => output_items
     bmi_status = BMI_SUCCESS
   end function heat_output_var_names
+
+  ! BMI initializer.
+  function heat_initialize(self, config_file) result (bmi_status)
+    class (bmi_heat), intent (out) :: self
+    character (len=*), intent (in) :: config_file
+    integer :: bmi_status
+
+    if (len (config_file) > 0) then
+       call initialize_from_file(self%model, config_file)
+    else
+       call initialize_from_defaults(self%model)
+    end if
+    status = BMI_SUCCESS
+  end function heat_initialize
+
+  ! BMI finalizer.
+  function heat_finalize(self) result (bmi_status)
+    class (bmi_heat), intent (inout) :: self
+    integer :: bmi_status
+
+    call cleanup(self%model)
+    status = BMI_SUCCESS
+  end function heat_finalize
 
 end module bmiheatf
