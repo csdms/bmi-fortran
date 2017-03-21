@@ -1,6 +1,6 @@
 module bmiheatf
 
-  use heat
+  use heatf
   use bmif
 
   type, extends (bmi) :: bmi_heat

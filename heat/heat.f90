@@ -1,5 +1,5 @@
 ! An example of the heat equation.
-module heat
+module heatf
 
   implicit none
 
@@ -146,4 +146,4 @@ contains
     end do
   end subroutine print_values
 
-end module heat
+end module heatf
