@@ -39,6 +39,8 @@ module bmif
   type, abstract :: bmi
      contains
        procedure (bmi_get_component_name), deferred :: get_component_name
+       procedure (bmi_get_input_var_names), deferred :: get_input_var_names
+       procedure (bmi_get_output_var_names), deferred :: get_output_var_names
   end type bmi
 
   abstract interface
@@ -50,6 +52,22 @@ module bmif
        character (len=*), pointer, intent (out) :: name
        integer :: bmi_status
      end function bmi_get_component_name
+
+     ! List a model's input variables.
+     function bmi_get_input_var_names(self, names) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (in) :: self
+       character (*), pointer, intent (out) :: names(:)
+       integer :: bmi_status
+     end function bmi_get_input_var_names
+
+     ! List a model's output variables.
+     function bmi_get_output_var_names(self, names) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (in) :: self
+       character (*), pointer, intent (out) :: names(:)
+       integer :: bmi_status
+     end function bmi_get_output_var_names
 
   end interface
 
