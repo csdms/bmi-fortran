@@ -12,10 +12,17 @@ module bmiheatf
      procedure :: get_output_var_names => heat_output_var_names
      procedure :: initialize => heat_initialize
      procedure :: finalize => heat_finalize
+     procedure :: get_start_time => heat_start_time
+     procedure :: get_end_time => heat_end_time
+     procedure :: get_current_time => heat_current_time
+     procedure :: get_time_step => heat_time_step
+     procedure :: get_time_units => heat_time_units
   end type bmi_heat
 
   private :: heat_component_name, heat_input_var_names, heat_output_var_names
   private :: heat_initialize, heat_finalize
+  private :: heat_start_time, heat_end_time, heat_current_time
+  private :: heat_time_step, heat_time_units
 
   character (len=BMI_MAXCOMPNAMESTR), target :: &
        component_name = "The 2D Heat Equation"
@@ -84,5 +91,55 @@ contains
     call cleanup(self%model)
     status = BMI_SUCCESS
   end function heat_finalize
+
+  ! Model start time.
+  function heat_start_time(self, time) result (bmi_status)
+    class (bmi_heat), intent (in) :: self
+    real, intent (out) :: time
+    integer :: bmi_status
+
+    time = 0.0
+    bmi_status = BMI_SUCCESS
+  end function heat_start_time
+
+  ! Model end time.
+  function heat_end_time(self, time) result (bmi_status)
+    class (bmi_heat), intent (in) :: self
+    real, intent (out) :: time
+    integer :: bmi_status
+
+    time = self%model%t_end
+    bmi_status = BMI_SUCCESS
+  end function heat_end_time
+
+  ! Model current time.
+  function heat_current_time(self, time) result (bmi_status)
+    class (bmi_heat), intent (in) :: self
+    real, intent (out) :: time
+    integer :: bmi_status
+
+    time = self%model%t
+    bmi_status = BMI_SUCCESS
+  end function heat_current_time
+
+  ! Model time step.
+  function heat_time_step(self, time_step) result (bmi_status)
+    class (bmi_heat), intent (in) :: self
+    real, intent (out) :: time_step
+    integer :: bmi_status
+
+    time_step = self%model%dt
+    bmi_status = BMI_SUCCESS
+  end function heat_time_step
+
+  ! Model time units.
+  function heat_time_units(self, time_units) result (bmi_status)
+    class (bmi_heat), intent (in) :: self
+    character (len=*), intent (out) :: time_units
+    integer :: bmi_status
+
+    time_units = "-"
+    bmi_status = BMI_SUCCESS
+  end function heat_time_units
 
 end module bmiheatf

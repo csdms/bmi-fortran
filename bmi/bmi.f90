@@ -43,6 +43,11 @@ module bmif
        procedure (bmi_get_output_var_names), deferred :: get_output_var_names
        procedure (bmi_initialize), deferred :: initialize
        procedure (bmi_finalize), deferred :: finalize
+       procedure (bmi_get_start_time), deferred :: get_start_time
+       procedure (bmi_get_end_time), deferred :: get_end_time
+       procedure (bmi_get_current_time), deferred :: get_current_time
+       procedure (bmi_get_time_step), deferred :: get_time_step
+       procedure (bmi_get_time_units), deferred :: get_time_units
   end type bmi
 
   abstract interface
@@ -85,6 +90,46 @@ module bmif
        class (bmi), intent (inout) :: self
        integer :: bmi_status
      end function bmi_finalize
+
+     ! Start time of the model.
+     function bmi_get_start_time(self, time) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (in) :: self
+       real, intent (out) :: time
+       integer :: bmi_status
+     end function bmi_get_start_time
+
+     ! End time of the model.
+     function bmi_get_end_time(self, time) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (in) :: self
+       real, intent (out) :: time
+       integer :: bmi_status
+     end function bmi_get_end_time
+
+     ! Current time of the model.
+     function bmi_get_current_time(self, time) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (in) :: self
+       real, intent (out) :: time
+       integer :: bmi_status
+     end function bmi_get_current_time
+
+     ! Time step of the model.
+     function bmi_get_time_step(self, time_step) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (in) :: self
+       real, intent (out) :: time_step
+       integer :: bmi_status
+     end function bmi_get_time_step
+
+     ! Time units of the model.
+     function bmi_get_time_units(self, time_units) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (in) :: self
+       character (len=*), intent (out) :: time_units
+       integer :: bmi_status
+     end function bmi_get_time_units
 
   end interface
 
