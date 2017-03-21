@@ -1,4 +1,4 @@
-module bmi_def
+module bmif
 
   implicit none
 
@@ -53,4 +53,4 @@ module bmi_def
 
   end interface
 
-end module bmi_def
+end module bmif
