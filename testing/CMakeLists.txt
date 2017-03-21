@@ -1,0 +1,8 @@
+include(CTest)
+
+include_directories(${CMAKE_Fortran_MODULE_DIRECTORY})
+
+add_test(NAME info_test COMMAND info_test)
+set(src_info_test info_test.f90)
+add_executable(info_test ${src_info_test})
+target_link_libraries(info_test ${bmi_lib} ${bmiheat_lib})
