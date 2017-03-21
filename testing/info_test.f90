@@ -1,4 +1,4 @@
-! Test the basic info and time BMI methods.
+! Test the basic info BMI methods.
 program info_test
 
   use bmiheatf
