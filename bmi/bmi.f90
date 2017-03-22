@@ -51,6 +51,7 @@ module bmif
        procedure (bmi_update), deferred :: update
        procedure (bmi_update_frac), deferred :: update_frac
        procedure (bmi_update_until), deferred :: update_until
+       procedure (bmi_get_var_grid), deferred :: get_var_grid
   end type bmi
 
   abstract interface
@@ -156,6 +157,15 @@ module bmif
        real, intent (in) :: time
        integer :: bmi_status
      end function bmi_update_until
+
+     ! Get the grid identifier for the given variable.
+     function bmi_get_var_grid(self, var_name, grid_id) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (in) :: self
+       character (len=*), intent (in) :: var_name
+       integer, intent (out) :: grid_id
+       integer :: bmi_status
+     end function bmi_get_var_grid
 
   end interface
 

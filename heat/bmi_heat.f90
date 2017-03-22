@@ -20,6 +20,7 @@ module bmiheatf
      procedure :: update => heat_update
      procedure :: update_frac => heat_update_frac
      procedure :: update_until => heat_update_until
+     procedure :: get_var_grid => heat_get_var_grid
   end type bmi_heat
 
   private :: heat_component_name, heat_input_var_names, heat_output_var_names
@@ -27,6 +28,7 @@ module bmiheatf
   private :: heat_start_time, heat_end_time, heat_current_time
   private :: heat_time_step, heat_time_units
   private :: heat_update, heat_update_frac, heat_update_until
+  private :: heat_get_var_grid
 
   character (len=BMI_MAXCOMPNAMESTR), target :: &
        component_name = "The 2D Heat Equation"
@@ -189,5 +191,21 @@ contains
     end if
     bmi_status = BMI_SUCCESS
   end function heat_update_until
+
+  function heat_get_var_grid(self, var_name, grid_id) result (bmi_status)
+    class (bmi_heat), intent (in) :: self
+    character (len=BMI_MAXVARNAMESTR), intent (in) :: var_name
+    integer, intent (out) :: grid_id
+    integer :: bmi_status
+
+    select case (var_name)
+    case ('plate_surface__temperature')
+       grid_id = 0
+       bmi_status = BMI_SUCCESS
+    case default
+       grid_id = -1
+       bmi_status = BMI_FAILURE
+    end select
+  end function heat_get_var_grid
 
 end module bmiheatf
