@@ -21,6 +21,12 @@ module bmiheatf
      procedure :: update_frac => heat_update_frac
      procedure :: update_until => heat_update_until
      procedure :: get_var_grid => heat_get_var_grid
+     procedure :: get_grid_type => heat_grid_type
+     procedure :: get_grid_rank => heat_grid_rank
+     procedure :: get_grid_shape => heat_grid_shape
+     procedure :: get_grid_size => heat_grid_size
+     procedure :: get_grid_spacing => heat_grid_spacing
+     procedure :: get_grid_origin => heat_grid_origin
   end type bmi_heat
 
   private :: heat_component_name, heat_input_var_names, heat_output_var_names
@@ -29,6 +35,8 @@ module bmiheatf
   private :: heat_time_step, heat_time_units
   private :: heat_update, heat_update_frac, heat_update_until
   private :: heat_get_var_grid
+  private :: heat_grid_type, heat_grid_rank, heat_grid_shape
+  private :: heat_grid_size, heat_grid_spacing, heat_grid_origin
 
   character (len=BMI_MAXCOMPNAMESTR), target :: &
        component_name = "The 2D Heat Equation"
@@ -192,6 +200,7 @@ contains
     bmi_status = BMI_SUCCESS
   end function heat_update_until
 
+  ! Get the grid id for a particular variable.
   function heat_get_var_grid(self, var_name, grid_id) result (bmi_status)
     class (bmi_heat), intent (in) :: self
     character (len=BMI_MAXVARNAMESTR), intent (in) :: var_name
@@ -207,5 +216,105 @@ contains
        bmi_status = BMI_FAILURE
     end select
   end function heat_get_var_grid
+
+  ! The type of a variable's grid.
+  function heat_grid_type(self, grid_id, grid_type) result (bmi_status)
+    class (bmi_heat), intent (in) :: self
+    integer, intent (in) :: grid_id
+    character (len=BMI_MAXVARNAMESTR), intent (out) :: grid_type
+    integer :: bmi_status
+
+    select case (grid_id)
+    case (0)
+       grid_type = "uniform_rectilinear"
+       bmi_status = BMI_SUCCESS
+    case default
+       grid_type = "-"
+       bmi_status = BMI_FAILURE
+    end select
+  end function heat_grid_type
+
+  ! The number of dimensions of a grid.
+  function heat_grid_rank(self, grid_id, rank) result (bmi_status)
+    class (bmi_heat), intent (in) :: self
+    integer, intent (in) :: grid_id
+    integer, intent (out) :: rank
+    integer :: bmi_status
+
+    select case (grid_id)
+    case (0)
+       rank = 2
+       bmi_status = BMI_SUCCESS
+    case default
+       rank = -1
+       bmi_status = BMI_FAILURE
+    end select
+  end function heat_grid_rank
+
+  ! The dimensions of a grid.
+  function heat_grid_shape(self, grid_id, shape) result (bmi_status)
+    class (bmi_heat), intent (in) :: self
+    integer, intent (in) :: grid_id
+    integer, dimension(:), intent (out) :: shape
+    integer :: bmi_status
+
+    select case (grid_id)
+    case (0)
+       shape = [self%model%n_y, self%model%n_x]
+       bmi_status = BMI_SUCCESS
+    case default
+       shape = [-1, -1]
+       bmi_status = BMI_FAILURE
+    end select
+  end function heat_grid_shape
+
+  ! The total number of elements in a grid.
+  function heat_grid_size(self, grid_id, size) result (bmi_status)
+    class (bmi_heat), intent (in) :: self
+    integer, intent (in) :: grid_id
+    integer, intent (out) :: size
+    integer :: bmi_status
+
+    select case (grid_id)
+    case (0)
+       size = self%model%n_y * self%model%n_x
+       bmi_status = BMI_SUCCESS
+    case default
+       size = -1
+       bmi_status = BMI_FAILURE
+    end select
+  end function heat_grid_size
+
+  ! The distance between nodes of a grid.
+  function heat_grid_spacing(self, grid_id, spacing) result (bmi_status)
+    class (bmi_heat), intent (in) :: self
+    integer, intent (in) :: grid_id
+    real, dimension(:), intent (out) :: spacing
+    integer :: bmi_status
+
+    select case (grid_id)
+    case (0)
+       spacing = [self%model%dy, self%model%dx]
+       bmi_status = BMI_SUCCESS
+    case default
+       spacing = -1
+       bmi_status = BMI_FAILURE
+    end select
+  end function heat_grid_spacing
+
+  function heat_grid_origin(self, grid_id, origin) result (bmi_status)
+    class (bmi_heat), intent (in) :: self
+    integer, intent (in) :: grid_id
+    real, dimension(:), intent (out) :: origin
+    integer :: bmi_status
+
+    select case (grid_id)
+    case (0)
+       origin = [0.0, 0.0]
+       bmi_status = BMI_SUCCESS
+    case default
+       bmi_status = BMI_FAILURE
+    end select
+  end function heat_grid_origin
 
 end module bmiheatf

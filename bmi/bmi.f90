@@ -52,6 +52,12 @@ module bmif
        procedure (bmi_update_frac), deferred :: update_frac
        procedure (bmi_update_until), deferred :: update_until
        procedure (bmi_get_var_grid), deferred :: get_var_grid
+       procedure (bmi_get_grid_type), deferred :: get_grid_type
+       procedure (bmi_get_grid_rank), deferred :: get_grid_rank
+       procedure (bmi_get_grid_shape), deferred :: get_grid_shape
+       procedure (bmi_get_grid_size), deferred :: get_grid_size
+       procedure (bmi_get_grid_spacing), deferred :: get_grid_spacing
+       procedure (bmi_get_grid_origin), deferred :: get_grid_origin
   end type bmi
 
   abstract interface
@@ -166,6 +172,59 @@ module bmif
        integer, intent (out) :: grid_id
        integer :: bmi_status
      end function bmi_get_var_grid
+
+     ! Get the grid type as a string.
+     function bmi_get_grid_type(self, grid_id, grid_type) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (in) :: self
+       integer, intent (in) :: grid_id
+       character (len=*), intent (out) :: grid_type
+       integer :: bmi_status
+     end function bmi_get_grid_type
+
+     ! Get number of dimensions of the computational grid.
+     function bmi_get_grid_rank(self, grid_id, rank) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (in) :: self
+       integer, intent (in) :: grid_id
+       integer, intent (out) :: rank
+       integer :: bmi_status
+     end function bmi_get_grid_rank
+
+     ! Get the dimensions of the computational grid.
+     function bmi_get_grid_shape(self, grid_id, shape) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (in) :: self
+       integer, intent (in) :: grid_id
+       integer, dimension(:), intent (out) :: shape
+       integer :: bmi_status
+     end function bmi_get_grid_shape
+
+     ! Get the total number of elements in the computational grid.
+     function bmi_get_grid_size(self, grid_id, size) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (in) :: self
+       integer, intent (in) :: grid_id
+       integer, intent (out) :: size
+       integer :: bmi_status
+     end function bmi_get_grid_size
+
+     ! Get distance between nodes of the computational grid.
+     function bmi_get_grid_spacing(self, grid_id, spacing) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (in) :: self
+       integer, intent (in) :: grid_id
+       real, dimension(:), intent (out) :: spacing
+       integer :: bmi_status
+     end function bmi_get_grid_spacing
+
+     function bmi_get_grid_origin(self, grid_id, origin) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (in) :: self
+       integer, intent (in) :: grid_id
+       real, dimension(:), intent (out) :: origin
+       integer :: bmi_status
+     end function bmi_get_grid_origin
 
   end interface
 

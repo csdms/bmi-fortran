@@ -8,6 +8,10 @@ program vargrid_test
   integer :: s, i
   character (len=BMI_MAXVARNAMESTR), pointer :: names(:)
   integer :: grid_id
+  character (len=BMI_MAXVARNAMESTR) :: astring
+  integer :: asize
+  real, dimension(2) :: rarray
+  integer, dimension(2) :: iarray
 
   write (*,"(a)",advance="no") "Initializing..."
   s = m%initialize("")
@@ -21,6 +25,19 @@ program vargrid_test
 
   s = m%get_var_grid(names(1), grid_id)
   write (*,"(a30, i3)") "Grid id:", grid_id
+
+  s = m%get_grid_type(grid_id, astring)
+  write (*,"(a30, 1x, a30)") "Grid type:", astring
+  s = m%get_grid_origin(grid_id, rarray)
+  write (*,"(a30, 1x, 2(f8.2))") "Grid origin:", rarray
+  s = m%get_grid_rank(grid_id, asize)
+  write (*,"(a30, i3)") "Grid rank:", asize
+  s = m%get_grid_shape(grid_id, iarray)
+  write (*,"(a30, 2(1x, i3))") "Grid shape:", iarray
+  s = m%get_grid_size(grid_id, asize)
+  write (*,"(a30, i8)") "Grid size:", asize
+  s = m%get_grid_spacing(grid_id, rarray)
+  write (*,"(a30, 1x, 2(f8.2))") "Grid spacing:", rarray
 
   write (*,"(a)", advance="no") "Finalizing..."
   s = m%finalize()
