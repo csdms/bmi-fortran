@@ -48,6 +48,9 @@ module bmif
        procedure (bmi_get_current_time), deferred :: get_current_time
        procedure (bmi_get_time_step), deferred :: get_time_step
        procedure (bmi_get_time_units), deferred :: get_time_units
+       procedure (bmi_update), deferred :: update
+       procedure (bmi_update_frac), deferred :: update_frac
+       procedure (bmi_update_until), deferred :: update_until
   end type bmi
 
   abstract interface
@@ -130,6 +133,29 @@ module bmif
        character (len=*), intent (out) :: time_units
        integer :: bmi_status
      end function bmi_get_time_units
+
+     ! Advance the model one time step.
+     function bmi_update(self) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (inout) :: self
+       integer :: bmi_status
+     end function bmi_update
+
+     ! Advance the model by a fraction of a time step.
+     function bmi_update_frac(self, time_frac) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (inout) :: self
+       real, intent (in) :: time_frac
+       integer :: bmi_status
+     end function bmi_update_frac
+
+     ! Advance the model until the given time.
+     function bmi_update_until(self, time) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (inout) :: self
+       real, intent (in) :: time
+       integer :: bmi_status
+     end function bmi_update_until
 
   end interface
 

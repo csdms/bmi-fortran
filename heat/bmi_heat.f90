@@ -17,12 +17,16 @@ module bmiheatf
      procedure :: get_current_time => heat_current_time
      procedure :: get_time_step => heat_time_step
      procedure :: get_time_units => heat_time_units
+     procedure :: update => heat_update
+     procedure :: update_frac => heat_update_frac
+     procedure :: update_until => heat_update_until
   end type bmi_heat
 
   private :: heat_component_name, heat_input_var_names, heat_output_var_names
   private :: heat_initialize, heat_finalize
   private :: heat_start_time, heat_end_time, heat_current_time
   private :: heat_time_step, heat_time_units
+  private :: heat_update, heat_update_frac, heat_update_until
 
   character (len=BMI_MAXCOMPNAMESTR), target :: &
        component_name = "The 2D Heat Equation"
@@ -141,5 +145,49 @@ contains
     time_units = "-"
     bmi_status = BMI_SUCCESS
   end function heat_time_units
+
+  ! Advance model by one time step.
+  function heat_update(self) result (bmi_status)
+    class (bmi_heat), intent (inout) :: self
+    integer :: bmi_status
+
+    call advance_in_time(self%model)
+    bmi_status = BMI_SUCCESS
+  end function heat_update
+
+  ! Advance the model by a fraction of a time step.
+  function heat_update_frac(self, time_frac) result (bmi_status)
+    class (bmi_heat), intent (inout) :: self
+    real, intent (in) :: time_frac
+    integer :: bmi_status
+    real :: time_step
+
+    if (time_frac > 0.0) then
+       time_step = self%model%dt
+       self%model%dt = time_step*time_frac
+       call advance_in_time(self%model)
+       self%model%dt = time_step
+    end if
+    bmi_status = BMI_SUCCESS
+  end function heat_update_frac
+
+  ! Advance the model until the given time.
+  function heat_update_until(self, time) result (bmi_status)
+    class (bmi_heat), intent (inout) :: self
+    real, intent (in) :: time
+    integer :: bmi_status
+    real :: n_steps_real
+    integer :: n_steps, i, s
+
+    if (time > self%model%t) then
+       n_steps_real = (time - self%model%t) / self%model%dt
+       n_steps = floor(n_steps_real)
+       do i = 1, n_steps
+          s = self%update()
+       end do
+       s = self%update_frac(n_steps_real - real(n_steps))
+    end if
+    bmi_status = BMI_SUCCESS
+  end function heat_update_until
 
 end module bmiheatf
