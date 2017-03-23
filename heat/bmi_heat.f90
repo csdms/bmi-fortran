@@ -20,7 +20,7 @@ module bmiheatf
      procedure :: update => heat_update
      procedure :: update_frac => heat_update_frac
      procedure :: update_until => heat_update_until
-     procedure :: get_var_grid => heat_get_var_grid
+     procedure :: get_var_grid => heat_var_grid
      procedure :: get_grid_type => heat_grid_type
      procedure :: get_grid_rank => heat_grid_rank
      procedure :: get_grid_shape => heat_grid_shape
@@ -34,7 +34,7 @@ module bmiheatf
   private :: heat_start_time, heat_end_time, heat_current_time
   private :: heat_time_step, heat_time_units
   private :: heat_update, heat_update_frac, heat_update_until
-  private :: heat_get_var_grid
+  private :: heat_var_grid
   private :: heat_grid_type, heat_grid_rank, heat_grid_shape
   private :: heat_grid_size, heat_grid_spacing, heat_grid_origin
 
@@ -201,7 +201,7 @@ contains
   end function heat_update_until
 
   ! Get the grid id for a particular variable.
-  function heat_get_var_grid(self, var_name, grid_id) result (bmi_status)
+  function heat_var_grid(self, var_name, grid_id) result (bmi_status)
     class (bmi_heat), intent (in) :: self
     character (len=BMI_MAXVARNAMESTR), intent (in) :: var_name
     integer, intent (out) :: grid_id
@@ -215,7 +215,7 @@ contains
        grid_id = -1
        bmi_status = BMI_FAILURE
     end select
-  end function heat_get_var_grid
+  end function heat_var_grid
 
   ! The type of a variable's grid.
   function heat_grid_type(self, grid_id, grid_type) result (bmi_status)
