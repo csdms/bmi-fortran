@@ -39,6 +39,15 @@ program vargrid_test
   s = m%get_grid_spacing(grid_id, rarray)
   write (*,"(a30, 1x, 2(f8.2))") "Grid spacing:", rarray
 
+  s = m%get_var_itemsize(names(1), asize)
+  write (*,"(a30, i8, 1x, a)") "Item size:", asize, "bytes"
+  s = m%get_var_nbytes(names(1), asize)
+  write (*,"(a30, i8, 1x, a)") "Variable size:", asize, "bytes"
+  s = m%get_var_type(names(1), astring)
+  write (*,"(a30, 1x, a30)") "Variable type:", astring
+  s = m%get_var_units(names(1), astring)
+  write (*,"(a30, 1x, a30)") "Variable units:", astring
+
   write (*,"(a)", advance="no") "Finalizing..."
   s = m%finalize()
   write (*,*) "Done"

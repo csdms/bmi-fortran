@@ -27,6 +27,10 @@ module bmiheatf
      procedure :: get_grid_size => heat_grid_size
      procedure :: get_grid_spacing => heat_grid_spacing
      procedure :: get_grid_origin => heat_grid_origin
+     procedure :: get_var_type => heat_var_type
+     procedure :: get_var_units => heat_var_units
+     procedure :: get_var_itemsize => heat_var_itemsize
+     procedure :: get_var_nbytes => heat_var_nbytes
   end type bmi_heat
 
   private :: heat_component_name, heat_input_var_names, heat_output_var_names
@@ -37,6 +41,7 @@ module bmiheatf
   private :: heat_var_grid
   private :: heat_grid_type, heat_grid_rank, heat_grid_shape
   private :: heat_grid_size, heat_grid_spacing, heat_grid_origin
+  private :: heat_var_type, heat_var_units, heat_var_itemsize, heat_var_nbytes
 
   character (len=BMI_MAXCOMPNAMESTR), target :: &
        component_name = "The 2D Heat Equation"
@@ -302,6 +307,7 @@ contains
     end select
   end function heat_grid_spacing
 
+  ! Coordinates of grid origin.
   function heat_grid_origin(self, grid_id, origin) result (bmi_status)
     class (bmi_heat), intent (in) :: self
     integer, intent (in) :: grid_id
@@ -316,5 +322,77 @@ contains
        bmi_status = BMI_FAILURE
     end select
   end function heat_grid_origin
+
+  ! The data type of the variable, as a string.
+  function heat_var_type(self, var_name, type) result (bmi_status)
+    class (bmi_heat), intent (in) :: self
+    character (len=BMI_MAXVARNAMESTR), intent (in) :: var_name
+    character (len=BMI_MAXUNITSSTR), intent (out) :: type
+    integer :: bmi_status
+
+    select case (var_name)
+    case ("plate_surface__temperature")
+       type = "real"
+       bmi_status = BMI_SUCCESS
+    case default
+       type = "-"
+       bmi_status = BMI_FAILURE
+    end select
+  end function heat_var_type
+
+  ! The units of the given variable.
+  function heat_var_units(self, var_name, units) result (bmi_status)
+    class (bmi_heat), intent (in) :: self
+    character (len=BMI_MAXVARNAMESTR), intent (in) :: var_name
+    character (len=BMI_MAXUNITSSTR), intent (out) :: units
+    integer :: bmi_status
+
+    select case (var_name)
+    case ("plate_surface__temperature")
+       units = "K"
+       bmi_status = BMI_SUCCESS
+    case default
+       units = "-"
+       bmi_status = BMI_FAILURE
+    end select
+  end function heat_var_units
+
+  ! Memory use per array element.
+  function heat_var_itemsize(self, var_name, size) result (bmi_status)
+    class (bmi_heat), intent (in) :: self
+    character (len=BMI_MAXVARNAMESTR), intent (in) :: var_name
+    integer, intent (out) :: size
+    integer :: bmi_status
+
+    select case (var_name)
+    case ("plate_surface__temperature")
+       size = BMI_DOUBLE
+       bmi_status = BMI_SUCCESS
+    case default
+       size = -1
+       bmi_status = BMI_FAILURE
+    end select
+  end function heat_var_itemsize
+
+  ! The size of the given variable.
+  function heat_var_nbytes(self, var_name, size) result (bmi_status)
+    class (bmi_heat), intent (in) :: self
+    character (len=BMI_MAXVARNAMESTR), intent (in) :: var_name
+    integer, intent (out) :: size
+    integer :: bmi_status
+    integer :: s1, s2, s3, grid_id, grid_size, item_size
+
+    s1 = self%get_var_grid(var_name, grid_id)
+    s2 = self%get_grid_size(grid_id, grid_size)
+    s3 = self%get_var_itemsize(var_name, item_size)
+
+    if ((s1 == BMI_SUCCESS).and.(s2 == BMI_SUCCESS).and.(s3 == BMI_SUCCESS)) then
+       size = item_size * grid_size
+       bmi_status = BMI_SUCCESS
+    else
+       size = -1
+       bmi_status = BMI_FAILURE
+    end if
+  end function heat_var_nbytes
 
 end module bmiheatf

@@ -58,6 +58,10 @@ module bmif
        procedure (bmi_get_grid_size), deferred :: get_grid_size
        procedure (bmi_get_grid_spacing), deferred :: get_grid_spacing
        procedure (bmi_get_grid_origin), deferred :: get_grid_origin
+       procedure (bmi_get_var_type), deferred :: get_var_type
+       procedure (bmi_get_var_units), deferred :: get_var_units
+       procedure (bmi_get_var_itemsize), deferred :: get_var_itemsize
+       procedure (bmi_get_var_nbytes), deferred :: get_var_nbytes
   end type bmi
 
   abstract interface
@@ -218,6 +222,7 @@ module bmif
        integer :: bmi_status
      end function bmi_get_grid_spacing
 
+     ! Get coordinates of the origin of the computational grid.
      function bmi_get_grid_origin(self, grid_id, origin) result (bmi_status)
        import :: bmi
        class (bmi), intent (in) :: self
@@ -225,6 +230,42 @@ module bmif
        real, dimension(:), intent (out) :: origin
        integer :: bmi_status
      end function bmi_get_grid_origin
+
+     ! Get the data type of the given variable as a string.
+     function bmi_get_var_type(self, var_name, type) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (in) :: self
+       character (len=*), intent (in) :: var_name
+       character (len=*), intent (out) :: type
+       integer :: bmi_status
+     end function bmi_get_var_type
+
+     ! Get the units of the given variable.
+     function bmi_get_var_units(self, var_name, units) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (in) :: self
+       character (len=*), intent (in) :: var_name
+       character (len=*), intent (out) :: units
+       integer :: bmi_status
+     end function bmi_get_var_units
+
+     ! Get memory use per array element, in bytes.
+     function bmi_get_var_itemsize(self, var_name, size) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (in) :: self
+       character (len=*), intent (in) :: var_name
+       integer, intent (out) :: size
+       integer :: bmi_status
+     end function bmi_get_var_itemsize
+
+     ! Get size of the given variable, in bytes.
+     function bmi_get_var_nbytes(self, var_name, size) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (in) :: self
+       character (len=*), intent (in) :: var_name
+       integer, intent (out) :: size
+       integer :: bmi_status
+     end function bmi_get_var_nbytes
 
   end interface
 
