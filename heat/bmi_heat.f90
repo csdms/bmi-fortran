@@ -3,6 +3,7 @@ module bmiheatf
   use heatf
   use bmif
   use, intrinsic :: iso_c_binding, only: c_ptr, c_loc, c_f_pointer
+  implicit none
 
   type, extends (bmi) :: bmi_heat
      private
@@ -104,7 +105,7 @@ contains
     else
        call initialize_from_defaults(self%model)
     end if
-    status = BMI_SUCCESS
+    bmi_status = BMI_SUCCESS
   end function heat_initialize
 
   ! BMI finalizer.
@@ -113,7 +114,7 @@ contains
     integer :: bmi_status
 
     call cleanup(self%model)
-    status = BMI_SUCCESS
+    bmi_status = BMI_SUCCESS
   end function heat_finalize
 
   ! Model start time.
