@@ -2,6 +2,7 @@ module bmiheatf
 
   use heatf
   use bmif
+  use, intrinsic :: iso_c_binding, only: c_ptr, c_loc, c_f_pointer
 
   type, extends (bmi) :: bmi_heat
      private
@@ -31,6 +32,9 @@ module bmiheatf
      procedure :: get_var_units => heat_var_units
      procedure :: get_var_itemsize => heat_var_itemsize
      procedure :: get_var_nbytes => heat_var_nbytes
+     procedure :: get_value => heat_value
+     procedure :: get_value_ref => heat_value_ref
+     procedure :: get_value_at_indices => heat_value_at_indices
   end type bmi_heat
 
   private :: heat_component_name, heat_input_var_names, heat_output_var_names
@@ -42,6 +46,7 @@ module bmiheatf
   private :: heat_grid_type, heat_grid_rank, heat_grid_shape
   private :: heat_grid_size, heat_grid_spacing, heat_grid_origin
   private :: heat_var_type, heat_var_units, heat_var_itemsize, heat_var_nbytes
+  private :: heat_value, heat_value_ref, heat_value_at_indices
 
   character (len=BMI_MAXCOMPNAMESTR), target :: &
        component_name = "The 2D Heat Equation"
@@ -394,5 +399,86 @@ contains
        bmi_status = BMI_FAILURE
     end if
   end function heat_var_nbytes
+
+  ! Get a copy of a variable's values, flattened.
+  function heat_value(self, var_name, dest) result (bmi_status)
+    class (bmi_heat), intent (in) :: self
+    character (len=BMI_MAXVARNAMESTR), intent (in) :: var_name
+    real, pointer, intent (inout) :: dest(:)
+    integer :: bmi_status
+    integer :: n_elements
+
+    select case (var_name)
+    case ("plate_surface__temperature")
+       n_elements = self%model%n_y * self%model%n_x
+       call allocate_flattened_array(dest, n_elements)
+       dest = reshape(self%model%temperature, [n_elements])
+       bmi_status = BMI_SUCCESS
+    case default
+       n_elements = 1
+       call allocate_flattened_array(dest, n_elements)
+       dest = -1.0
+       bmi_status = BMI_FAILURE
+    end select
+  end function heat_value
+
+  ! Get a reference to a variable's values, flattened.
+  function heat_value_ref(self, var_name, dest) result (bmi_status)
+    class (bmi_heat), intent (in) :: self
+    character (len=BMI_MAXVARNAMESTR), intent (in) :: var_name
+    real, pointer, intent (inout) :: dest(:)
+    integer :: bmi_status
+    type (c_ptr) :: src
+    real, pointer :: src_flattened(:)
+    integer :: n_elements
+
+    select case (var_name)
+    case ("plate_surface__temperature")
+       src = c_loc (self%model%temperature(1,1))
+       n_elements = self%model%n_y * self%model%n_x
+       if (associated (dest)) then
+          call c_f_pointer(src, src_flattened, [n_elements])
+          dest = src_flattened
+       else
+          call c_f_pointer(src, dest, [n_elements])
+       end if
+       bmi_status = BMI_SUCCESS
+    case default
+       bmi_status = BMI_FAILURE
+    end select
+  end function heat_value_ref
+
+  function heat_value_at_indices(self, var_name, dest, indices) result (bmi_status)
+    class (bmi_heat), intent (in) :: self
+    character (len=BMI_MAXVARNAMESTR), intent (in) :: var_name
+    real, pointer, intent (inout) :: dest(:)
+    integer, intent (in) :: indices(:)
+    integer :: bmi_status
+    type (c_ptr) src
+    real, pointer :: src_flattened(:)
+    integer :: i
+
+    select case (var_name)
+    case ("plate_surface__temperature")
+       src = c_loc (self%model%temperature(1,1))
+       call c_f_pointer(src, src_flattened, [self%model%n_y * self%model%n_x])
+       do i = 1, size (indices)
+          dest(i) = src_flattened(indices(i))
+       end do
+       bmi_status = BMI_SUCCESS
+    case default
+       bmi_status = BMI_FAILURE
+    end select
+  end function heat_value_at_indices
+
+  ! A helper routine to allocate a flattened array.
+  subroutine allocate_flattened_array(array, n)
+    real, pointer, intent (inout) :: array(:)
+    integer, intent (in) :: n
+
+    if (.not.associated(array)) then
+       allocate(array(n))
+    end if
+  end subroutine allocate_flattened_array
 
 end module bmiheatf

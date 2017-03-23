@@ -62,6 +62,9 @@ module bmif
        procedure (bmi_get_var_units), deferred :: get_var_units
        procedure (bmi_get_var_itemsize), deferred :: get_var_itemsize
        procedure (bmi_get_var_nbytes), deferred :: get_var_nbytes
+       procedure (bmi_get_value), deferred :: get_value
+       procedure (bmi_get_value_ref), deferred :: get_value_ref
+       procedure (bmi_get_value_at_indices), deferred :: get_value_at_indices
   end type bmi
 
   abstract interface
@@ -266,6 +269,34 @@ module bmif
        integer, intent (out) :: size
        integer :: bmi_status
      end function bmi_get_var_nbytes
+
+     ! Get a copy of values (flattened!) of the given variable.
+     function bmi_get_value(self, var_name, dest) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (in) :: self
+       character (len=*), intent (in) :: var_name
+       real, pointer, intent (inout) :: dest(:)
+       integer :: bmi_status
+     end function bmi_get_value
+
+     ! Get a reference to the values (flattened!) of the given variable.
+     function bmi_get_value_ref(self, var_name, dest) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (in) :: self
+       character (len=*), intent (in) :: var_name
+       real, pointer, intent (inout) :: dest(:)
+       integer :: bmi_status
+     end function bmi_get_value_ref
+
+     ! Get values at particular (one-dimensional) indices.
+     function bmi_get_value_at_indices(self, var_name, dest, indices) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (in) :: self
+       character (len=*), intent (in) :: var_name
+       real, pointer, intent (inout) :: dest(:)
+       integer, intent (in) :: indices(:)
+       integer :: bmi_status
+     end function bmi_get_value_at_indices
 
   end interface
 
