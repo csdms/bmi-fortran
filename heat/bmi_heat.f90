@@ -33,9 +33,9 @@ module bmiheatf
      procedure :: get_var_units => heat_var_units
      procedure :: get_var_itemsize => heat_var_itemsize
      procedure :: get_var_nbytes => heat_var_nbytes
-     procedure :: get_value => heat_value
-     procedure :: get_value_ref => heat_value_ref
-     procedure :: get_value_at_indices => heat_value_at_indices
+     procedure :: get_value => heat_get
+     procedure :: get_value_ref => heat_get_ref
+     procedure :: get_value_at_indices => heat_get_at_indices
   end type bmi_heat
 
   private :: heat_component_name, heat_input_var_names, heat_output_var_names
@@ -47,7 +47,7 @@ module bmiheatf
   private :: heat_grid_type, heat_grid_rank, heat_grid_shape
   private :: heat_grid_size, heat_grid_spacing, heat_grid_origin
   private :: heat_var_type, heat_var_units, heat_var_itemsize, heat_var_nbytes
-  private :: heat_value, heat_value_ref, heat_value_at_indices
+  private :: heat_get, heat_get_ref, heat_get_at_indices
 
   character (len=BMI_MAXCOMPNAMESTR), target :: &
        component_name = "The 2D Heat Equation"
@@ -402,7 +402,7 @@ contains
   end function heat_var_nbytes
 
   ! Get a copy of a variable's values, flattened.
-  function heat_value(self, var_name, dest) result (bmi_status)
+  function heat_get(self, var_name, dest) result (bmi_status)
     class (bmi_heat), intent (in) :: self
     character (len=*), intent (in) :: var_name
     real, pointer, intent (inout) :: dest(:)
@@ -421,10 +421,10 @@ contains
        dest = -1.0
        bmi_status = BMI_FAILURE
     end select
-  end function heat_value
+  end function heat_get
 
   ! Get a reference to a variable's values, flattened.
-  function heat_value_ref(self, var_name, dest) result (bmi_status)
+  function heat_get_ref(self, var_name, dest) result (bmi_status)
     class (bmi_heat), intent (in) :: self
     character (len=*), intent (in) :: var_name
     real, pointer, intent (inout) :: dest(:)
@@ -447,9 +447,9 @@ contains
     case default
        bmi_status = BMI_FAILURE
     end select
-  end function heat_value_ref
+  end function heat_get_ref
 
-  function heat_value_at_indices(self, var_name, dest, indices) result (bmi_status)
+  function heat_get_at_indices(self, var_name, dest, indices) result (bmi_status)
     class (bmi_heat), intent (in) :: self
     character (len=*), intent (in) :: var_name
     real, pointer, intent (inout) :: dest(:)
@@ -472,7 +472,7 @@ contains
     case default
        bmi_status = BMI_FAILURE
     end select
-  end function heat_value_at_indices
+  end function heat_get_at_indices
 
   ! A helper routine to allocate a flattened array.
   subroutine allocate_flattened_array(array, n)
