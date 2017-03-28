@@ -404,7 +404,7 @@ contains
   ! Get a copy of a variable's values, flattened.
   function heat_value(self, var_name, dest) result (bmi_status)
     class (bmi_heat), intent (in) :: self
-    character (len=BMI_MAXVARNAMESTR), intent (in) :: var_name
+    character (len=*), intent (in) :: var_name
     real, pointer, intent (inout) :: dest(:)
     integer :: bmi_status
     integer :: n_elements
@@ -426,7 +426,7 @@ contains
   ! Get a reference to a variable's values, flattened.
   function heat_value_ref(self, var_name, dest) result (bmi_status)
     class (bmi_heat), intent (in) :: self
-    character (len=BMI_MAXVARNAMESTR), intent (in) :: var_name
+    character (len=*), intent (in) :: var_name
     real, pointer, intent (inout) :: dest(:)
     integer :: bmi_status
     type (c_ptr) :: src
@@ -451,7 +451,7 @@ contains
 
   function heat_value_at_indices(self, var_name, dest, indices) result (bmi_status)
     class (bmi_heat), intent (in) :: self
-    character (len=BMI_MAXVARNAMESTR), intent (in) :: var_name
+    character (len=*), intent (in) :: var_name
     real, pointer, intent (inout) :: dest(:)
     integer, intent (in) :: indices(:)
     integer :: bmi_status
