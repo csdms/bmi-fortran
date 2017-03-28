@@ -16,3 +16,8 @@ add_test(NAME vargrid_test COMMAND vargrid_test)
 set(src_vargrid_test vargrid_test.f90)
 add_executable(vargrid_test ${src_vargrid_test})
 target_link_libraries(vargrid_test ${bmi_lib} ${bmiheat_lib})
+
+add_test(NAME get_value_test COMMAND get_value_test)
+set(src_get_value_test get_value_test.f90 testing_helpers.f90)
+add_executable(get_value_test ${src_get_value_test})
+target_link_libraries(get_value_test ${bmi_lib} ${bmiheat_lib})
