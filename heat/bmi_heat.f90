@@ -457,13 +457,15 @@ contains
     integer :: bmi_status
     type (c_ptr) src
     real, pointer :: src_flattened(:)
-    integer :: i
+    integer :: i, n_elements
 
     select case (var_name)
     case ("plate_surface__temperature")
        src = c_loc (self%model%temperature(1,1))
        call c_f_pointer(src, src_flattened, [self%model%n_y * self%model%n_x])
-       do i = 1, size (indices)
+       n_elements = size (indices)
+       call allocate_flattened_array(dest, n_elements)
+       do i = 1, n_elements
           dest(i) = src_flattened(indices(i))
        end do
        bmi_status = BMI_SUCCESS
