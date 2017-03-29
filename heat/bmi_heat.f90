@@ -36,6 +36,8 @@ module bmiheatf
      procedure :: get_value => heat_get
      procedure :: get_value_ref => heat_get_ref
      procedure :: get_value_at_indices => heat_get_at_indices
+     procedure :: set_value => heat_set
+     procedure :: set_value_at_indices => heat_set_at_indices
   end type bmi_heat
 
   private :: heat_component_name, heat_input_var_names, heat_output_var_names
@@ -48,6 +50,7 @@ module bmiheatf
   private :: heat_grid_size, heat_grid_spacing, heat_grid_origin
   private :: heat_var_type, heat_var_units, heat_var_itemsize, heat_var_nbytes
   private :: heat_get, heat_get_ref, heat_get_at_indices
+  private :: heat_set, heat_set_at_indices
 
   character (len=BMI_MAXCOMPNAMESTR), target :: &
        component_name = "The 2D Heat Equation"
@@ -449,6 +452,7 @@ contains
     end select
   end function heat_get_ref
 
+  ! Get values of a variable at the given locations.
   function heat_get_at_indices(self, var_name, dest, indices) result (bmi_status)
     class (bmi_heat), intent (in) :: self
     character (len=*), intent (in) :: var_name
@@ -473,6 +477,46 @@ contains
        bmi_status = BMI_FAILURE
     end select
   end function heat_get_at_indices
+
+  ! Set new values.
+  function heat_set(self, var_name, src) result (bmi_status)
+    class (bmi_heat), intent (inout) :: self
+    character (len=*), intent (in) :: var_name
+    real, intent (in) :: src(:)
+    integer :: bmi_status
+
+    select case (var_name)
+    case ("plate_surface__temperature")
+       self%model%temperature = reshape(src, [self%model%n_y, self%model%n_x])
+       bmi_status = BMI_SUCCESS
+    case default
+       bmi_status = BMI_FAILURE
+    end select
+  end function heat_set
+
+  ! Set new values at particular locations.
+  function heat_set_at_indices(self, var_name, indices, src) result (bmi_status)
+    class (bmi_heat), intent (inout) :: self
+    character (len=*), intent (in) :: var_name
+    integer, intent (in) :: indices(:)
+    real, intent (in) :: src(:)
+    integer :: bmi_status
+    type (c_ptr) dest
+    real, pointer :: dest_flattened(:)
+    integer :: i
+
+    select case (var_name)
+    case ("plate_surface__temperature")
+       dest = c_loc (self%model%temperature(1,1))
+       call c_f_pointer(dest, dest_flattened, [self%model%n_y * self%model%n_x])
+       do i = 1, size (indices)
+          dest_flattened(indices(i)) = src(i)
+       end do
+       bmi_status = BMI_SUCCESS
+    case default
+       bmi_status = BMI_FAILURE
+    end select
+  end function heat_set_at_indices
 
   ! A helper routine to allocate a flattened array.
   subroutine allocate_flattened_array(array, n)

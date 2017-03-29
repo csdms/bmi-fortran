@@ -65,6 +65,8 @@ module bmif
        procedure (bmi_get_value), deferred :: get_value
        procedure (bmi_get_value_ref), deferred :: get_value_ref
        procedure (bmi_get_value_at_indices), deferred :: get_value_at_indices
+       procedure (bmi_set_value), deferred :: set_value
+       procedure (bmi_set_value_at_indices), deferred :: set_value_at_indices
   end type bmi
 
   abstract interface
@@ -297,6 +299,25 @@ module bmif
        integer, intent (in) :: indices(:)
        integer :: bmi_status
      end function bmi_get_value_at_indices
+
+     ! Set a new value for a model variable.
+     function bmi_set_value(self, var_name, src) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (inout) :: self
+       character (len=*), intent (in) :: var_name
+       real, intent (in) :: src(:)
+       integer :: bmi_status
+     end function bmi_set_value
+
+     ! Set values at particular (one-dimensional) indices.
+     function bmi_set_value_at_indices(self, var_name, indices, src) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (inout) :: self
+       character (len=*), intent (in) :: var_name
+       integer, intent (in) :: indices(:)
+       real, intent (in) :: src(:)
+       integer :: bmi_status
+     end function bmi_set_value_at_indices
 
   end interface
 
