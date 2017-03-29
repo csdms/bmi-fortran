@@ -21,3 +21,8 @@ add_test(NAME get_value_test COMMAND get_value_test)
 set(src_get_value_test get_value_test.f90 testing_helpers.f90)
 add_executable(get_value_test ${src_get_value_test})
 target_link_libraries(get_value_test ${bmi_lib} ${bmiheat_lib})
+
+add_test(NAME set_value_test COMMAND set_value_test)
+set(src_set_value_test set_value_test.f90 testing_helpers.f90)
+add_executable(set_value_test ${src_set_value_test})
+target_link_libraries(set_value_test ${bmi_lib} ${bmiheat_lib})
