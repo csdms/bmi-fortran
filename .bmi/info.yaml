@@ -1,0 +1,9 @@
+summary:
+  An example of a model that implements the Fortran 2003 bindings
+  for the Basic Model Interface (BMI). This model solves the
+  two-dimensional heat equation on a uniform rectilinear grid.
+url: https://github.com/csdms/bmi-fortran
+author: Mark Piper
+email: mark.piper@colorado.edu
+version: 0.3
+license: MIT
