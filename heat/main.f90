@@ -1,14 +1,24 @@
+! Run the heat model using its BMI.
 program main
 
-  use bmiheatf
+  use heatf
+  implicit none
 
-  type (bmi_heat) :: m
-  integer :: s
-  character (len=BMI_MAXCOMPNAMESTR), pointer :: name
+  type (heat_model) :: model
 
-  write (*,"(a)") "Component info"
+  write(*,"(a)") "Start"
+  call initialize_from_defaults(model)
 
-  s = m%get_component_name(name)
-  write (*,"(a30, a30)") "Component name: ", name
+  write(*,"(a)") "Model initial values..."
+  call print_values(model)
+
+  do while (model%t < model%t_end)
+     call advance_in_time(model)
+     write(*,"(a, f6.1)") "Model values at time = ", model%t
+     call print_values(model)
+  end do
+
+  call cleanup(model)
+  write(*,"(a)") "Finish"
 
 end program main
