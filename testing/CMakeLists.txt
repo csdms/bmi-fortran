@@ -26,3 +26,18 @@ add_test(NAME set_value_test COMMAND set_value_test)
 set(src_set_value_test set_value_test.f90 testing_helpers.f90)
 add_executable(set_value_test ${src_set_value_test})
 target_link_libraries(set_value_test ${bmi_lib} ${bmiheat_lib})
+
+add_test(
+  NAME conflicting_instances_test
+  COMMAND conflicting_instances_test)
+set(src_conflicting_instances_test
+  conflicting_instances_test.f90
+  testing_helpers.f90)
+add_executable(conflicting_instances_test ${src_conflicting_instances_test})
+target_link_libraries(conflicting_instances_test ${bmi_lib} ${bmiheat_lib})
+file (
+  COPY ${CMAKE_CURRENT_SOURCE_DIR}/test1.cfg
+  DESTINATION ${CMAKE_BINARY_DIR}/testing)
+file (
+  COPY ${CMAKE_CURRENT_SOURCE_DIR}/test2.cfg
+  DESTINATION ${CMAKE_BINARY_DIR}/testing)
