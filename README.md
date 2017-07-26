@@ -27,3 +27,25 @@ Run some simple tests with
 To install:
 
     $ make install
+
+## Note
+
+Why two different Fortran BMIs?
+Though Fortran 90/95 has the concept of an interface,
+it doesn't allow procedures to be included within types.
+This is difficult to reconcile with BMI, which, in Fortran,
+would ideally be implemented as a collection of procedures in a type.
+Thus, the Fortran 90/95 BMI is set up as an example
+that a user can copy and modify,
+substituting their code for code in the example.
+This is somewhat cumbersome.
+The Fortran 2003 BMI implementation acts a true interface--it can be imported
+as a type from a module into a Fortran program and its methods overridden.
+The CSDMS IF software engineers recommend using the Fortran 2003 bindings;
+however, we will continue to support the Fortran 90/95 bindings
+for users in the CSDMS community who aren't comfortable
+using the object-oriented features of Fortran 2003.
+Further, both BMI implementations are backward-compatible with Fortran 77.
+All that is needed is a compiler that's capable of handling
+the more recent versions of Fortran;
+for example `gfortran` in the GNU Compiler Collection.
