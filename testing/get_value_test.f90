@@ -21,6 +21,7 @@ program get_value_test
 
   s = m%get_var_grid(names(1), grid_id)
   s = m%get_grid_shape(grid_id, dims)
+  write(*,'(a,2i4)') 'Grid shape (ny,nx): ', dims
 
   write (*, "(a)") "Initial values:"
   s = m%get_value("plate_surface__temperature", z)
