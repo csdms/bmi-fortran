@@ -25,7 +25,8 @@ before_install:
     if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       conda install gcc libgfortran cmake
     else
-      conda install gcc_linux-64 libgfortran cmake
+      conda install gfortran_linux-64 cmake
+      export FC=x86_64-conda_cos6-linux-gnu-gfortran
     fi
 install:
   - mkdir _build && cd _build
