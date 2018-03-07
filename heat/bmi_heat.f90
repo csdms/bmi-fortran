@@ -415,12 +415,12 @@ contains
     select case (var_name)
     case ("plate_surface__temperature")
        n_elements = self%model%n_y * self%model%n_x
-       call allocate_flattened_array(dest, n_elements)
+       allocate(dest(n_elements))
        dest = reshape(self%model%temperature, [n_elements])
        bmi_status = BMI_SUCCESS
     case default
        n_elements = 1
-       call allocate_flattened_array(dest, n_elements)
+       allocate(dest(n_elements))
        dest = -1.0
        bmi_status = BMI_FAILURE
     end select
@@ -440,12 +440,7 @@ contains
     case ("plate_surface__temperature")
        src = c_loc (self%model%temperature(1,1))
        n_elements = self%model%n_y * self%model%n_x
-       if (associated (dest)) then
-          call c_f_pointer(src, src_flattened, [n_elements])
-          dest = src_flattened
-       else
-          call c_f_pointer(src, dest, [n_elements])
-       end if
+       call c_f_pointer(src, dest, [n_elements])
        bmi_status = BMI_SUCCESS
     case default
        bmi_status = BMI_FAILURE
@@ -468,7 +463,7 @@ contains
        src = c_loc (self%model%temperature(1,1))
        call c_f_pointer(src, src_flattened, [self%model%n_y * self%model%n_x])
        n_elements = size (indices)
-       call allocate_flattened_array(dest, n_elements)
+       allocate(dest(n_elements))
        do i = 1, n_elements
           dest(i) = src_flattened(indices(i))
        end do
@@ -517,15 +512,5 @@ contains
        bmi_status = BMI_FAILURE
     end select
   end function heat_set_at_indices
-
-  ! A helper routine to allocate a flattened array.
-  subroutine allocate_flattened_array(array, n)
-    real, pointer, intent (inout) :: array(:)
-    integer, intent (in) :: n
-
-    if (.not.associated(array)) then
-       allocate(array(n))
-    end if
-  end subroutine allocate_flattened_array
 
 end module bmiheatf

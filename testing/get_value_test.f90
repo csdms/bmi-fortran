@@ -10,7 +10,6 @@ program get_value_test
   character (len=BMI_MAXVARNAMESTR), pointer :: names(:)
   integer :: dims(2), locations(3)
   real, pointer :: z(:), y(:), x(:)
-  character(len=30) :: rowfmt
   real :: time
 
   write (*,"(a)",advance="no") "Initializing..."
@@ -22,7 +21,7 @@ program get_value_test
 
   s = m%get_var_grid(names(1), grid_id)
   s = m%get_grid_shape(grid_id, dims)
-  write(rowfmt,'(a,i4,a)') '(', dims(2), '(1x,f6.1))'
+  write(*,'(a,2i4)') 'Grid shape (ny,nx): ', dims
 
   write (*, "(a)") "Initial values:"
   s = m%get_value("plate_surface__temperature", z)
@@ -54,6 +53,12 @@ program get_value_test
      call print_array(x, dims)
   end do
   write (*,"(a)") "Done."
+
+  write (*, "(a)") "Values at three locations:"
+  locations = [21, 41, 62]
+  write (*,*) "Locations: ", locations
+  s = m%get_value_at_indices("plate_surface__temperature", y, locations)
+  write (*,*) "Values: ", y
 
   write (*,"(a)", advance="no") "Finalizing..."
   s = m%finalize()

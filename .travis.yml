@@ -4,7 +4,7 @@ os:
   - osx
 env:
   global:
-    - CONDA_PREFIX=$HOME/miniconda
+    - CONDA_PREFIX=$HOME/conda
     - MINICONDA_URL_BASE="https://repo.continuum.io/miniconda/Miniconda2-latest"
     - TRAVIS_PYTHON_VERSION="2.7"
 sudo: false
@@ -15,16 +15,21 @@ before_install:
     else
       OS="Linux-x86_64"
     fi
-  - curl $MINICONDA_URL_BASE-$OS.sh > $HOME/minconda.sh
-  - bash $HOME/minconda.sh -b -p $CONDA_PREFIX
+  - curl $MINICONDA_URL_BASE-$OS.sh > $HOME/miniconda.sh
+  - bash $HOME/miniconda.sh -b -p $CONDA_PREFIX
   - export PATH="$CONDA_PREFIX/bin:$PATH"
   - hash -r
   - conda config --set always_yes yes --set changeps1 no
   - conda install python=$TRAVIS_PYTHON_VERSION
-  - conda install gcc libgfortran cmake
+  - |
+    if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      conda install gcc libgfortran cmake
+    else
+      conda install gfortran_linux-64 cmake
+      export FC=$CONDA_PREFIX/bin/x86_64-conda_cos6-linux-gnu-gfortran
+    fi
 install:
-  - mkdir _build
-  - cd _build
+  - mkdir _build && cd _build
   - cmake .. -DCMAKE_INSTALL_PREFIX=$(pwd)/../_install -DCMAKE_VERBOSE_MAKEFILE=True
   - make install
 before_script:
