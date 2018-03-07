@@ -54,6 +54,12 @@ program get_value_test
   end do
   write (*,"(a)") "Done."
 
+  write (*, "(a)") "Values at three locations:"
+  locations = [21, 41, 62]
+  write (*,*) "Locations: ", locations
+  s = m%get_value_at_indices("plate_surface__temperature", y, locations)
+  write (*,*) "Values: ", y
+
   write (*,"(a)", advance="no") "Finalizing..."
   s = m%finalize()
   write (*,*) "Done"
