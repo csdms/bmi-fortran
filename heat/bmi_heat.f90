@@ -70,7 +70,7 @@ contains
   ! Get the name of the model.
   function heat_component_name(self, name) result (bmi_status)
     class (bmi_heat), intent (in) :: self
-    character (len=BMI_MAXCOMPNAMESTR), pointer, intent (out) :: name
+    character (len=*), pointer, intent (out) :: name
     integer :: bmi_status
 
     name => component_name
@@ -217,7 +217,7 @@ contains
   ! Get the grid id for a particular variable.
   function heat_var_grid(self, var_name, grid_id) result (bmi_status)
     class (bmi_heat), intent (in) :: self
-    character (len=BMI_MAXVARNAMESTR), intent (in) :: var_name
+    character (len=*), intent (in) :: var_name
     integer, intent (out) :: grid_id
     integer :: bmi_status
 
@@ -235,7 +235,7 @@ contains
   function heat_grid_type(self, grid_id, grid_type) result (bmi_status)
     class (bmi_heat), intent (in) :: self
     integer, intent (in) :: grid_id
-    character (len=BMI_MAXVARNAMESTR), intent (out) :: grid_type
+    character (len=*), intent (out) :: grid_type
     integer :: bmi_status
 
     select case (grid_id)
@@ -335,8 +335,8 @@ contains
   ! The data type of the variable, as a string.
   function heat_var_type(self, var_name, type) result (bmi_status)
     class (bmi_heat), intent (in) :: self
-    character (len=BMI_MAXVARNAMESTR), intent (in) :: var_name
-    character (len=BMI_MAXUNITSSTR), intent (out) :: type
+    character (len=*), intent (in) :: var_name
+    character (len=*), intent (out) :: type
     integer :: bmi_status
 
     select case (var_name)
@@ -352,8 +352,8 @@ contains
   ! The units of the given variable.
   function heat_var_units(self, var_name, units) result (bmi_status)
     class (bmi_heat), intent (in) :: self
-    character (len=BMI_MAXVARNAMESTR), intent (in) :: var_name
-    character (len=BMI_MAXUNITSSTR), intent (out) :: units
+    character (len=*), intent (in) :: var_name
+    character (len=*), intent (out) :: units
     integer :: bmi_status
 
     select case (var_name)
@@ -369,7 +369,7 @@ contains
   ! Memory use per array element.
   function heat_var_itemsize(self, var_name, size) result (bmi_status)
     class (bmi_heat), intent (in) :: self
-    character (len=BMI_MAXVARNAMESTR), intent (in) :: var_name
+    character (len=*), intent (in) :: var_name
     integer, intent (out) :: size
     integer :: bmi_status
 
@@ -386,7 +386,7 @@ contains
   ! The size of the given variable.
   function heat_var_nbytes(self, var_name, size) result (bmi_status)
     class (bmi_heat), intent (in) :: self
-    character (len=BMI_MAXVARNAMESTR), intent (in) :: var_name
+    character (len=*), intent (in) :: var_name
     integer, intent (out) :: size
     integer :: bmi_status
     integer :: s1, s2, s3, grid_id, grid_size, item_size
