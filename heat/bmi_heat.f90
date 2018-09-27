@@ -56,11 +56,10 @@ module bmiheatf
        component_name = "The 2D Heat Equation"
 
   ! Exchange items
-  integer, parameter :: input_item_count = 1
+  integer, parameter :: input_item_count = 2
   integer, parameter :: output_item_count = 1
   character (len=BMI_MAXVARNAMESTR), target, &
-       dimension (input_item_count) :: &
-       input_items = (/'plate_surface__temperature'/)
+       dimension (input_item_count) :: input_items
   character (len=BMI_MAXVARNAMESTR), target, &
        dimension (output_item_count) :: &
        output_items = (/'plate_surface__temperature'/)
@@ -82,6 +81,9 @@ contains
     class (bmi_heat), intent (in) :: self
     character (*), pointer, intent (out) :: names(:)
     integer :: bmi_status
+
+    input_items(1) = 'plate_surface__temperature'
+    input_items(2) = 'plate_surface__thermal_diffusivity'
 
     names => input_items
     bmi_status = BMI_SUCCESS
