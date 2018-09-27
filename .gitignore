@@ -33,3 +33,8 @@
 
 # Emacs backups
 *~
+
+# Build and install directories for testing
+_build
+_install
+
