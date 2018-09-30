@@ -12,6 +12,6 @@ set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
 add_subdirectory(bmi)
 add_subdirectory(heat)
 add_subdirectory(heat/examples)
-add_subdirectory(heat/test)
+add_subdirectory(heat/tests)
 
 include(CTest)
