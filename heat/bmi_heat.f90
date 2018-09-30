@@ -377,7 +377,7 @@ contains
 
     select case (var_name)
     case ("plate_surface__temperature")
-       size = BMI_DOUBLE
+       size = sizeof(self%model%temperature(1,1))  ! 'sizeof' in gcc & ifort
        bmi_status = BMI_SUCCESS
     case default
        size = -1
