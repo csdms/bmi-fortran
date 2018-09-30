@@ -37,7 +37,7 @@ add_executable(conflicting_instances_test ${src_conflicting_instances_test})
 target_link_libraries(conflicting_instances_test ${bmi_lib} ${bmiheat_lib})
 file (
   COPY ${CMAKE_CURRENT_SOURCE_DIR}/test1.cfg
-  DESTINATION ${CMAKE_BINARY_DIR}/testing)
+  DESTINATION ${CMAKE_BINARY_DIR}/heat/examples)
 file (
   COPY ${CMAKE_CURRENT_SOURCE_DIR}/test2.cfg
-  DESTINATION ${CMAKE_BINARY_DIR}/testing)
+  DESTINATION ${CMAKE_BINARY_DIR}/heat/examples)
