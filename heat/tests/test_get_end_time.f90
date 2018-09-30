@@ -1,7 +1,7 @@
 program test_get_end_time
 
   use bmiheatf
-  use fixtures
+  use fixtures, only: config_file, status
 
   implicit none
 

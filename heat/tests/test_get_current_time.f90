@@ -1,7 +1,7 @@
 program test_get_current_time
 
   use bmiheatf
-  use fixtures
+  use fixtures, only: config_file, status
 
   implicit none
 
