@@ -29,7 +29,10 @@ make_test(test_get_grid_shape)
 make_test(test_get_grid_size)
 make_test(test_get_grid_spacing)
 make_test(test_get_grid_origin)
+make_test(test_get_var_type)
+make_test(test_get_var_units)
 make_test(test_get_var_itemsize)
+make_test(test_get_var_nbytes)
 
 file(
   COPY ${CMAKE_CURRENT_SOURCE_DIR}/sample.cfg
