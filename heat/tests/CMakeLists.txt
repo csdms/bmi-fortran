@@ -12,7 +12,13 @@ endfunction(make_test)
 make_test(test_get_component_name)
 make_test(test_get_input_var_names)
 make_test(test_get_output_var_names)
+make_test(test_initialize)
+make_test(test_finalize)
 make_test(test_get_start_time)
 make_test(test_get_end_time)
 make_test(test_get_current_time)
 make_test(test_get_var_itemsize)
+
+file(
+  COPY ${CMAKE_CURRENT_SOURCE_DIR}/sample.cfg
+  DESTINATION ${CMAKE_BINARY_DIR}/heat/tests)
