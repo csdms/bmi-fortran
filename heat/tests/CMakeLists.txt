@@ -22,6 +22,13 @@ make_test(test_get_time_units)
 make_test(test_update)
 make_test(test_update_frac)
 make_test(test_update_until)
+make_test(test_get_var_grid)
+make_test(test_get_grid_type)
+make_test(test_get_grid_rank)
+make_test(test_get_grid_shape)
+make_test(test_get_grid_size)
+make_test(test_get_grid_spacing)
+make_test(test_get_grid_origin)
 make_test(test_get_var_itemsize)
 
 file(
