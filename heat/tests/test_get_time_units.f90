@@ -8,7 +8,7 @@ program test_get_time_units
   character (len=*), parameter :: expected_units = "-"
 
   type (bmi_heat) :: m
-  character (len=BMI_MAXUNITSSTR) :: units
+  character (len=BMI_MAX_UNITS_NAME) :: units
 
   status = m%initialize(config_file)
   status = m%get_time_units(units)

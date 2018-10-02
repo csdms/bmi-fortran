@@ -7,7 +7,7 @@ program get_value_test
 
   type (bmi_heat) :: m
   integer :: s, i, j, grid_id
-  character (len=BMI_MAXVARNAMESTR), pointer :: names(:)
+  character (len=BMI_MAX_VAR_NAME), pointer :: names(:)
   integer :: dims(2), locations(3)
   real, pointer :: z(:), y(:), x(:)
   real :: time

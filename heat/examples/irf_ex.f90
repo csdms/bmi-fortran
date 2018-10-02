@@ -7,7 +7,7 @@ program irf_test
   type (bmi_heat) :: m
   integer :: s, i
   real :: time, time0, time1
-  character (len=BMI_MAXUNITSSTR) :: time_units
+  character (len=BMI_MAX_UNITS_NAME) :: time_units
 
   write (*,"(a)",advance="no") "Initializing..."
   s = m%initialize("")

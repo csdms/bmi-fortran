@@ -6,7 +6,7 @@ program test_get_output_var_names
   implicit none
 
   type (bmi_heat) :: m
-  character (len=BMI_MAXCOMPNAMESTR), pointer :: names(:)
+  character (len=BMI_MAX_VAR_NAME), pointer :: names(:)
   integer :: i
   
   status = m%get_output_var_names(names)

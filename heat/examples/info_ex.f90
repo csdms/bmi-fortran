@@ -6,8 +6,8 @@ program info_test
 
   type (bmi_heat) :: m
   integer :: s, i
-  character (len=BMI_MAXCOMPNAMESTR), pointer :: name
-  character (len=BMI_MAXVARNAMESTR), pointer :: names(:)
+  character (len=BMI_MAX_COMPONENT_NAME), pointer :: name
+  character (len=BMI_MAX_VAR_NAME), pointer :: names(:)
 
   write (*,"(a)") "Component info"
 

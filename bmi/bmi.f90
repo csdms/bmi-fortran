@@ -2,9 +2,10 @@ module bmif
 
   implicit none
 
-  integer, parameter :: BMI_MAXVARNAMESTR = 2048
-  integer, parameter :: BMI_MAXCOMPNAMESTR = 2048
-  integer, parameter :: BMI_MAXUNITSSTR = 2048
+  integer, parameter :: BMI_MAX_COMPONENT_NAME = 2048
+  integer, parameter :: BMI_MAX_VAR_NAME = 2048
+  integer, parameter :: BMI_MAX_TYPE_NAME = 2048
+  integer, parameter :: BMI_MAX_UNITS_NAME = 2048
 
   integer, parameter :: BMI_FAILURE = 1
   integer, parameter :: BMI_SUCCESS = 0

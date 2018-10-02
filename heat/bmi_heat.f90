@@ -52,15 +52,15 @@ module bmiheatf
   private :: heat_get, heat_get_ref, heat_get_at_indices
   private :: heat_set, heat_set_at_indices
 
-  character (len=BMI_MAXCOMPNAMESTR), target :: &
+  character (len=BMI_MAX_COMPONENT_NAME), target :: &
        component_name = "The 2D Heat Equation"
 
   ! Exchange items
   integer, parameter :: input_item_count = 2
   integer, parameter :: output_item_count = 1
-  character (len=BMI_MAXVARNAMESTR), target, &
+  character (len=BMI_MAX_VAR_NAME), target, &
        dimension (input_item_count) :: input_items
-  character (len=BMI_MAXVARNAMESTR), target, &
+  character (len=BMI_MAX_VAR_NAME), target, &
        dimension (output_item_count) :: &
        output_items = (/'plate_surface__temperature'/)
 

@@ -6,9 +6,9 @@ program vargrid_test
 
   type (bmi_heat) :: m
   integer :: s, i
-  character (len=BMI_MAXVARNAMESTR), pointer :: names(:)
+  character (len=BMI_MAX_VAR_NAME), pointer :: names(:)
   integer :: grid_id
-  character (len=BMI_MAXVARNAMESTR) :: astring
+  character (len=BMI_MAX_VAR_NAME) :: astring
   integer :: asize
   real, dimension(2) :: rarray
   integer, dimension(2) :: iarray

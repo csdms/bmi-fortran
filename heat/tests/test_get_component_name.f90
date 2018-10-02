@@ -6,7 +6,7 @@ program test_get_component_name
   implicit none
 
   type (bmi_heat) :: m
-  character (len=BMI_MAXCOMPNAMESTR), pointer :: name
+  character (len=BMI_MAX_COMPONENT_NAME), pointer :: name
 
   status = m%get_component_name(name)
 

@@ -10,7 +10,7 @@ program test_get_grid_type
        expected_type = "uniform_rectilinear"
 
   type (bmi_heat) :: m
-  character (len=BMI_MAXVARNAMESTR) :: grid_type
+  character (len=BMI_MAX_TYPE_NAME) :: grid_type
 
   status = m%initialize(config_file)
   status = m%get_grid_type(grid_id, grid_type)
