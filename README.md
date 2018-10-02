@@ -5,6 +5,9 @@
 Fortran bindings, created with Fortran 2003, for the
 [Basic Model Interface](http://csdms.colorado.edu/wiki/BMI_Description).
 
+The bindings are defined in the [bmi](./bmi) directory.
+A sample implementation is provided in the [heat](./heat) directory.
+
 ## Build
 
 To build the BMI Fortran bindings, sample implementation, tests,
