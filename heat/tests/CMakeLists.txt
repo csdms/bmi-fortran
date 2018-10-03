@@ -37,6 +37,8 @@ make_test(test_get_value)
 make_test(test_get_value_ref)
 make_test(test_get_value_at_indices)
 make_test(test_by_reference)
+make_test(test_set_value)
+make_test(test_set_value_at_indices)
 
 file(
   COPY ${CMAKE_CURRENT_SOURCE_DIR}/sample.cfg
