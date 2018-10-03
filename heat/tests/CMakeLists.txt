@@ -33,6 +33,7 @@ make_test(test_get_var_type)
 make_test(test_get_var_units)
 make_test(test_get_var_itemsize)
 make_test(test_get_var_nbytes)
+make_test(test_by_reference)
 
 file(
   COPY ${CMAKE_CURRENT_SOURCE_DIR}/sample.cfg
