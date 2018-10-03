@@ -435,7 +435,6 @@ contains
     real, pointer, intent (inout) :: dest(:)
     integer :: bmi_status
     type (c_ptr) :: src
-    real, pointer :: src_flattened(:)
     integer :: n_elements
 
     select case (var_name)
