@@ -33,11 +33,10 @@ program test_by_reference
   write (*, "(a)") "Time = 1 (by reference):"
   call print_array(tref, shape)
   
-  status = m%finalize()
-
   if (sum(tval).eq.sum(tref)) then
      stop 1
   end if
 
+  status = m%finalize()
   deallocate(tval)
 end program test_by_reference
