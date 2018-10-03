@@ -43,6 +43,7 @@ contains
     write (*, "(a)") "Time = 1 (by reference):"
     call print_array(tref, shape)
   
+    code = BMI_SUCCESS
     if (sum(tval).eq.sum(tref)) then
        code = BMI_FAILURE
     end if

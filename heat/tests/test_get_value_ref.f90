@@ -35,6 +35,7 @@ contains
        write(*,*) tref((i-1)*shape(1)+1)
     end do
 
+    code = BMI_SUCCESS
     do i = 1, shape(2)
        if (tref((i-1)*shape(1)+1).ne.expected(i)) then
           code = BMI_FAILURE

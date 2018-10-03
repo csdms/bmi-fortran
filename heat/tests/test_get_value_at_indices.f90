@@ -37,6 +37,7 @@ contains
        write(*,*) indices(i), tval(i), expected(i)
     end do
 
+    code = BMI_SUCCESS
     do i = 1, shape(2)
        if (tval(i).ne.expected(i)) then
           code = BMI_FAILURE
