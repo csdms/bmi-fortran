@@ -38,4 +38,6 @@ program test_by_reference
   if (sum(tval).eq.sum(tref)) then
      stop 1
   end if
+
+  deallocate(tval)
 end program test_by_reference
