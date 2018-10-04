@@ -33,6 +33,9 @@ install:
   - cmake .. -DCMAKE_INSTALL_PREFIX=$(pwd)/../_install -DCMAKE_VERBOSE_MAKEFILE=True
   - make install
 before_script:
-  - source ../.ci/travis/update_rpaths.sh
+  - |
+    if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      source ../scripts/update_rpaths.sh
+    fi
 script:
   - ctest

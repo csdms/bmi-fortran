@@ -7,11 +7,11 @@ program conflicting_instances_test
 
   type (bmi_heat) :: m1
   type (bmi_heat) :: m2
-  character (len=BMI_MAXVARNAMESTR) :: &
+  character (len=BMI_MAX_VAR_NAME) :: &
        cfg_file1 = "test1.cfg", cfg_file2 = "test2.cfg"
   integer :: s
   integer :: grid_id1, grid_id2
-  character (len=BMI_MAXVARNAMESTR), pointer :: names1(:), names2(:)
+  character (len=BMI_MAX_VAR_NAME), pointer :: names1(:), names2(:)
   integer :: dims1(2), dims2(2)
   real, pointer :: z1(:), z2(:)
   character(len=30) :: rowfmt1, rowfmt2
