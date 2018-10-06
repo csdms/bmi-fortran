@@ -32,6 +32,11 @@ module bmif
        procedure (bmif_get_grid_size), deferred :: get_grid_size
        procedure (bmif_get_grid_spacing), deferred :: get_grid_spacing
        procedure (bmif_get_grid_origin), deferred :: get_grid_origin
+       procedure (bmif_get_grid_x), deferred :: get_grid_x
+       procedure (bmif_get_grid_y), deferred :: get_grid_y
+       procedure (bmif_get_grid_z), deferred :: get_grid_z
+       procedure (bmif_get_grid_connectivity), deferred :: get_grid_connectivity
+       procedure (bmif_get_grid_offset), deferred :: get_grid_offset
        procedure (bmif_get_var_type), deferred :: get_var_type
        procedure (bmif_get_var_units), deferred :: get_var_units
        procedure (bmif_get_var_itemsize), deferred :: get_var_itemsize
@@ -209,6 +214,53 @@ module bmif
        real, dimension(:), intent (out) :: origin
        integer :: bmi_status
      end function bmif_get_grid_origin
+
+     ! Get the x-coordinates of the nodes of a computational grid.
+     function bmif_get_grid_x(self, grid_id, x) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (in) :: self
+       integer, intent (in) :: grid_id
+       real, dimension(:), intent (out) :: x
+       integer :: bmi_status
+     end function bmif_get_grid_x
+
+     ! Get the y-coordinates of the nodes of a computational grid.
+     function bmif_get_grid_y(self, grid_id, y) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (in) :: self
+       integer, intent (in) :: grid_id
+       real, dimension(:), intent (out) :: y
+       integer :: bmi_status
+     end function bmif_get_grid_y
+
+     ! Get the z-coordinates of the nodes of a computational grid.
+     function bmif_get_grid_z(self, grid_id, z) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (in) :: self
+       integer, intent (in) :: grid_id
+       real, dimension(:), intent (out) :: z
+       integer :: bmi_status
+     end function bmif_get_grid_z
+
+     ! Get the connectivity array of the nodes of an unstructured grid.
+     function bmif_get_grid_connectivity(self, grid_id, connectivity) &
+          result (bmi_status)
+       import :: bmi
+       class (bmi), intent (in) :: self
+       integer, intent (in) :: grid_id
+       integer, dimension(:), intent (out) :: connectivity
+       integer :: bmi_status
+     end function bmif_get_grid_connectivity
+
+     ! Get the offsets of the nodes of an unstructured grid.
+     function bmif_get_grid_offset(self, grid_id, offset) &
+          result (bmi_status)
+       import :: bmi
+       class (bmi), intent (in) :: self
+       integer, intent (in) :: grid_id
+       integer, dimension(:), intent (out) :: offset
+       integer :: bmi_status
+     end function bmif_get_grid_offset
 
      ! Get the data type of the given variable as a string.
      function bmif_get_var_type(self, var_name, type) result (bmi_status)
