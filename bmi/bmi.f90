@@ -243,12 +243,12 @@ module bmif
      end function bmif_get_grid_z
 
      ! Get the connectivity array of the nodes of an unstructured grid.
-     function bmif_get_grid_connectivity(self, grid_id, conn) &
+     function bmif_get_grid_connectivity(self, grid_id, connectivity) &
           result (bmi_status)
        import :: bmi
        class (bmi), intent (in) :: self
        integer, intent (in) :: grid_id
-       integer, dimension(:), intent (out) :: conn
+       integer, dimension(:), intent (out) :: connectivity
        integer :: bmi_status
      end function bmif_get_grid_connectivity
 
