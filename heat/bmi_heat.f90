@@ -295,7 +295,7 @@ contains
        shape = [self%model%n_y, self%model%n_x]
        bmi_status = BMI_SUCCESS
     case default
-       shape = [-1, -1]
+       shape = [-1]
        bmi_status = BMI_FAILURE
     end select
   end function heat_grid_shape
@@ -349,6 +349,7 @@ contains
        origin = [0.0, 0.0]
        bmi_status = BMI_SUCCESS
     case default
+       origin = [-1.0]
        bmi_status = BMI_FAILURE
     end select
   end function heat_grid_origin
@@ -365,6 +366,7 @@ contains
        x = [0.0]
        bmi_status = BMI_SUCCESS
     case default
+       x = [-1.0]
        bmi_status = BMI_FAILURE
     end select
   end function heat_grid_x
@@ -381,6 +383,7 @@ contains
        y = [0.0]
        bmi_status = BMI_SUCCESS
     case default
+       y = [-1.0]
        bmi_status = BMI_FAILURE
     end select
   end function heat_grid_y
@@ -397,6 +400,7 @@ contains
        z = [0.0]
        bmi_status = BMI_SUCCESS
     case default
+       z = [-1.0]
        bmi_status = BMI_FAILURE
     end select
   end function heat_grid_z
@@ -414,6 +418,7 @@ contains
        connectivity = [0]
        bmi_status = BMI_SUCCESS
     case default
+       connectivity = [-1]
        bmi_status = BMI_FAILURE
     end select
   end function heat_grid_connectivity
@@ -431,6 +436,7 @@ contains
        offset = [0]
        bmi_status = BMI_SUCCESS
     case default
+       offset = [-1]
        bmi_status = BMI_FAILURE
     end select
   end function heat_grid_offset
@@ -444,6 +450,9 @@ contains
 
     select case (var_name)
     case ("plate_surface__temperature")
+       type = "real"
+       bmi_status = BMI_SUCCESS
+    case ("plate_surface__thermal_diffusivity")
        type = "real"
        bmi_status = BMI_SUCCESS
     case default
@@ -463,6 +472,9 @@ contains
     case ("plate_surface__temperature")
        units = "K"
        bmi_status = BMI_SUCCESS
+    case ("plate_surface__thermal_diffusivity")
+       units = "m2 s-1"
+       bmi_status = BMI_SUCCESS
     case default
        units = "-"
        bmi_status = BMI_FAILURE
@@ -479,6 +491,9 @@ contains
     select case (var_name)
     case ("plate_surface__temperature")
        size = sizeof(self%model%temperature(1,1))  ! 'sizeof' in gcc & ifort
+       bmi_status = BMI_SUCCESS
+    case ("plate_surface__thermal_diffusivity")
+       size = sizeof(self%model%alpha)             ! 'sizeof' in gcc & ifort
        bmi_status = BMI_SUCCESS
     case default
        size = -1
@@ -513,17 +528,23 @@ contains
     character (len=*), intent (in) :: var_name
     real, pointer, intent (inout) :: dest(:)
     integer :: bmi_status
-    integer :: n_elements
+    integer :: status, grid_id, grid_size
+
+    status = self%get_var_grid(var_name, grid_id)
+    status = self%get_grid_size(grid_id, grid_size)
 
     select case (var_name)
     case ("plate_surface__temperature")
-       n_elements = self%model%n_y * self%model%n_x
-       allocate(dest(n_elements))
-       dest = reshape(self%model%temperature, [n_elements])
+       allocate(dest(grid_size))
+       dest = reshape(self%model%temperature, [grid_size])
+       bmi_status = BMI_SUCCESS
+    case ("plate_surface__thermal_diffusivity")
+       allocate(dest(grid_size))
+       dest = [self%model%alpha]
        bmi_status = BMI_SUCCESS
     case default
-       n_elements = 1
-       allocate(dest(n_elements))
+       grid_size = 1
+       allocate(dest(grid_size))
        dest = -1.0
        bmi_status = BMI_FAILURE
     end select
