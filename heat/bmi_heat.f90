@@ -29,6 +29,11 @@ module bmiheatf
      procedure :: get_grid_size => heat_grid_size
      procedure :: get_grid_spacing => heat_grid_spacing
      procedure :: get_grid_origin => heat_grid_origin
+     procedure :: get_grid_x => heat_grid_x
+     procedure :: get_grid_y => heat_grid_y
+     procedure :: get_grid_z => heat_grid_z
+     procedure :: get_grid_connectivity => heat_grid_connectivity
+     procedure :: get_grid_offset => heat_grid_offset
      procedure :: get_var_type => heat_var_type
      procedure :: get_var_units => heat_var_units
      procedure :: get_var_itemsize => heat_var_itemsize
@@ -48,6 +53,8 @@ module bmiheatf
   private :: heat_var_grid
   private :: heat_grid_type, heat_grid_rank, heat_grid_shape
   private :: heat_grid_size, heat_grid_spacing, heat_grid_origin
+  private :: heat_grid_x, heat_grid_y, heat_grid_z
+  private :: heat_grid_connectivity, heat_grid_offset
   private :: heat_var_type, heat_var_units, heat_var_itemsize, heat_var_nbytes
   private :: heat_get, heat_get_ref, heat_get_at_indices
   private :: heat_set, heat_set_at_indices
@@ -227,6 +234,9 @@ contains
     case ('plate_surface__temperature')
        grid_id = 0
        bmi_status = BMI_SUCCESS
+    case ('plate_surface__thermal_diffusivity')
+       grid_id = 1
+       bmi_status = BMI_SUCCESS
     case default
        grid_id = -1
        bmi_status = BMI_FAILURE
@@ -244,6 +254,9 @@ contains
     case (0)
        grid_type = "uniform_rectilinear"
        bmi_status = BMI_SUCCESS
+    case (1)
+       grid_type = "unstructured"
+       bmi_status = BMI_SUCCESS
     case default
        grid_type = "-"
        bmi_status = BMI_FAILURE
@@ -260,6 +273,9 @@ contains
     select case (grid_id)
     case (0)
        rank = 2
+       bmi_status = BMI_SUCCESS
+    case (1)
+       rank = 0
        bmi_status = BMI_SUCCESS
     case default
        rank = -1
@@ -294,6 +310,9 @@ contains
     select case (grid_id)
     case (0)
        size = self%model%n_y * self%model%n_x
+       bmi_status = BMI_SUCCESS
+    case (1)
+       size = 1
        bmi_status = BMI_SUCCESS
     case default
        size = -1
@@ -333,6 +352,88 @@ contains
        bmi_status = BMI_FAILURE
     end select
   end function heat_grid_origin
+
+  ! X-coordinates of grid nodes.
+  function heat_grid_x(self, grid_id, x) result (bmi_status)
+    class (bmi_heat), intent (in) :: self
+    integer, intent (in) :: grid_id
+    real, dimension(:), intent (out) :: x
+    integer :: bmi_status
+
+    select case (grid_id)
+    case (1)
+       x = [0.0]
+       bmi_status = BMI_SUCCESS
+    case default
+       bmi_status = BMI_FAILURE
+    end select
+  end function heat_grid_x
+
+  ! Y-coordinates of grid nodes.
+  function heat_grid_y(self, grid_id, y) result (bmi_status)
+    class (bmi_heat), intent (in) :: self
+    integer, intent (in) :: grid_id
+    real, dimension(:), intent (out) :: y
+    integer :: bmi_status
+
+    select case (grid_id)
+    case (1)
+       y = [0.0]
+       bmi_status = BMI_SUCCESS
+    case default
+       bmi_status = BMI_FAILURE
+    end select
+  end function heat_grid_y
+
+  ! Z-coordinates of grid nodes.
+  function heat_grid_z(self, grid_id, z) result (bmi_status)
+    class (bmi_heat), intent (in) :: self
+    integer, intent (in) :: grid_id
+    real, dimension(:), intent (out) :: z
+    integer :: bmi_status
+
+    select case (grid_id)
+    case (1)
+       z = [0.0]
+       bmi_status = BMI_SUCCESS
+    case default
+       bmi_status = BMI_FAILURE
+    end select
+  end function heat_grid_z
+
+  ! Connectivity array of unstructured grid nodes.
+  function heat_grid_connectivity(self, grid_id, connectivity) &
+       result (bmi_status)
+    class (bmi_heat), intent (in) :: self
+    integer, intent (in) :: grid_id
+    integer, dimension(:), intent (out) :: connectivity
+    integer :: bmi_status
+
+    select case (grid_id)
+    case (1)
+       connectivity = [0]
+       bmi_status = BMI_SUCCESS
+    case default
+       bmi_status = BMI_FAILURE
+    end select
+  end function heat_grid_connectivity
+
+  ! Offsets of unstructured grid nodes.
+  function heat_grid_offset(self, grid_id, offset) &
+       result (bmi_status)
+    class (bmi_heat), intent (in) :: self
+    integer, intent (in) :: grid_id
+    integer, dimension(:), intent (out) :: offset
+    integer :: bmi_status
+
+    select case (grid_id)
+    case (1)
+       offset = [0]
+       bmi_status = BMI_SUCCESS
+    case default
+       bmi_status = BMI_FAILURE
+    end select
+  end function heat_grid_offset
 
   ! The data type of the variable, as a string.
   function heat_var_type(self, var_name, type) result (bmi_status)
