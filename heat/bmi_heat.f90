@@ -607,6 +607,9 @@ contains
     case ("plate_surface__temperature")
        self%model%temperature = reshape(src, [self%model%n_y, self%model%n_x])
        bmi_status = BMI_SUCCESS
+    case ("plate_surface__thermal_diffusivity")
+       self%model%alpha = src(1)
+       bmi_status = BMI_SUCCESS
     case default
        bmi_status = BMI_FAILURE
     end select
