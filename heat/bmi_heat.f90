@@ -43,6 +43,7 @@ module bmiheatf
      procedure :: get_value_at_indices => heat_get_at_indices
      procedure :: set_value => heat_set
      procedure :: set_value_at_indices => heat_set_at_indices
+     procedure :: print_model_info
   end type bmi_heat
 
   private :: heat_component_name, heat_input_var_names, heat_output_var_names
@@ -638,5 +639,12 @@ contains
        bmi_status = BMI_FAILURE
     end select
   end function heat_set_at_indices
+
+  ! A non-BMI procedure for model introspection.
+  subroutine print_model_info(self)
+    class (bmi_heat), intent (in) :: self
+
+    call print_info(self%model)
+  end subroutine print_model_info
 
 end module bmiheatf
