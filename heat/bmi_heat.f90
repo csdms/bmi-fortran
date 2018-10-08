@@ -48,8 +48,7 @@ module bmiheatf
 
   private
   public :: bmi_heat
-  public :: input_item_count, output_item_count, &
-       input_items, output_items, component_name
+  public :: input_items, output_items, component_name
 
   character (len=BMI_MAX_COMPONENT_NAME), target :: &
        component_name = "The 2D Heat Equation"

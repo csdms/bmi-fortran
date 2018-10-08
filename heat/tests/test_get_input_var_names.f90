@@ -12,7 +12,7 @@ program test_get_input_var_names
   
   status = m%get_input_var_names(names)
   
-  do i=1, input_item_count
+  do i=1, size(names)
      if (names(i).ne.input_items(i)) then
         stop BMI_FAILURE
      end if

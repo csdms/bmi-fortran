@@ -12,7 +12,7 @@ program test_get_output_var_names
   
   status = m%get_output_var_names(names)
   
-  do i=1, output_item_count
+  do i=1, size(names)
      if (names(i).ne.output_items(i)) then
         stop BMI_FAILURE
      end if
