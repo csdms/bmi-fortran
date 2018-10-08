@@ -1,5 +1,6 @@
 program test_get_grid_offset
 
+  use bmif, only: BMI_FAILURE
   use bmiheatf
   use fixtures, only: config_file, status
 
@@ -22,7 +23,7 @@ program test_get_grid_offset
 
   do i = 1, noffset
      if (grid_offset(i).ne.expected_offset(i)) then
-        stop 1
+        stop BMI_FAILURE
      end if
   end do
 end program test_get_grid_offset

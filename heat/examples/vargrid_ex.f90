@@ -1,6 +1,7 @@
 ! Test the BMI get_var_* and get_grid_* functions.
 program vargrid_test
 
+  use bmif, only: BMI_MAX_VAR_NAME
   use bmiheatf
   implicit none
 

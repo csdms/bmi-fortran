@@ -1,5 +1,6 @@
 program test_update_until
 
+  use bmif, only: BMI_FAILURE
   use bmiheatf
   use fixtures, only: config_file, status
 
@@ -16,6 +17,6 @@ program test_update_until
   status = m%finalize()
 
   if (time.ne.expected_time) then
-     stop 1
+     stop BMI_FAILURE
   end if
 end program test_update_until

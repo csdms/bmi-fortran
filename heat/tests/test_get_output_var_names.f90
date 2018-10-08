@@ -1,5 +1,6 @@
 program test_get_output_var_names
 
+  use bmif, only: BMI_FAILURE, BMI_MAX_VAR_NAME
   use bmiheatf
   use fixtures, only: status
 
@@ -13,7 +14,7 @@ program test_get_output_var_names
   
   do i=1, output_item_count
      if (names(i).ne.output_items(i)) then
-        stop 1
+        stop BMI_FAILURE
      end if
   end do
 end program test_get_output_var_names

@@ -1,6 +1,7 @@
 ! Test the basic info BMI methods.
 program info_test
 
+  use bmif
   use bmiheatf
   implicit none
 

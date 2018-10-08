@@ -1,5 +1,6 @@
 program test_get_time_step
 
+  use bmif, only: BMI_FAILURE
   use bmiheatf
   use fixtures, only: config_file, status
 
@@ -15,6 +16,6 @@ program test_get_time_step
   status = m%finalize()
 
   if (time_step.ne.expected_time_step) then
-     stop 1
+     stop BMI_FAILURE
   end if
 end program test_get_time_step

@@ -1,6 +1,7 @@
 ! Test the lifecycle and time BMI methods.
 program irf_test
 
+  use bmif, only: BMI_MAX_UNITS_NAME
   use bmiheatf
   implicit none
 

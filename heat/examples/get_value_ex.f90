@@ -1,6 +1,7 @@
 ! Test the get_value, get_value_ref, and get_value_at_indices functions.
 program get_value_test
 
+  use bmif, only: BMI_MAX_VAR_NAME
   use bmiheatf
   use testing_helpers
   implicit none

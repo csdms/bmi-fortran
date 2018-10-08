@@ -1,5 +1,6 @@
 program test_get_var_grid
 
+  use bmif, only: BMI_FAILURE
   use bmiheatf
   use fixtures, only: config_file, status
 
@@ -16,6 +17,6 @@ program test_get_var_grid
   status = m%finalize()
 
   if (grid_id.ne.expected_id) then
-     stop 1
+     stop BMI_FAILURE
   end if
 end program test_get_var_grid

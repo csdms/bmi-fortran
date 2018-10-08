@@ -1,5 +1,6 @@
 program test_get_grid_rank
 
+  use bmif, only: BMI_FAILURE
   use bmiheatf
   use fixtures, only: config_file, status
 
@@ -16,6 +17,6 @@ program test_get_grid_rank
   status = m%finalize()
 
   if (grid_rank.ne.expected_rank) then
-     stop 1
+     stop BMI_FAILURE
   end if
 end program test_get_grid_rank

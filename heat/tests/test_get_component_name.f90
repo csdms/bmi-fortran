@@ -1,5 +1,6 @@
 program test_get_component_name
 
+  use bmif, only: BMI_FAILURE, BMI_MAX_COMPONENT_NAME
   use bmiheatf
   use fixtures, only: status
 
@@ -11,6 +12,6 @@ program test_get_component_name
   status = m%get_component_name(name)
 
   if (name.ne.component_name) then
-     stop 1
+     stop BMI_FAILURE
   end if
 end program test_get_component_name
