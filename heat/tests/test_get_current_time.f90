@@ -1,5 +1,6 @@
 program test_get_current_time
 
+  use bmif, only: BMI_FAILURE
   use bmiheatf
   use fixtures, only: config_file, status
 
@@ -15,6 +16,6 @@ program test_get_current_time
   status = m%finalize()
 
   if (current_time.ne.expected_time) then
-     stop 1
+     stop BMI_FAILURE
   end if
 end program test_get_current_time

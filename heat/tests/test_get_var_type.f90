@@ -1,5 +1,6 @@
 program test_get_var_type
 
+  use bmif, only: BMI_FAILURE, BMI_MAX_TYPE_NAME
   use bmiheatf
   use fixtures, only: config_file, status
 
@@ -16,6 +17,6 @@ program test_get_var_type
   status = m%finalize()
 
   if (var_type.ne.expected_type) then
-     stop 1
+     stop BMI_FAILURE
   end if
 end program test_get_var_type

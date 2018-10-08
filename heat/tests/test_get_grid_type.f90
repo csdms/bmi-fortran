@@ -1,5 +1,6 @@
 program test_get_grid_type
 
+  use bmif, only: BMI_FAILURE, BMI_MAX_TYPE_NAME
   use bmiheatf
   use fixtures, only: config_file, status
 
@@ -17,6 +18,6 @@ program test_get_grid_type
   status = m%finalize()
 
   if (grid_type.ne.expected_type) then
-     stop 1
+     stop BMI_FAILURE
   end if
 end program test_get_grid_type

@@ -1,6 +1,7 @@
 ! Do two instances of bmi_heat conflict?
 program conflicting_instances_test
 
+  use bmif, only: BMI_MAX_VAR_NAME
   use bmiheatf
   use testing_helpers
   implicit none

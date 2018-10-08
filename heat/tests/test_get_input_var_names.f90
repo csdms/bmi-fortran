@@ -1,5 +1,6 @@
 program test_get_input_var_names
 
+  use bmif, only: BMI_FAILURE, BMI_MAX_VAR_NAME
   use bmiheatf
   use fixtures, only: status
 
@@ -11,9 +12,9 @@ program test_get_input_var_names
   
   status = m%get_input_var_names(names)
   
-  do i=1, input_item_count
+  do i=1, size(names)
      if (names(i).ne.input_items(i)) then
-        stop 1
+        stop BMI_FAILURE
      end if
   end do
 end program test_get_input_var_names

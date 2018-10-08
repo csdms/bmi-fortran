@@ -1,5 +1,6 @@
 program test_get_var_units
 
+  use bmif, only: BMI_FAILURE, BMI_MAX_UNITS_NAME
   use bmiheatf
   use fixtures, only: config_file, status
 
@@ -16,6 +17,6 @@ program test_get_var_units
   status = m%finalize()
 
   if (var_units.ne.expected_units) then
-     stop 1
+     stop BMI_FAILURE
   end if
 end program test_get_var_units

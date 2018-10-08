@@ -1,5 +1,6 @@
 program test_get_grid_origin
 
+  use bmif, only: BMI_FAILURE
   use bmiheatf
   use fixtures, only: config_file, status
 
@@ -19,7 +20,7 @@ program test_get_grid_origin
 
   do i = 1, rank
      if (grid_origin(i).ne.expected_origin(i)) then
-        stop 1
+        stop BMI_FAILURE
      end if
   end do
 end program test_get_grid_origin

@@ -1,6 +1,7 @@
 ! Test the basic info BMI methods.
 program info_test
 
+  use bmif
   use bmiheatf
   implicit none
 
@@ -16,7 +17,7 @@ program info_test
 
   s = m%get_input_var_names(names)
   write (*,"(a30)") "Input variables: "
-  do i = 1, input_item_count
+  do i = 1, size(names)
      write (*,"(a30, a40)") "- ", names(i)
   end do
   s = m%get_output_var_names(names)

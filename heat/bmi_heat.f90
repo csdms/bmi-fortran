@@ -46,19 +46,9 @@ module bmiheatf
      procedure :: print_model_info
   end type bmi_heat
 
-  private :: heat_component_name, heat_input_var_names, heat_output_var_names
-  private :: heat_initialize, heat_finalize
-  private :: heat_start_time, heat_end_time, heat_current_time
-  private :: heat_time_step, heat_time_units
-  private :: heat_update, heat_update_frac, heat_update_until
-  private :: heat_var_grid
-  private :: heat_grid_type, heat_grid_rank, heat_grid_shape
-  private :: heat_grid_size, heat_grid_spacing, heat_grid_origin
-  private :: heat_grid_x, heat_grid_y, heat_grid_z
-  private :: heat_grid_connectivity, heat_grid_offset
-  private :: heat_var_type, heat_var_units, heat_var_itemsize, heat_var_nbytes
-  private :: heat_get, heat_get_ref, heat_get_at_indices
-  private :: heat_set, heat_set_at_indices
+  private
+  public :: bmi_heat
+  public :: input_items, output_items, component_name
 
   character (len=BMI_MAX_COMPONENT_NAME), target :: &
        component_name = "The 2D Heat Equation"

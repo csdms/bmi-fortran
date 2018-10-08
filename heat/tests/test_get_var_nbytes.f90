@@ -1,5 +1,6 @@
 program test_get_var_nbytes
 
+  use bmif, only: BMI_FAILURE
   use bmiheatf
   use fixtures, only: config_file, status
 
@@ -16,6 +17,6 @@ program test_get_var_nbytes
   status = m%finalize()
 
   if (var_nbytes.ne.expected_nbytes) then
-     stop 1
+     stop BMI_FAILURE
   end if
 end program test_get_var_nbytes

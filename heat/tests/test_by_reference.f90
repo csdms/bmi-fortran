@@ -1,5 +1,6 @@
 program test_by_reference
 
+  use bmif, only: BMI_SUCCESS, BMI_FAILURE
   use bmiheatf
   use fixtures, only: status, print_array
 

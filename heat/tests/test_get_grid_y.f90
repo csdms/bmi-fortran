@@ -1,5 +1,6 @@
 program test_get_grid_y
 
+  use bmif, only: BMI_FAILURE
   use bmiheatf
   use fixtures, only: config_file, status
 
@@ -22,7 +23,7 @@ program test_get_grid_y
 
   do i = 1, ny
      if (grid_y(i).ne.expected_y(i)) then
-        stop 1
+        stop BMI_FAILURE
      end if
   end do
 end program test_get_grid_y
