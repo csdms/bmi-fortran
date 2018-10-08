@@ -15,6 +15,7 @@ if [[ -z "$CONDA_PREFIX" ]]; then
 fi
 
 examples="irf_ex \
+    change_diffusivity_ex \
     conflicting_instances_ex \
     get_value_ex \
     info_ex \
