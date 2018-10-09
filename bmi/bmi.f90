@@ -41,7 +41,9 @@ module bmif
        procedure (bmif_get_var_units), deferred :: get_var_units
        procedure (bmif_get_var_itemsize), deferred :: get_var_itemsize
        procedure (bmif_get_var_nbytes), deferred :: get_var_nbytes
-       procedure (bmif_get_value), deferred :: get_value
+       procedure (bmif_get_value_int), deferred :: get_value_int
+       procedure (bmif_get_value_float), deferred :: get_value_float
+       procedure (bmif_get_value_double), deferred :: get_value_double
        procedure (bmif_get_value_ref), deferred :: get_value_ref
        procedure (bmif_get_value_at_indices), deferred :: get_value_at_indices
        procedure (bmif_set_value), deferred :: set_value
@@ -298,14 +300,32 @@ module bmif
        integer :: bmi_status
      end function bmif_get_var_nbytes
 
-     ! Get a copy of values (flattened!) of the given variable.
-     function bmif_get_value(self, var_name, dest) result (bmi_status)
+     ! Get a copy of values (flattened!) of the given integer variable.
+     function bmif_get_value_int(self, var_name, dest) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (in) :: self
+       character (len=*), intent (in) :: var_name
+       integer, pointer, intent (inout) :: dest(:)
+       integer :: bmi_status
+     end function bmif_get_value_int
+
+     ! Get a copy of values (flattened!) of the given real variable.
+     function bmif_get_value_float(self, var_name, dest) result (bmi_status)
        import :: bmi
        class (bmi), intent (in) :: self
        character (len=*), intent (in) :: var_name
        real, pointer, intent (inout) :: dest(:)
        integer :: bmi_status
-     end function bmif_get_value
+     end function bmif_get_value_float
+
+     ! Get a copy of values (flattened!) of the given double variable.
+     function bmif_get_value_double(self, var_name, dest) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (in) :: self
+       character (len=*), intent (in) :: var_name
+       double precision, pointer, intent (inout) :: dest(:)
+       integer :: bmi_status
+     end function bmif_get_value_double
 
      ! Get a reference to the values (flattened!) of the given variable.
      function bmif_get_value_ref(self, var_name, dest) result (bmi_status)

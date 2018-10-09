@@ -38,7 +38,10 @@ module bmiheatf
      procedure :: get_var_units => heat_var_units
      procedure :: get_var_itemsize => heat_var_itemsize
      procedure :: get_var_nbytes => heat_var_nbytes
-     procedure :: get_value => heat_get
+     procedure :: get_value_int => heat_get_int
+     procedure :: get_value_float => heat_get_float
+     procedure :: get_value_double => heat_get_double
+     generic :: get_value => get_value_int, get_value_float, get_value_double
      procedure :: get_value_ref => heat_get_ref
      procedure :: get_value_at_indices => heat_get_at_indices
      procedure :: set_value => heat_set
@@ -513,8 +516,28 @@ contains
     end if
   end function heat_var_nbytes
 
-  ! Get a copy of a variable's values, flattened.
-  function heat_get(self, var_name, dest) result (bmi_status)
+  ! Get a copy of a integer variable's values, flattened.
+  function heat_get_int(self, var_name, dest) result (bmi_status)
+    class (bmi_heat), intent (in) :: self
+    character (len=*), intent (in) :: var_name
+    integer, pointer, intent (inout) :: dest(:)
+    integer :: bmi_status
+    integer :: status, grid_id, grid_size
+
+    status = self%get_var_grid(var_name, grid_id)
+    status = self%get_grid_size(grid_id, grid_size)
+
+    select case (var_name)
+    case default
+       grid_size = 1
+       allocate(dest(grid_size))
+       dest = -1
+       bmi_status = BMI_FAILURE
+    end select
+  end function heat_get_int
+
+  ! Get a copy of a real variable's values, flattened.
+  function heat_get_float(self, var_name, dest) result (bmi_status)
     class (bmi_heat), intent (in) :: self
     character (len=*), intent (in) :: var_name
     real, pointer, intent (inout) :: dest(:)
@@ -539,7 +562,27 @@ contains
        dest = -1.0
        bmi_status = BMI_FAILURE
     end select
-  end function heat_get
+  end function heat_get_float
+
+  ! Get a copy of a double variable's values, flattened.
+  function heat_get_double(self, var_name, dest) result (bmi_status)
+    class (bmi_heat), intent (in) :: self
+    character (len=*), intent (in) :: var_name
+    double precision, pointer, intent (inout) :: dest(:)
+    integer :: bmi_status
+    integer :: status, grid_id, grid_size
+
+    status = self%get_var_grid(var_name, grid_id)
+    status = self%get_grid_size(grid_id, grid_size)
+
+    select case (var_name)
+    case default
+       grid_size = 1
+       allocate(dest(grid_size))
+       dest = -1.d0
+       bmi_status = BMI_FAILURE
+    end select
+  end function heat_get_double
 
   ! Get a reference to a variable's values, flattened.
   function heat_get_ref(self, var_name, dest) result (bmi_status)
