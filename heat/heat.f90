@@ -5,6 +5,8 @@ module heatf
 
   ! Define the attributes of the model.
   type :: heat_model
+     integer :: id
+
      real :: dt
      real :: t
      real :: t_end
@@ -51,6 +53,7 @@ contains
   subroutine initialize(model)
     type (heat_model), intent (inout) :: model
 
+    model%id = 0
     model%t = 0.
     model%dt = 1.
     model%dx = 1.

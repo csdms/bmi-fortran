@@ -57,7 +57,7 @@ module bmiheatf
        component_name = "The 2D Heat Equation"
 
   ! Exchange items
-  integer, parameter :: input_item_count = 2
+  integer, parameter :: input_item_count = 3
   integer, parameter :: output_item_count = 1
   character (len=BMI_MAX_VAR_NAME), target, &
        dimension (input_item_count) :: input_items
@@ -85,6 +85,7 @@ contains
 
     input_items(1) = 'plate_surface__temperature'
     input_items(2) = 'plate_surface__thermal_diffusivity'
+    input_items(3) = 'model__identification_number'
 
     names => input_items
     bmi_status = BMI_SUCCESS
@@ -229,6 +230,9 @@ contains
        grid_id = 0
        bmi_status = BMI_SUCCESS
     case ('plate_surface__thermal_diffusivity')
+       grid_id = 1
+       bmi_status = BMI_SUCCESS
+    case ('model__identification_number')
        grid_id = 1
        bmi_status = BMI_SUCCESS
     case default
@@ -449,6 +453,9 @@ contains
     case ("plate_surface__thermal_diffusivity")
        type = "real"
        bmi_status = BMI_SUCCESS
+    case ("model__identification_number")
+       type = "integer"
+       bmi_status = BMI_SUCCESS
     case default
        type = "-"
        bmi_status = BMI_FAILURE
@@ -469,6 +476,9 @@ contains
     case ("plate_surface__thermal_diffusivity")
        units = "m2 s-1"
        bmi_status = BMI_SUCCESS
+    case ("model__identification_number")
+       units = "-"
+       bmi_status = BMI_SUCCESS
     case default
        units = "-"
        bmi_status = BMI_FAILURE
@@ -488,6 +498,9 @@ contains
        bmi_status = BMI_SUCCESS
     case ("plate_surface__thermal_diffusivity")
        size = sizeof(self%model%alpha)             ! 'sizeof' in gcc & ifort
+       bmi_status = BMI_SUCCESS
+    case ("model__identification_number")
+       size = sizeof(self%model%id)                ! 'sizeof' in gcc & ifort
        bmi_status = BMI_SUCCESS
     case default
        size = -1
@@ -528,6 +541,10 @@ contains
     status = self%get_grid_size(grid_id, grid_size)
 
     select case (var_name)
+    case ("model__identification_number")
+       allocate(dest(grid_size))
+       dest = [self%model%id]
+       bmi_status = BMI_SUCCESS
     case default
        grid_size = 1
        allocate(dest(grid_size))
