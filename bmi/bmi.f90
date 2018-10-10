@@ -41,11 +41,27 @@ module bmif
        procedure (bmif_get_var_units), deferred :: get_var_units
        procedure (bmif_get_var_itemsize), deferred :: get_var_itemsize
        procedure (bmif_get_var_nbytes), deferred :: get_var_nbytes
-       procedure (bmif_get_value), deferred :: get_value
-       procedure (bmif_get_value_ref), deferred :: get_value_ref
-       procedure (bmif_get_value_at_indices), deferred :: get_value_at_indices
-       procedure (bmif_set_value), deferred :: set_value
-       procedure (bmif_set_value_at_indices), deferred :: set_value_at_indices
+       procedure (bmif_get_value_int), deferred :: get_value_int
+       procedure (bmif_get_value_float), deferred :: get_value_float
+       procedure (bmif_get_value_double), deferred :: get_value_double
+       procedure (bmif_get_value_ref_int), deferred :: get_value_ref_int
+       procedure (bmif_get_value_ref_float), deferred :: get_value_ref_float
+       procedure (bmif_get_value_ref_double), deferred :: get_value_ref_double
+       procedure (bmif_get_value_at_indices_int), deferred :: &
+            get_value_at_indices_int
+       procedure (bmif_get_value_at_indices_float), deferred :: &
+            get_value_at_indices_float
+       procedure (bmif_get_value_at_indices_double), deferred :: &
+            get_value_at_indices_double
+       procedure (bmif_set_value_int), deferred :: set_value_int
+       procedure (bmif_set_value_float), deferred :: set_value_float
+       procedure (bmif_set_value_double), deferred :: set_value_double
+       procedure (bmif_set_value_at_indices_int), deferred :: &
+            set_value_at_indices_int
+       procedure (bmif_set_value_at_indices_float), deferred :: &
+            set_value_at_indices_float
+       procedure (bmif_set_value_at_indices_double), deferred :: &
+            set_value_at_indices_double
   end type bmi
 
   abstract interface
@@ -298,52 +314,155 @@ module bmif
        integer :: bmi_status
      end function bmif_get_var_nbytes
 
-     ! Get a copy of values (flattened!) of the given variable.
-     function bmif_get_value(self, var_name, dest) result (bmi_status)
+     ! Get a copy of values (flattened!) of the given integer variable.
+     function bmif_get_value_int(self, var_name, dest) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (in) :: self
+       character (len=*), intent (in) :: var_name
+       integer, pointer, intent (inout) :: dest(:)
+       integer :: bmi_status
+     end function bmif_get_value_int
+
+     ! Get a copy of values (flattened!) of the given real variable.
+     function bmif_get_value_float(self, var_name, dest) result (bmi_status)
        import :: bmi
        class (bmi), intent (in) :: self
        character (len=*), intent (in) :: var_name
        real, pointer, intent (inout) :: dest(:)
        integer :: bmi_status
-     end function bmif_get_value
+     end function bmif_get_value_float
 
-     ! Get a reference to the values (flattened!) of the given variable.
-     function bmif_get_value_ref(self, var_name, dest) result (bmi_status)
+     ! Get a copy of values (flattened!) of the given double variable.
+     function bmif_get_value_double(self, var_name, dest) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (in) :: self
+       character (len=*), intent (in) :: var_name
+       double precision, pointer, intent (inout) :: dest(:)
+       integer :: bmi_status
+     end function bmif_get_value_double
+
+     ! Get a reference to the given integer variable.
+     function bmif_get_value_ref_int(self, var_name, dest) &
+          result (bmi_status)
+       import :: bmi
+       class (bmi), intent (in) :: self
+       character (len=*), intent (in) :: var_name
+       integer, pointer, intent (inout) :: dest(:)
+       integer :: bmi_status
+     end function bmif_get_value_ref_int
+
+     ! Get a reference to the given real variable.
+     function bmif_get_value_ref_float(self, var_name, dest) &
+          result (bmi_status)
        import :: bmi
        class (bmi), intent (in) :: self
        character (len=*), intent (in) :: var_name
        real, pointer, intent (inout) :: dest(:)
        integer :: bmi_status
-     end function bmif_get_value_ref
+     end function bmif_get_value_ref_float
 
-     ! Get values at particular (one-dimensional) indices.
-     function bmif_get_value_at_indices(self, var_name, dest, indices) result (bmi_status)
+     ! Get a reference to the given double variable.
+     function bmif_get_value_ref_double(self, var_name, dest) &
+          result (bmi_status)
+       import :: bmi
+       class (bmi), intent (in) :: self
+       character (len=*), intent (in) :: var_name
+       double precision, pointer, intent (inout) :: dest(:)
+       integer :: bmi_status
+     end function bmif_get_value_ref_double
+
+     ! Get integer values at particular (one-dimensional) indices.
+     function bmif_get_value_at_indices_int(self, var_name, dest, indices) &
+          result (bmi_status)
+       import :: bmi
+       class (bmi), intent (in) :: self
+       character (len=*), intent (in) :: var_name
+       integer, pointer, intent (inout) :: dest(:)
+       integer, intent (in) :: indices(:)
+       integer :: bmi_status
+     end function bmif_get_value_at_indices_int
+
+     ! Get real values at particular (one-dimensional) indices.
+     function bmif_get_value_at_indices_float(self, var_name, dest, indices) &
+          result (bmi_status)
        import :: bmi
        class (bmi), intent (in) :: self
        character (len=*), intent (in) :: var_name
        real, pointer, intent (inout) :: dest(:)
        integer, intent (in) :: indices(:)
        integer :: bmi_status
-     end function bmif_get_value_at_indices
+     end function bmif_get_value_at_indices_float
 
-     ! Set a new value for a model variable.
-     function bmif_set_value(self, var_name, src) result (bmi_status)
+     ! Get double values at particular (one-dimensional) indices.
+     function bmif_get_value_at_indices_double(self, var_name, dest, indices) &
+          result (bmi_status)
+       import :: bmi
+       class (bmi), intent (in) :: self
+       character (len=*), intent (in) :: var_name
+       double precision, pointer, intent (inout) :: dest(:)
+       integer, intent (in) :: indices(:)
+       integer :: bmi_status
+     end function bmif_get_value_at_indices_double
+
+     ! Set new values for an integer model variable.
+     function bmif_set_value_int(self, var_name, src) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (inout) :: self
+       character (len=*), intent (in) :: var_name
+       integer, intent (in) :: src(:)
+       integer :: bmi_status
+     end function bmif_set_value_int
+
+     ! Set new values for a real model variable.
+     function bmif_set_value_float(self, var_name, src) result (bmi_status)
        import :: bmi
        class (bmi), intent (inout) :: self
        character (len=*), intent (in) :: var_name
        real, intent (in) :: src(:)
        integer :: bmi_status
-     end function bmif_set_value
+     end function bmif_set_value_float
 
-     ! Set values at particular (one-dimensional) indices.
-     function bmif_set_value_at_indices(self, var_name, indices, src) result (bmi_status)
+     ! Set new values for a double model variable.
+     function bmif_set_value_double(self, var_name, src) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (inout) :: self
+       character (len=*), intent (in) :: var_name
+       double precision, intent (in) :: src(:)
+       integer :: bmi_status
+     end function bmif_set_value_double
+
+     ! Set integer values at particular (one-dimensional) indices.
+     function bmif_set_value_at_indices_int(self, var_name, indices, src) &
+          result (bmi_status)
+       import :: bmi
+       class (bmi), intent (inout) :: self
+       character (len=*), intent (in) :: var_name
+       integer, intent (in) :: indices(:)
+       integer, intent (in) :: src(:)
+       integer :: bmi_status
+     end function bmif_set_value_at_indices_int
+
+     ! Set real values at particular (one-dimensional) indices.
+     function bmif_set_value_at_indices_float(self, var_name, indices, src) &
+          result (bmi_status)
        import :: bmi
        class (bmi), intent (inout) :: self
        character (len=*), intent (in) :: var_name
        integer, intent (in) :: indices(:)
        real, intent (in) :: src(:)
        integer :: bmi_status
-     end function bmif_set_value_at_indices
+     end function bmif_set_value_at_indices_float
+
+     ! Set double values at particular (one-dimensional) indices.
+     function bmif_set_value_at_indices_double(self, var_name, indices, src) &
+          result (bmi_status)
+       import :: bmi
+       class (bmi), intent (inout) :: self
+       character (len=*), intent (in) :: var_name
+       integer, intent (in) :: indices(:)
+       double precision, intent (in) :: src(:)
+       integer :: bmi_status
+     end function bmif_set_value_at_indices_double
 
   end interface
 

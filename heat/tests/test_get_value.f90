@@ -20,8 +20,14 @@ program test_get_value
      stop BMI_FAILURE
   end if
 
+  retcode = test3()
+  if (retcode.ne.BMI_SUCCESS) then
+     stop BMI_FAILURE
+  end if
+
 contains
 
+  ! Test getting plate_surface__temperature.
   function test1() result(code)
     character (len=*), parameter :: &
          var_name = "plate_surface__temperature"
@@ -54,6 +60,7 @@ contains
     deallocate(tval)
   end function test1
 
+  ! Test getting plate_surface__thermal_diffusivity.
   function test2() result(code)
     character (len=*), parameter :: &
          var_name = "plate_surface__thermal_diffusivity"
@@ -77,5 +84,30 @@ contains
 
     deallocate(val)
   end function test2
-  
+
+  ! Test getting model__identification_number.
+  function test3() result(code)
+    character (len=*), parameter :: &
+         var_name = "model__identification_number"
+    integer, parameter :: expected = 0
+    integer, pointer :: val(:)
+    integer :: i, code
+
+    status = m%initialize(config_file)
+    status = m%get_value(var_name, val)
+    status = m%finalize()
+
+    ! Visual inspection.
+    write(*,*) "Test 3"
+    write(*,*) val
+    write(*,*) expected
+
+    code = BMI_SUCCESS
+    if (val(1).ne.expected) then
+       code = BMI_FAILURE
+    end if
+
+    deallocate(val)
+  end function test3
+
 end program test_get_value
