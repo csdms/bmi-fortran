@@ -53,7 +53,9 @@ module bmif
             get_value_at_indices_float
        procedure (bmif_get_value_at_indices_double), deferred :: &
             get_value_at_indices_double
-       procedure (bmif_set_value), deferred :: set_value
+       procedure (bmif_set_value_int), deferred :: set_value_int
+       procedure (bmif_set_value_float), deferred :: set_value_float
+       procedure (bmif_set_value_double), deferred :: set_value_double
        procedure (bmif_set_value_at_indices), deferred :: set_value_at_indices
   end type bmi
 
@@ -397,14 +399,32 @@ module bmif
        integer :: bmi_status
      end function bmif_get_value_at_indices_double
 
-     ! Set a new value for a model variable.
-     function bmif_set_value(self, var_name, src) result (bmi_status)
+     ! Set new values for an integer model variable.
+     function bmif_set_value_int(self, var_name, src) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (inout) :: self
+       character (len=*), intent (in) :: var_name
+       integer, intent (in) :: src(:)
+       integer :: bmi_status
+     end function bmif_set_value_int
+
+     ! Set new values for a real model variable.
+     function bmif_set_value_float(self, var_name, src) result (bmi_status)
        import :: bmi
        class (bmi), intent (inout) :: self
        character (len=*), intent (in) :: var_name
        real, intent (in) :: src(:)
        integer :: bmi_status
-     end function bmif_set_value
+     end function bmif_set_value_float
+
+     ! Set new values for a double model variable.
+     function bmif_set_value_double(self, var_name, src) result (bmi_status)
+       import :: bmi
+       class (bmi), intent (inout) :: self
+       character (len=*), intent (in) :: var_name
+       double precision, intent (in) :: src(:)
+       integer :: bmi_status
+     end function bmif_set_value_double
 
      ! Set values at particular (one-dimensional) indices.
      function bmif_set_value_at_indices(self, var_name, indices, src) result (bmi_status)

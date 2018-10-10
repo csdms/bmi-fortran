@@ -20,6 +20,11 @@ program test_set_value
      stop BMI_FAILURE
   end if
 
+  retcode = test3()
+  if (retcode.ne.BMI_SUCCESS) then
+     stop BMI_FAILURE
+  end if
+
 contains
 
   function test1() result(code)
@@ -84,5 +89,36 @@ contains
     deallocate(x)
     deallocate(y)
   end function test2
+
+  function test3() result(code)
+    character (len=*), parameter :: &
+         var_name = "model__identification_number"
+    integer, parameter :: rank = 1
+    integer, parameter :: expected(rank) = (/ 42 /)
+    integer, pointer :: x(:), y(:)
+    integer :: i, code
+
+    status = m%initialize(config_file)
+    status = m%get_value(var_name, x)
+    status = m%set_value(var_name, expected)
+    status = m%get_value(var_name, y)
+    status = m%finalize()
+
+    ! Visual inspection.
+    write(*,*) "Test 3"
+    write(*,*) x
+    write(*,*) expected
+    write(*,*) y
+
+    code = BMI_SUCCESS
+    do i = 1, rank
+       if (y(i).ne.expected(i)) then
+          code = BMI_FAILURE
+       end if
+    end do
+
+    deallocate(x)
+    deallocate(y)
+  end function test3
 
 end program test_set_value

@@ -41,21 +41,31 @@ module bmiheatf
      procedure :: get_value_int => heat_get_int
      procedure :: get_value_float => heat_get_float
      procedure :: get_value_double => heat_get_double
-     generic :: get_value => get_value_int, get_value_float, get_value_double
+     generic :: get_value => &
+          get_value_int, &
+          get_value_float, &
+          get_value_double
      procedure :: get_value_ref_int => heat_get_ref_int
      procedure :: get_value_ref_float => heat_get_ref_float
      procedure :: get_value_ref_double => heat_get_ref_double
-     generic :: get_value_ref => get_value_ref_int, get_value_ref_float, &
+     generic :: get_value_ref => &
+          get_value_ref_int, &
+          get_value_ref_float, &
           get_value_ref_double
-
-     ! procedure :: get_value_at_indices => heat_get_at_indices
      procedure :: get_value_at_indices_int => heat_get_at_indices_int
      procedure :: get_value_at_indices_float => heat_get_at_indices_float
      procedure :: get_value_at_indices_double => heat_get_at_indices_double
-     generic :: get_value_at_indices => get_value_at_indices_int, &
-          get_value_at_indices_float, get_value_at_indices_double
-
-     procedure :: set_value => heat_set
+     generic :: get_value_at_indices => &
+          get_value_at_indices_int, &
+          get_value_at_indices_float, &
+          get_value_at_indices_double
+     procedure :: set_value_int => heat_set_int
+     procedure :: set_value_float => heat_set_float
+     procedure :: set_value_double => heat_set_double
+     generic :: set_value => &
+          set_value_int, &
+          set_value_float, &
+          set_value_double
      procedure :: set_value_at_indices => heat_set_at_indices
      procedure :: print_model_info
   end type bmi_heat
@@ -725,8 +735,24 @@ contains
     end select
   end function heat_get_at_indices_double
 
-  ! Set new values.
-  function heat_set(self, var_name, src) result (bmi_status)
+  ! Set new integer values.
+  function heat_set_int(self, var_name, src) result (bmi_status)
+    class (bmi_heat), intent (inout) :: self
+    character (len=*), intent (in) :: var_name
+    integer, intent (in) :: src(:)
+    integer :: bmi_status
+
+    select case (var_name)
+    case ("model__identification_number")
+       self%model%id = src(1)
+       bmi_status = BMI_SUCCESS
+    case default
+       bmi_status = BMI_FAILURE
+    end select
+  end function heat_set_int
+
+  ! Set new real values.
+  function heat_set_float(self, var_name, src) result (bmi_status)
     class (bmi_heat), intent (inout) :: self
     character (len=*), intent (in) :: var_name
     real, intent (in) :: src(:)
@@ -742,7 +768,20 @@ contains
     case default
        bmi_status = BMI_FAILURE
     end select
-  end function heat_set
+  end function heat_set_float
+
+  ! Set new double values.
+  function heat_set_double(self, var_name, src) result (bmi_status)
+    class (bmi_heat), intent (inout) :: self
+    character (len=*), intent (in) :: var_name
+    double precision, intent (in) :: src(:)
+    integer :: bmi_status
+
+    select case (var_name)
+    case default
+       bmi_status = BMI_FAILURE
+    end select
+  end function heat_set_double
 
   ! Set new values at particular locations.
   function heat_set_at_indices(self, var_name, indices, src) result (bmi_status)
