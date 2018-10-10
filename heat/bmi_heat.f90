@@ -42,8 +42,19 @@ module bmiheatf
      procedure :: get_value_float => heat_get_float
      procedure :: get_value_double => heat_get_double
      generic :: get_value => get_value_int, get_value_float, get_value_double
-     procedure :: get_value_ref => heat_get_ref
-     procedure :: get_value_at_indices => heat_get_at_indices
+     procedure :: get_value_ref_int => heat_get_ref_int
+     procedure :: get_value_ref_float => heat_get_ref_float
+     procedure :: get_value_ref_double => heat_get_ref_double
+     generic :: get_value_ref => get_value_ref_int, get_value_ref_float, &
+          get_value_ref_double
+
+     ! procedure :: get_value_at_indices => heat_get_at_indices
+     procedure :: get_value_at_indices_int => heat_get_at_indices_int
+     procedure :: get_value_at_indices_float => heat_get_at_indices_float
+     procedure :: get_value_at_indices_double => heat_get_at_indices_double
+     generic :: get_value_at_indices => get_value_at_indices_int, &
+          get_value_at_indices_float, get_value_at_indices_double
+
      procedure :: set_value => heat_set
      procedure :: set_value_at_indices => heat_set_at_indices
      procedure :: print_model_info
@@ -601,8 +612,23 @@ contains
     end select
   end function heat_get_double
 
-  ! Get a reference to a variable's values, flattened.
-  function heat_get_ref(self, var_name, dest) result (bmi_status)
+  ! Get a reference to an integer-valued variable, flattened.
+  function heat_get_ref_int(self, var_name, dest) result (bmi_status)
+    class (bmi_heat), intent (in) :: self
+    character (len=*), intent (in) :: var_name
+    integer, pointer, intent (inout) :: dest(:)
+    integer :: bmi_status
+    type (c_ptr) :: src
+    integer :: n_elements
+
+    select case (var_name)
+    case default
+       bmi_status = BMI_FAILURE
+    end select
+  end function heat_get_ref_int
+
+  ! Get a reference to a real-valued variable, flattened.
+  function heat_get_ref_float(self, var_name, dest) result (bmi_status)
     class (bmi_heat), intent (in) :: self
     character (len=*), intent (in) :: var_name
     real, pointer, intent (inout) :: dest(:)
@@ -612,17 +638,51 @@ contains
 
     select case (var_name)
     case ("plate_surface__temperature")
-       src = c_loc (self%model%temperature(1,1))
+       src = c_loc(self%model%temperature(1,1))
        n_elements = self%model%n_y * self%model%n_x
        call c_f_pointer(src, dest, [n_elements])
        bmi_status = BMI_SUCCESS
     case default
        bmi_status = BMI_FAILURE
     end select
-  end function heat_get_ref
+  end function heat_get_ref_float
 
-  ! Get values of a variable at the given locations.
-  function heat_get_at_indices(self, var_name, dest, indices) result (bmi_status)
+  ! Get a reference to an double-valued variable, flattened.
+  function heat_get_ref_double(self, var_name, dest) result (bmi_status)
+    class (bmi_heat), intent (in) :: self
+    character (len=*), intent (in) :: var_name
+    double precision, pointer, intent (inout) :: dest(:)
+    integer :: bmi_status
+    type (c_ptr) :: src
+    integer :: n_elements
+
+    select case (var_name)
+    case default
+       bmi_status = BMI_FAILURE
+    end select
+  end function heat_get_ref_double
+
+  ! Get values of an integer variable at the given locations.
+  function heat_get_at_indices_int(self, var_name, dest, indices) &
+       result (bmi_status)
+    class (bmi_heat), intent (in) :: self
+    character (len=*), intent (in) :: var_name
+    integer, pointer, intent (inout) :: dest(:)
+    integer, intent (in) :: indices(:)
+    integer :: bmi_status
+    type (c_ptr) src
+    integer, pointer :: src_flattened(:)
+    integer :: i, n_elements
+
+    select case (var_name)
+    case default
+       bmi_status = BMI_FAILURE
+    end select
+  end function heat_get_at_indices_int
+
+  ! Get values of a real variable at the given locations.
+  function heat_get_at_indices_float(self, var_name, dest, indices) &
+       result (bmi_status)
     class (bmi_heat), intent (in) :: self
     character (len=*), intent (in) :: var_name
     real, pointer, intent (inout) :: dest(:)
@@ -634,7 +694,7 @@ contains
 
     select case (var_name)
     case ("plate_surface__temperature")
-       src = c_loc (self%model%temperature(1,1))
+       src = c_loc(self%model%temperature(1,1))
        call c_f_pointer(src, src_flattened, [self%model%n_y * self%model%n_x])
        n_elements = size (indices)
        allocate(dest(n_elements))
@@ -645,7 +705,25 @@ contains
     case default
        bmi_status = BMI_FAILURE
     end select
-  end function heat_get_at_indices
+  end function heat_get_at_indices_float
+
+  ! Get values of a double variable at the given locations.
+  function heat_get_at_indices_double(self, var_name, dest, indices) &
+       result (bmi_status)
+    class (bmi_heat), intent (in) :: self
+    character (len=*), intent (in) :: var_name
+    double precision, pointer, intent (inout) :: dest(:)
+    integer, intent (in) :: indices(:)
+    integer :: bmi_status
+    type (c_ptr) src
+    double precision, pointer :: src_flattened(:)
+    integer :: i, n_elements
+
+    select case (var_name)
+    case default
+       bmi_status = BMI_FAILURE
+    end select
+  end function heat_get_at_indices_double
 
   ! Set new values.
   function heat_set(self, var_name, src) result (bmi_status)
