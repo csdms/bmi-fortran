@@ -86,17 +86,17 @@ module bmiheatf
   integer, parameter :: input_item_count = 3
   integer, parameter :: output_item_count = 1
   character (len=BMI_MAX_VAR_NAME), target, &
-       dimension (input_item_count) :: input_items
+       dimension(input_item_count) :: input_items
   character (len=BMI_MAX_VAR_NAME), target, &
-       dimension (output_item_count) :: &
+       dimension(output_item_count) :: &
        output_items = (/'plate_surface__temperature'/)
 
 contains
 
   ! Get the name of the model.
   function heat_component_name(self, name) result (bmi_status)
-    class (bmi_heat), intent (in) :: self
-    character (len=*), pointer, intent (out) :: name
+    class (bmi_heat), intent(in) :: self
+    character (len=*), pointer, intent(out) :: name
     integer :: bmi_status
 
     name => component_name
@@ -105,8 +105,8 @@ contains
 
   ! List input variables.
   function heat_input_var_names(self, names) result (bmi_status)
-    class (bmi_heat), intent (in) :: self
-    character (*), pointer, intent (out) :: names(:)
+    class (bmi_heat), intent(in) :: self
+    character (*), pointer, intent(out) :: names(:)
     integer :: bmi_status
 
     input_items(1) = 'plate_surface__temperature'
@@ -119,8 +119,8 @@ contains
 
   ! List output variables.
   function heat_output_var_names(self, names) result (bmi_status)
-    class (bmi_heat), intent (in) :: self
-    character (*), pointer, intent (out) :: names(:)
+    class (bmi_heat), intent(in) :: self
+    character (*), pointer, intent(out) :: names(:)
     integer :: bmi_status
 
     names => output_items
@@ -129,11 +129,11 @@ contains
 
   ! BMI initializer.
   function heat_initialize(self, config_file) result (bmi_status)
-    class (bmi_heat), intent (out) :: self
-    character (len=*), intent (in) :: config_file
+    class (bmi_heat), intent(out) :: self
+    character (len=*), intent(in) :: config_file
     integer :: bmi_status
 
-    if (len (config_file) > 0) then
+    if (len(config_file) > 0) then
        call initialize_from_file(self%model, config_file)
     else
        call initialize_from_defaults(self%model)
@@ -143,7 +143,7 @@ contains
 
   ! BMI finalizer.
   function heat_finalize(self) result (bmi_status)
-    class (bmi_heat), intent (inout) :: self
+    class (bmi_heat), intent(inout) :: self
     integer :: bmi_status
 
     call cleanup(self%model)
@@ -152,8 +152,8 @@ contains
 
   ! Model start time.
   function heat_start_time(self, time) result (bmi_status)
-    class (bmi_heat), intent (in) :: self
-    real, intent (out) :: time
+    class (bmi_heat), intent(in) :: self
+    real, intent(out) :: time
     integer :: bmi_status
 
     time = 0.0
@@ -162,8 +162,8 @@ contains
 
   ! Model end time.
   function heat_end_time(self, time) result (bmi_status)
-    class (bmi_heat), intent (in) :: self
-    real, intent (out) :: time
+    class (bmi_heat), intent(in) :: self
+    real, intent(out) :: time
     integer :: bmi_status
 
     time = self%model%t_end
@@ -172,8 +172,8 @@ contains
 
   ! Model current time.
   function heat_current_time(self, time) result (bmi_status)
-    class (bmi_heat), intent (in) :: self
-    real, intent (out) :: time
+    class (bmi_heat), intent(in) :: self
+    real, intent(out) :: time
     integer :: bmi_status
 
     time = self%model%t
@@ -182,8 +182,8 @@ contains
 
   ! Model time step.
   function heat_time_step(self, time_step) result (bmi_status)
-    class (bmi_heat), intent (in) :: self
-    real, intent (out) :: time_step
+    class (bmi_heat), intent(in) :: self
+    real, intent(out) :: time_step
     integer :: bmi_status
 
     time_step = self%model%dt
@@ -192,8 +192,8 @@ contains
 
   ! Model time units.
   function heat_time_units(self, time_units) result (bmi_status)
-    class (bmi_heat), intent (in) :: self
-    character (len=*), intent (out) :: time_units
+    class (bmi_heat), intent(in) :: self
+    character (len=*), intent(out) :: time_units
     integer :: bmi_status
 
     time_units = "-"
@@ -202,7 +202,7 @@ contains
 
   ! Advance model by one time step.
   function heat_update(self) result (bmi_status)
-    class (bmi_heat), intent (inout) :: self
+    class (bmi_heat), intent(inout) :: self
     integer :: bmi_status
 
     call advance_in_time(self%model)
@@ -211,8 +211,8 @@ contains
 
   ! Advance the model by a fraction of a time step.
   function heat_update_frac(self, time_frac) result (bmi_status)
-    class (bmi_heat), intent (inout) :: self
-    real, intent (in) :: time_frac
+    class (bmi_heat), intent(inout) :: self
+    real, intent(in) :: time_frac
     integer :: bmi_status
     real :: time_step
 
@@ -227,8 +227,8 @@ contains
 
   ! Advance the model until the given time.
   function heat_update_until(self, time) result (bmi_status)
-    class (bmi_heat), intent (inout) :: self
-    real, intent (in) :: time
+    class (bmi_heat), intent(inout) :: self
+    real, intent(in) :: time
     integer :: bmi_status
     real :: n_steps_real
     integer :: n_steps, i, s
@@ -246,19 +246,19 @@ contains
 
   ! Get the grid id for a particular variable.
   function heat_var_grid(self, var_name, grid_id) result (bmi_status)
-    class (bmi_heat), intent (in) :: self
-    character (len=*), intent (in) :: var_name
-    integer, intent (out) :: grid_id
+    class (bmi_heat), intent(in) :: self
+    character (len=*), intent(in) :: var_name
+    integer, intent(out) :: grid_id
     integer :: bmi_status
 
-    select case (var_name)
-    case ('plate_surface__temperature')
+    select case(var_name)
+    case('plate_surface__temperature')
        grid_id = 0
        bmi_status = BMI_SUCCESS
-    case ('plate_surface__thermal_diffusivity')
+    case('plate_surface__thermal_diffusivity')
        grid_id = 1
        bmi_status = BMI_SUCCESS
-    case ('model__identification_number')
+    case('model__identification_number')
        grid_id = 1
        bmi_status = BMI_SUCCESS
     case default
@@ -269,16 +269,16 @@ contains
 
   ! The type of a variable's grid.
   function heat_grid_type(self, grid_id, grid_type) result (bmi_status)
-    class (bmi_heat), intent (in) :: self
-    integer, intent (in) :: grid_id
-    character (len=*), intent (out) :: grid_type
+    class (bmi_heat), intent(in) :: self
+    integer, intent(in) :: grid_id
+    character (len=*), intent(out) :: grid_type
     integer :: bmi_status
 
-    select case (grid_id)
-    case (0)
+    select case(grid_id)
+    case(0)
        grid_type = "uniform_rectilinear"
        bmi_status = BMI_SUCCESS
-    case (1)
+    case(1)
        grid_type = "unstructured"
        bmi_status = BMI_SUCCESS
     case default
@@ -289,16 +289,16 @@ contains
 
   ! The number of dimensions of a grid.
   function heat_grid_rank(self, grid_id, rank) result (bmi_status)
-    class (bmi_heat), intent (in) :: self
-    integer, intent (in) :: grid_id
-    integer, intent (out) :: rank
+    class (bmi_heat), intent(in) :: self
+    integer, intent(in) :: grid_id
+    integer, intent(out) :: rank
     integer :: bmi_status
 
-    select case (grid_id)
-    case (0)
+    select case(grid_id)
+    case(0)
        rank = 2
        bmi_status = BMI_SUCCESS
-    case (1)
+    case(1)
        rank = 0
        bmi_status = BMI_SUCCESS
     case default
@@ -309,13 +309,13 @@ contains
 
   ! The dimensions of a grid.
   function heat_grid_shape(self, grid_id, shape) result (bmi_status)
-    class (bmi_heat), intent (in) :: self
-    integer, intent (in) :: grid_id
-    integer, dimension(:), intent (out) :: shape
+    class (bmi_heat), intent(in) :: self
+    integer, intent(in) :: grid_id
+    integer, dimension(:), intent(out) :: shape
     integer :: bmi_status
 
-    select case (grid_id)
-    case (0)
+    select case(grid_id)
+    case(0)
        shape = [self%model%n_y, self%model%n_x]
        bmi_status = BMI_SUCCESS
     case default
@@ -326,16 +326,16 @@ contains
 
   ! The total number of elements in a grid.
   function heat_grid_size(self, grid_id, size) result (bmi_status)
-    class (bmi_heat), intent (in) :: self
-    integer, intent (in) :: grid_id
-    integer, intent (out) :: size
+    class (bmi_heat), intent(in) :: self
+    integer, intent(in) :: grid_id
+    integer, intent(out) :: size
     integer :: bmi_status
 
-    select case (grid_id)
-    case (0)
+    select case(grid_id)
+    case(0)
        size = self%model%n_y * self%model%n_x
        bmi_status = BMI_SUCCESS
-    case (1)
+    case(1)
        size = 1
        bmi_status = BMI_SUCCESS
     case default
@@ -346,13 +346,13 @@ contains
 
   ! The distance between nodes of a grid.
   function heat_grid_spacing(self, grid_id, spacing) result (bmi_status)
-    class (bmi_heat), intent (in) :: self
-    integer, intent (in) :: grid_id
-    real, dimension(:), intent (out) :: spacing
+    class (bmi_heat), intent(in) :: self
+    integer, intent(in) :: grid_id
+    real, dimension(:), intent(out) :: spacing
     integer :: bmi_status
 
-    select case (grid_id)
-    case (0)
+    select case(grid_id)
+    case(0)
        spacing = [self%model%dy, self%model%dx]
        bmi_status = BMI_SUCCESS
     case default
@@ -363,13 +363,13 @@ contains
 
   ! Coordinates of grid origin.
   function heat_grid_origin(self, grid_id, origin) result (bmi_status)
-    class (bmi_heat), intent (in) :: self
-    integer, intent (in) :: grid_id
-    real, dimension(:), intent (out) :: origin
+    class (bmi_heat), intent(in) :: self
+    integer, intent(in) :: grid_id
+    real, dimension(:), intent(out) :: origin
     integer :: bmi_status
 
-    select case (grid_id)
-    case (0)
+    select case(grid_id)
+    case(0)
        origin = [0.0, 0.0]
        bmi_status = BMI_SUCCESS
     case default
@@ -380,13 +380,13 @@ contains
 
   ! X-coordinates of grid nodes.
   function heat_grid_x(self, grid_id, x) result (bmi_status)
-    class (bmi_heat), intent (in) :: self
-    integer, intent (in) :: grid_id
-    real, dimension(:), intent (out) :: x
+    class (bmi_heat), intent(in) :: self
+    integer, intent(in) :: grid_id
+    real, dimension(:), intent(out) :: x
     integer :: bmi_status
 
-    select case (grid_id)
-    case (1)
+    select case(grid_id)
+    case(1)
        x = [0.0]
        bmi_status = BMI_SUCCESS
     case default
@@ -397,13 +397,13 @@ contains
 
   ! Y-coordinates of grid nodes.
   function heat_grid_y(self, grid_id, y) result (bmi_status)
-    class (bmi_heat), intent (in) :: self
-    integer, intent (in) :: grid_id
-    real, dimension(:), intent (out) :: y
+    class (bmi_heat), intent(in) :: self
+    integer, intent(in) :: grid_id
+    real, dimension(:), intent(out) :: y
     integer :: bmi_status
 
-    select case (grid_id)
-    case (1)
+    select case(grid_id)
+    case(1)
        y = [0.0]
        bmi_status = BMI_SUCCESS
     case default
@@ -414,13 +414,13 @@ contains
 
   ! Z-coordinates of grid nodes.
   function heat_grid_z(self, grid_id, z) result (bmi_status)
-    class (bmi_heat), intent (in) :: self
-    integer, intent (in) :: grid_id
-    real, dimension(:), intent (out) :: z
+    class (bmi_heat), intent(in) :: self
+    integer, intent(in) :: grid_id
+    real, dimension(:), intent(out) :: z
     integer :: bmi_status
 
-    select case (grid_id)
-    case (1)
+    select case(grid_id)
+    case(1)
        z = [0.0]
        bmi_status = BMI_SUCCESS
     case default
@@ -432,13 +432,13 @@ contains
   ! Connectivity array of unstructured grid nodes.
   function heat_grid_connectivity(self, grid_id, connectivity) &
        result (bmi_status)
-    class (bmi_heat), intent (in) :: self
-    integer, intent (in) :: grid_id
-    integer, dimension(:), intent (out) :: connectivity
+    class (bmi_heat), intent(in) :: self
+    integer, intent(in) :: grid_id
+    integer, dimension(:), intent(out) :: connectivity
     integer :: bmi_status
 
-    select case (grid_id)
-    case (1)
+    select case(grid_id)
+    case(1)
        connectivity = [0]
        bmi_status = BMI_SUCCESS
     case default
@@ -450,13 +450,13 @@ contains
   ! Offsets of unstructured grid nodes.
   function heat_grid_offset(self, grid_id, offset) &
        result (bmi_status)
-    class (bmi_heat), intent (in) :: self
-    integer, intent (in) :: grid_id
-    integer, dimension(:), intent (out) :: offset
+    class (bmi_heat), intent(in) :: self
+    integer, intent(in) :: grid_id
+    integer, dimension(:), intent(out) :: offset
     integer :: bmi_status
 
-    select case (grid_id)
-    case (1)
+    select case(grid_id)
+    case(1)
        offset = [0]
        bmi_status = BMI_SUCCESS
     case default
@@ -467,19 +467,19 @@ contains
 
   ! The data type of the variable, as a string.
   function heat_var_type(self, var_name, type) result (bmi_status)
-    class (bmi_heat), intent (in) :: self
-    character (len=*), intent (in) :: var_name
-    character (len=*), intent (out) :: type
+    class (bmi_heat), intent(in) :: self
+    character (len=*), intent(in) :: var_name
+    character (len=*), intent(out) :: type
     integer :: bmi_status
 
-    select case (var_name)
-    case ("plate_surface__temperature")
+    select case(var_name)
+    case("plate_surface__temperature")
        type = "real"
        bmi_status = BMI_SUCCESS
-    case ("plate_surface__thermal_diffusivity")
+    case("plate_surface__thermal_diffusivity")
        type = "real"
        bmi_status = BMI_SUCCESS
-    case ("model__identification_number")
+    case("model__identification_number")
        type = "integer"
        bmi_status = BMI_SUCCESS
     case default
@@ -490,19 +490,19 @@ contains
 
   ! The units of the given variable.
   function heat_var_units(self, var_name, units) result (bmi_status)
-    class (bmi_heat), intent (in) :: self
-    character (len=*), intent (in) :: var_name
-    character (len=*), intent (out) :: units
+    class (bmi_heat), intent(in) :: self
+    character (len=*), intent(in) :: var_name
+    character (len=*), intent(out) :: units
     integer :: bmi_status
 
-    select case (var_name)
-    case ("plate_surface__temperature")
+    select case(var_name)
+    case("plate_surface__temperature")
        units = "K"
        bmi_status = BMI_SUCCESS
-    case ("plate_surface__thermal_diffusivity")
+    case("plate_surface__thermal_diffusivity")
        units = "m2 s-1"
        bmi_status = BMI_SUCCESS
-    case ("model__identification_number")
+    case("model__identification_number")
        units = "-"
        bmi_status = BMI_SUCCESS
     case default
@@ -513,19 +513,19 @@ contains
 
   ! Memory use per array element.
   function heat_var_itemsize(self, var_name, size) result (bmi_status)
-    class (bmi_heat), intent (in) :: self
-    character (len=*), intent (in) :: var_name
-    integer, intent (out) :: size
+    class (bmi_heat), intent(in) :: self
+    character (len=*), intent(in) :: var_name
+    integer, intent(out) :: size
     integer :: bmi_status
 
-    select case (var_name)
-    case ("plate_surface__temperature")
+    select case(var_name)
+    case("plate_surface__temperature")
        size = sizeof(self%model%temperature(1,1))  ! 'sizeof' in gcc & ifort
        bmi_status = BMI_SUCCESS
-    case ("plate_surface__thermal_diffusivity")
+    case("plate_surface__thermal_diffusivity")
        size = sizeof(self%model%alpha)             ! 'sizeof' in gcc & ifort
        bmi_status = BMI_SUCCESS
-    case ("model__identification_number")
+    case("model__identification_number")
        size = sizeof(self%model%id)                ! 'sizeof' in gcc & ifort
        bmi_status = BMI_SUCCESS
     case default
@@ -536,9 +536,9 @@ contains
 
   ! The size of the given variable.
   function heat_var_nbytes(self, var_name, size) result (bmi_status)
-    class (bmi_heat), intent (in) :: self
-    character (len=*), intent (in) :: var_name
-    integer, intent (out) :: size
+    class (bmi_heat), intent(in) :: self
+    character (len=*), intent(in) :: var_name
+    integer, intent(out) :: size
     integer :: bmi_status
     integer :: s1, s2, s3, grid_id, grid_size, item_size
 
@@ -557,17 +557,17 @@ contains
 
   ! Get a copy of a integer variable's values, flattened.
   function heat_get_int(self, var_name, dest) result (bmi_status)
-    class (bmi_heat), intent (in) :: self
-    character (len=*), intent (in) :: var_name
-    integer, pointer, intent (inout) :: dest(:)
+    class (bmi_heat), intent(in) :: self
+    character (len=*), intent(in) :: var_name
+    integer, pointer, intent(inout) :: dest(:)
     integer :: bmi_status
     integer :: status, grid_id, grid_size
 
     status = self%get_var_grid(var_name, grid_id)
     status = self%get_grid_size(grid_id, grid_size)
 
-    select case (var_name)
-    case ("model__identification_number")
+    select case(var_name)
+    case("model__identification_number")
        allocate(dest(grid_size))
        dest = [self%model%id]
        bmi_status = BMI_SUCCESS
@@ -581,21 +581,21 @@ contains
 
   ! Get a copy of a real variable's values, flattened.
   function heat_get_float(self, var_name, dest) result (bmi_status)
-    class (bmi_heat), intent (in) :: self
-    character (len=*), intent (in) :: var_name
-    real, pointer, intent (inout) :: dest(:)
+    class (bmi_heat), intent(in) :: self
+    character (len=*), intent(in) :: var_name
+    real, pointer, intent(inout) :: dest(:)
     integer :: bmi_status
     integer :: status, grid_id, grid_size
 
     status = self%get_var_grid(var_name, grid_id)
     status = self%get_grid_size(grid_id, grid_size)
 
-    select case (var_name)
-    case ("plate_surface__temperature")
+    select case(var_name)
+    case("plate_surface__temperature")
        allocate(dest(grid_size))
        dest = reshape(self%model%temperature, [grid_size])
        bmi_status = BMI_SUCCESS
-    case ("plate_surface__thermal_diffusivity")
+    case("plate_surface__thermal_diffusivity")
        allocate(dest(grid_size))
        dest = [self%model%alpha]
        bmi_status = BMI_SUCCESS
@@ -609,16 +609,16 @@ contains
 
   ! Get a copy of a double variable's values, flattened.
   function heat_get_double(self, var_name, dest) result (bmi_status)
-    class (bmi_heat), intent (in) :: self
-    character (len=*), intent (in) :: var_name
-    double precision, pointer, intent (inout) :: dest(:)
+    class (bmi_heat), intent(in) :: self
+    character (len=*), intent(in) :: var_name
+    double precision, pointer, intent(inout) :: dest(:)
     integer :: bmi_status
     integer :: status, grid_id, grid_size
 
     status = self%get_var_grid(var_name, grid_id)
     status = self%get_grid_size(grid_id, grid_size)
 
-    select case (var_name)
+    select case(var_name)
     case default
        grid_size = 1
        allocate(dest(grid_size))
@@ -629,14 +629,14 @@ contains
 
   ! Get a reference to an integer-valued variable, flattened.
   function heat_get_ref_int(self, var_name, dest) result (bmi_status)
-    class (bmi_heat), intent (in) :: self
-    character (len=*), intent (in) :: var_name
-    integer, pointer, intent (inout) :: dest(:)
+    class (bmi_heat), intent(in) :: self
+    character (len=*), intent(in) :: var_name
+    integer, pointer, intent(inout) :: dest(:)
     integer :: bmi_status
     type (c_ptr) :: src
     integer :: n_elements
 
-    select case (var_name)
+    select case(var_name)
     case default
        bmi_status = BMI_FAILURE
     end select
@@ -644,15 +644,15 @@ contains
 
   ! Get a reference to a real-valued variable, flattened.
   function heat_get_ref_float(self, var_name, dest) result (bmi_status)
-    class (bmi_heat), intent (in) :: self
-    character (len=*), intent (in) :: var_name
-    real, pointer, intent (inout) :: dest(:)
+    class (bmi_heat), intent(in) :: self
+    character (len=*), intent(in) :: var_name
+    real, pointer, intent(inout) :: dest(:)
     integer :: bmi_status
     type (c_ptr) :: src
     integer :: n_elements
 
-    select case (var_name)
-    case ("plate_surface__temperature")
+    select case(var_name)
+    case("plate_surface__temperature")
        src = c_loc(self%model%temperature(1,1))
        n_elements = self%model%n_y * self%model%n_x
        call c_f_pointer(src, dest, [n_elements])
@@ -664,14 +664,14 @@ contains
 
   ! Get a reference to an double-valued variable, flattened.
   function heat_get_ref_double(self, var_name, dest) result (bmi_status)
-    class (bmi_heat), intent (in) :: self
-    character (len=*), intent (in) :: var_name
-    double precision, pointer, intent (inout) :: dest(:)
+    class (bmi_heat), intent(in) :: self
+    character (len=*), intent(in) :: var_name
+    double precision, pointer, intent(inout) :: dest(:)
     integer :: bmi_status
     type (c_ptr) :: src
     integer :: n_elements
 
-    select case (var_name)
+    select case(var_name)
     case default
        bmi_status = BMI_FAILURE
     end select
@@ -680,16 +680,16 @@ contains
   ! Get values of an integer variable at the given locations.
   function heat_get_at_indices_int(self, var_name, dest, indices) &
        result (bmi_status)
-    class (bmi_heat), intent (in) :: self
-    character (len=*), intent (in) :: var_name
-    integer, pointer, intent (inout) :: dest(:)
-    integer, intent (in) :: indices(:)
+    class (bmi_heat), intent(in) :: self
+    character (len=*), intent(in) :: var_name
+    integer, pointer, intent(inout) :: dest(:)
+    integer, intent(in) :: indices(:)
     integer :: bmi_status
     type (c_ptr) src
     integer, pointer :: src_flattened(:)
     integer :: i, n_elements
 
-    select case (var_name)
+    select case(var_name)
     case default
        bmi_status = BMI_FAILURE
     end select
@@ -698,17 +698,17 @@ contains
   ! Get values of a real variable at the given locations.
   function heat_get_at_indices_float(self, var_name, dest, indices) &
        result (bmi_status)
-    class (bmi_heat), intent (in) :: self
-    character (len=*), intent (in) :: var_name
-    real, pointer, intent (inout) :: dest(:)
-    integer, intent (in) :: indices(:)
+    class (bmi_heat), intent(in) :: self
+    character (len=*), intent(in) :: var_name
+    real, pointer, intent(inout) :: dest(:)
+    integer, intent(in) :: indices(:)
     integer :: bmi_status
     type (c_ptr) src
     real, pointer :: src_flattened(:)
     integer :: i, n_elements
 
-    select case (var_name)
-    case ("plate_surface__temperature")
+    select case(var_name)
+    case("plate_surface__temperature")
        src = c_loc(self%model%temperature(1,1))
        call c_f_pointer(src, src_flattened, [self%model%n_y * self%model%n_x])
        n_elements = size (indices)
@@ -725,16 +725,16 @@ contains
   ! Get values of a double variable at the given locations.
   function heat_get_at_indices_double(self, var_name, dest, indices) &
        result (bmi_status)
-    class (bmi_heat), intent (in) :: self
-    character (len=*), intent (in) :: var_name
-    double precision, pointer, intent (inout) :: dest(:)
-    integer, intent (in) :: indices(:)
+    class (bmi_heat), intent(in) :: self
+    character (len=*), intent(in) :: var_name
+    double precision, pointer, intent(inout) :: dest(:)
+    integer, intent(in) :: indices(:)
     integer :: bmi_status
     type (c_ptr) src
     double precision, pointer :: src_flattened(:)
     integer :: i, n_elements
 
-    select case (var_name)
+    select case(var_name)
     case default
        bmi_status = BMI_FAILURE
     end select
@@ -742,13 +742,13 @@ contains
 
   ! Set new integer values.
   function heat_set_int(self, var_name, src) result (bmi_status)
-    class (bmi_heat), intent (inout) :: self
-    character (len=*), intent (in) :: var_name
-    integer, intent (in) :: src(:)
+    class (bmi_heat), intent(inout) :: self
+    character (len=*), intent(in) :: var_name
+    integer, intent(in) :: src(:)
     integer :: bmi_status
 
-    select case (var_name)
-    case ("model__identification_number")
+    select case(var_name)
+    case("model__identification_number")
        self%model%id = src(1)
        bmi_status = BMI_SUCCESS
     case default
@@ -758,16 +758,16 @@ contains
 
   ! Set new real values.
   function heat_set_float(self, var_name, src) result (bmi_status)
-    class (bmi_heat), intent (inout) :: self
-    character (len=*), intent (in) :: var_name
-    real, intent (in) :: src(:)
+    class (bmi_heat), intent(inout) :: self
+    character (len=*), intent(in) :: var_name
+    real, intent(in) :: src(:)
     integer :: bmi_status
 
-    select case (var_name)
-    case ("plate_surface__temperature")
+    select case(var_name)
+    case("plate_surface__temperature")
        self%model%temperature = reshape(src, [self%model%n_y, self%model%n_x])
        bmi_status = BMI_SUCCESS
-    case ("plate_surface__thermal_diffusivity")
+    case("plate_surface__thermal_diffusivity")
        self%model%alpha = src(1)
        bmi_status = BMI_SUCCESS
     case default
@@ -777,12 +777,12 @@ contains
 
   ! Set new double values.
   function heat_set_double(self, var_name, src) result (bmi_status)
-    class (bmi_heat), intent (inout) :: self
-    character (len=*), intent (in) :: var_name
-    double precision, intent (in) :: src(:)
+    class (bmi_heat), intent(inout) :: self
+    character (len=*), intent(in) :: var_name
+    double precision, intent(in) :: src(:)
     integer :: bmi_status
 
-    select case (var_name)
+    select case(var_name)
     case default
        bmi_status = BMI_FAILURE
     end select
@@ -791,16 +791,16 @@ contains
   ! Set integer values at particular locations.
   function heat_set_at_indices_int(self, var_name, indices, src) &
        result (bmi_status)
-    class (bmi_heat), intent (inout) :: self
-    character (len=*), intent (in) :: var_name
-    integer, intent (in) :: indices(:)
-    integer, intent (in) :: src(:)
+    class (bmi_heat), intent(inout) :: self
+    character (len=*), intent(in) :: var_name
+    integer, intent(in) :: indices(:)
+    integer, intent(in) :: src(:)
     integer :: bmi_status
     type (c_ptr) dest
     integer, pointer :: dest_flattened(:)
     integer :: i
 
-    select case (var_name)
+    select case(var_name)
     case default
        bmi_status = BMI_FAILURE
     end select
@@ -809,17 +809,17 @@ contains
   ! Set real values at particular locations.
   function heat_set_at_indices_float(self, var_name, indices, src) &
        result (bmi_status)
-    class (bmi_heat), intent (inout) :: self
-    character (len=*), intent (in) :: var_name
-    integer, intent (in) :: indices(:)
-    real, intent (in) :: src(:)
+    class (bmi_heat), intent(inout) :: self
+    character (len=*), intent(in) :: var_name
+    integer, intent(in) :: indices(:)
+    real, intent(in) :: src(:)
     integer :: bmi_status
     type (c_ptr) dest
     real, pointer :: dest_flattened(:)
     integer :: i
 
-    select case (var_name)
-    case ("plate_surface__temperature")
+    select case(var_name)
+    case("plate_surface__temperature")
        dest = c_loc(self%model%temperature(1,1))
        call c_f_pointer(dest, dest_flattened, [self%model%n_y * self%model%n_x])
        do i = 1, size(indices)
@@ -834,16 +834,16 @@ contains
   ! Set double values at particular locations.
   function heat_set_at_indices_double(self, var_name, indices, src) &
        result (bmi_status)
-    class (bmi_heat), intent (inout) :: self
-    character (len=*), intent (in) :: var_name
-    integer, intent (in) :: indices(:)
-    double precision, intent (in) :: src(:)
+    class (bmi_heat), intent(inout) :: self
+    character (len=*), intent(in) :: var_name
+    integer, intent(in) :: indices(:)
+    double precision, intent(in) :: src(:)
     integer :: bmi_status
     type (c_ptr) dest
     double precision, pointer :: dest_flattened(:)
     integer :: i
 
-    select case (var_name)
+    select case(var_name)
     case default
        bmi_status = BMI_FAILURE
     end select
@@ -851,7 +851,7 @@ contains
 
   ! A non-BMI procedure for model introspection.
   subroutine print_model_info(self)
-    class (bmi_heat), intent (in) :: self
+    class (bmi_heat), intent(in) :: self
 
     call print_info(self%model)
   end subroutine print_model_info
