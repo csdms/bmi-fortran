@@ -66,7 +66,13 @@ module bmiheatf
           set_value_int, &
           set_value_float, &
           set_value_double
-     procedure :: set_value_at_indices => heat_set_at_indices
+     procedure :: set_value_at_indices_int => heat_set_at_indices_int
+     procedure :: set_value_at_indices_float => heat_set_at_indices_float
+     procedure :: set_value_at_indices_double => heat_set_at_indices_double
+     generic :: set_value_at_indices => &
+          set_value_at_indices_int, &
+          set_value_at_indices_float, &
+          set_value_at_indices_double
      procedure :: print_model_info
   end type bmi_heat
 
@@ -783,8 +789,27 @@ contains
     end select
   end function heat_set_double
 
-  ! Set new values at particular locations.
-  function heat_set_at_indices(self, var_name, indices, src) result (bmi_status)
+  ! Set integer values at particular locations.
+  function heat_set_at_indices_int(self, var_name, indices, src) &
+       result (bmi_status)
+    class (bmi_heat), intent (inout) :: self
+    character (len=*), intent (in) :: var_name
+    integer, intent (in) :: indices(:)
+    integer, intent (in) :: src(:)
+    integer :: bmi_status
+    type (c_ptr) dest
+    integer, pointer :: dest_flattened(:)
+    integer :: i
+
+    select case (var_name)
+    case default
+       bmi_status = BMI_FAILURE
+    end select
+  end function heat_set_at_indices_int
+
+  ! Set real values at particular locations.
+  function heat_set_at_indices_float(self, var_name, indices, src) &
+       result (bmi_status)
     class (bmi_heat), intent (inout) :: self
     character (len=*), intent (in) :: var_name
     integer, intent (in) :: indices(:)
@@ -796,16 +821,34 @@ contains
 
     select case (var_name)
     case ("plate_surface__temperature")
-       dest = c_loc (self%model%temperature(1,1))
+       dest = c_loc(self%model%temperature(1,1))
        call c_f_pointer(dest, dest_flattened, [self%model%n_y * self%model%n_x])
-       do i = 1, size (indices)
+       do i = 1, size(indices)
           dest_flattened(indices(i)) = src(i)
        end do
        bmi_status = BMI_SUCCESS
     case default
        bmi_status = BMI_FAILURE
     end select
-  end function heat_set_at_indices
+  end function heat_set_at_indices_float
+
+  ! Set double values at particular locations.
+  function heat_set_at_indices_double(self, var_name, indices, src) &
+       result (bmi_status)
+    class (bmi_heat), intent (inout) :: self
+    character (len=*), intent (in) :: var_name
+    integer, intent (in) :: indices(:)
+    double precision, intent (in) :: src(:)
+    integer :: bmi_status
+    type (c_ptr) dest
+    double precision, pointer :: dest_flattened(:)
+    integer :: i
+
+    select case (var_name)
+    case default
+       bmi_status = BMI_FAILURE
+    end select
+  end function heat_set_at_indices_double
 
   ! A non-BMI procedure for model introspection.
   subroutine print_model_info(self)

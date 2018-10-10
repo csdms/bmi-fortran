@@ -56,7 +56,12 @@ module bmif
        procedure (bmif_set_value_int), deferred :: set_value_int
        procedure (bmif_set_value_float), deferred :: set_value_float
        procedure (bmif_set_value_double), deferred :: set_value_double
-       procedure (bmif_set_value_at_indices), deferred :: set_value_at_indices
+       procedure (bmif_set_value_at_indices_int), deferred :: &
+            set_value_at_indices_int
+       procedure (bmif_set_value_at_indices_float), deferred :: &
+            set_value_at_indices_float
+       procedure (bmif_set_value_at_indices_double), deferred :: &
+            set_value_at_indices_double
   end type bmi
 
   abstract interface
@@ -426,15 +431,38 @@ module bmif
        integer :: bmi_status
      end function bmif_set_value_double
 
-     ! Set values at particular (one-dimensional) indices.
-     function bmif_set_value_at_indices(self, var_name, indices, src) result (bmi_status)
+     ! Set integer values at particular (one-dimensional) indices.
+     function bmif_set_value_at_indices_int(self, var_name, indices, src) &
+          result (bmi_status)
+       import :: bmi
+       class (bmi), intent (inout) :: self
+       character (len=*), intent (in) :: var_name
+       integer, intent (in) :: indices(:)
+       integer, intent (in) :: src(:)
+       integer :: bmi_status
+     end function bmif_set_value_at_indices_int
+
+     ! Set real values at particular (one-dimensional) indices.
+     function bmif_set_value_at_indices_float(self, var_name, indices, src) &
+          result (bmi_status)
        import :: bmi
        class (bmi), intent (inout) :: self
        character (len=*), intent (in) :: var_name
        integer, intent (in) :: indices(:)
        real, intent (in) :: src(:)
        integer :: bmi_status
-     end function bmif_set_value_at_indices
+     end function bmif_set_value_at_indices_float
+
+     ! Set double values at particular (one-dimensional) indices.
+     function bmif_set_value_at_indices_double(self, var_name, indices, src) &
+          result (bmi_status)
+       import :: bmi
+       class (bmi), intent (inout) :: self
+       character (len=*), intent (in) :: var_name
+       integer, intent (in) :: indices(:)
+       double precision, intent (in) :: src(:)
+       integer :: bmi_status
+     end function bmif_set_value_at_indices_double
 
   end interface
 
