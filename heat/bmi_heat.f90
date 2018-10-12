@@ -671,7 +671,7 @@ contains
        result (bmi_status)
     class (bmi_heat), intent(in) :: self
     character (len=*), intent(in) :: var_name
-    integer, pointer, intent(inout) :: dest(:)
+    integer, intent(inout) :: dest(:)
     integer, intent(in) :: indices(:)
     integer :: bmi_status
     type (c_ptr) src
@@ -689,7 +689,7 @@ contains
        result (bmi_status)
     class (bmi_heat), intent(in) :: self
     character (len=*), intent(in) :: var_name
-    real, pointer, intent(inout) :: dest(:)
+    real, intent(inout) :: dest(:)
     integer, intent(in) :: indices(:)
     integer :: bmi_status
     type (c_ptr) src
@@ -700,8 +700,7 @@ contains
     case("plate_surface__temperature")
        src = c_loc(self%model%temperature(1,1))
        call c_f_pointer(src, src_flattened, [self%model%n_y * self%model%n_x])
-       n_elements = size (indices)
-       allocate(dest(n_elements))
+       n_elements = size(indices)
        do i = 1, n_elements
           dest(i) = src_flattened(indices(i))
        end do
@@ -716,7 +715,7 @@ contains
        result (bmi_status)
     class (bmi_heat), intent(in) :: self
     character (len=*), intent(in) :: var_name
-    double precision, pointer, intent(inout) :: dest(:)
+    double precision, intent(inout) :: dest(:)
     integer, intent(in) :: indices(:)
     integer :: bmi_status
     type (c_ptr) src

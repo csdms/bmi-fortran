@@ -10,8 +10,8 @@ program get_value_ex
   integer :: s, i, j, grid_id
   character (len=BMI_MAX_VAR_NAME), pointer :: names(:)
   integer :: grid_size, dims(2), locations(3)
-  real, allocatable :: z(:)
-  real, pointer :: y(:), x(:)
+  real, allocatable :: z(:), y(:)
+  real, pointer :: x(:)
   real :: time
 
   write (*,"(a)",advance="no") "Initializing..."
@@ -46,6 +46,7 @@ program get_value_ex
   write (*, "(a)") "Values at three locations:"
   locations = [21, 41, 62]
   write (*,*) "Locations: ", locations
+  allocate(y(size(locations)))
   s = m%get_value_at_indices("plate_surface__temperature", y, locations)
   write (*,*) "Values: ", y
 
@@ -66,7 +67,7 @@ program get_value_ex
   write (*,*) "Values: ", y
 
   write (*,"(a)", advance="no") "Finalizing..."
-  deallocate(z)
+  deallocate(z, y)
   s = m%finalize()
   write (*,*) "Done"
 
