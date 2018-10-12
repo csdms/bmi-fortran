@@ -22,11 +22,17 @@ contains
   function run_test() result(code)
     type (bmi_heat) :: m
     integer, dimension(rank) :: shape
-    real, pointer :: tval(:), tref(:)
+    integer :: size
+    real, allocatable :: tval(:)
+    real, pointer :: tref(:)
     integer :: code
 
     status = m%initialize(config_file)
     status = m%get_grid_shape(grid_id, shape)
+    status = m%get_grid_size(grid_id, size)
+
+    ! Dynamically allocate memory for the temperature values.
+    allocate(tval(size))
 
     ! Get initial temperature array, by value and by reference.
     status = m%get_value("plate_surface__temperature", tval)

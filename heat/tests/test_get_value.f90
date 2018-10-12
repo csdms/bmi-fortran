@@ -32,10 +32,11 @@ contains
     character (len=*), parameter :: &
          var_name = "plate_surface__temperature"
     integer, parameter :: rank = 2
+    integer, parameter :: size = 50
     integer, parameter, dimension(rank) :: shape = (/ 10, 5 /)
     real, parameter, dimension(shape(2)) :: &
          expected = (/ 0.0, 3.0, 4.0, 3.0, 0.0 /)
-    real, pointer :: tval(:)
+    real :: tval(size)
     integer :: i, code
 
     status = m%initialize(config_file)
@@ -56,16 +57,15 @@ contains
           exit
        end if
     end do
-
-    deallocate(tval)
   end function test1
 
   ! Test getting plate_surface__thermal_diffusivity.
   function test2() result(code)
     character (len=*), parameter :: &
          var_name = "plate_surface__thermal_diffusivity"
-    real, parameter :: expected = 1.0
-    real, pointer :: val(:)
+    integer, parameter :: size = 1
+    real, parameter :: expected(size) = (/ 1.0 /)
+    real :: val(size)
     integer :: i, code
 
     status = m%initialize(config_file)
@@ -78,19 +78,20 @@ contains
     write(*,*) expected
 
     code = BMI_SUCCESS
-    if (val(1).ne.expected) then
-       code = BMI_FAILURE
-    end if
-
-    deallocate(val)
+    do i = 1, size
+       if (val(i).ne.expected(i)) then
+          code = BMI_FAILURE
+       end if
+    end do
   end function test2
 
   ! Test getting model__identification_number.
   function test3() result(code)
     character (len=*), parameter :: &
          var_name = "model__identification_number"
-    integer, parameter :: expected = 0
-    integer, pointer :: val(:)
+    integer, parameter :: size = 1
+    integer, parameter :: expected(size) = (/ 0 /)
+    integer :: val(size)
     integer :: i, code
 
     status = m%initialize(config_file)
@@ -103,11 +104,11 @@ contains
     write(*,*) expected
 
     code = BMI_SUCCESS
-    if (val(1).ne.expected) then
-       code = BMI_FAILURE
-    end if
-
-    deallocate(val)
+    do i = 1, size
+       if (val(i).ne.expected(i)) then
+          code = BMI_FAILURE
+       end if
+    end do
   end function test3
 
 end program test_get_value

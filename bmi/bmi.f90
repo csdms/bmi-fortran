@@ -319,7 +319,7 @@ module bmif
        import :: bmi
        class (bmi), intent(in) :: self
        character (len=*), intent(in) :: var_name
-       integer, pointer, intent(inout) :: dest(:)
+       integer, intent(inout) :: dest(:)
        integer :: bmi_status
      end function bmif_get_value_int
 
@@ -328,7 +328,7 @@ module bmif
        import :: bmi
        class (bmi), intent(in) :: self
        character (len=*), intent(in) :: var_name
-       real, pointer, intent(inout) :: dest(:)
+       real, intent(inout) :: dest(:)
        integer :: bmi_status
      end function bmif_get_value_float
 
@@ -337,7 +337,7 @@ module bmif
        import :: bmi
        class (bmi), intent(in) :: self
        character (len=*), intent(in) :: var_name
-       double precision, pointer, intent(inout) :: dest(:)
+       double precision, intent(inout) :: dest(:)
        integer :: bmi_status
      end function bmif_get_value_double
 
@@ -377,7 +377,7 @@ module bmif
        import :: bmi
        class (bmi), intent(in) :: self
        character (len=*), intent(in) :: var_name
-       integer, pointer, intent(inout) :: dest(:)
+       integer, intent(inout) :: dest(:)
        integer, intent(in) :: indices(:)
        integer :: bmi_status
      end function bmif_get_value_at_indices_int
@@ -388,7 +388,7 @@ module bmif
        import :: bmi
        class (bmi), intent(in) :: self
        character (len=*), intent(in) :: var_name
-       real, pointer, intent(inout) :: dest(:)
+       real, intent(inout) :: dest(:)
        integer, intent(in) :: indices(:)
        integer :: bmi_status
      end function bmif_get_value_at_indices_float
@@ -399,7 +399,7 @@ module bmif
        import :: bmi
        class (bmi), intent(in) :: self
        character (len=*), intent(in) :: var_name
-       double precision, pointer, intent(inout) :: dest(:)
+       double precision, intent(inout) :: dest(:)
        integer, intent(in) :: indices(:)
        integer :: bmi_status
      end function bmif_get_value_at_indices_double

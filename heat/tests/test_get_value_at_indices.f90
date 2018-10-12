@@ -25,9 +25,11 @@ contains
 
   function run_test() result(code)
     type (bmi_heat) :: m
-    real, pointer :: tval(:)
+    real, allocatable :: tval(:)
     integer :: i
     integer :: code
+
+    allocate(tval(size(indices)))
 
     status = m%initialize(config_file)
     status = m%get_value_at_indices(var_name, tval, indices)

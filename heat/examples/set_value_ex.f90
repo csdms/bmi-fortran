@@ -1,5 +1,5 @@
 ! Test the set_value and set_value_at_indices functions.
-program set_value_test
+program set_value_ex
 
   use bmif, only: BMI_MAX_VAR_NAME
   use bmiheatf
@@ -9,9 +9,9 @@ program set_value_test
   type (bmi_heat) :: m
   integer :: s, i, j, grid_id
   character (len=BMI_MAX_VAR_NAME), pointer :: names(:)
-  integer :: dims(2), locations(3)
+  integer :: grid_size, dims(2), locations(3)
   real :: values(3)
-  real, pointer :: z(:), y(:)
+  real, allocatable :: z(:), y(:)
   character(len=30) :: rowfmt
 
   write (*,"(a)",advance="no") "Initializing..."
@@ -24,8 +24,11 @@ program set_value_test
   s = m%get_var_grid(names(1), grid_id)
   s = m%get_grid_shape(grid_id, dims)
   write(rowfmt,'(a,i4,a)') '(', dims(2), '(1x,f6.1))'
+  s = m%get_grid_size(grid_id, grid_size)
+  write(*,'(a,i8)') 'Grid size: ', grid_size
 
   write (*, "(a)") "Initial values:"
+  allocate(z(grid_size))
   s = m%get_value("plate_surface__temperature", z)
   call print_array(z, dims)
 
@@ -34,6 +37,7 @@ program set_value_test
   s = m%set_value("plate_surface__temperature", z)
   write (*,*) "Done."
   write (*, "(a)") "New values:"
+  allocate(y(grid_size))
   s = m%get_value("plate_surface__temperature", y)
   call print_array(y, dims)
 
@@ -48,7 +52,8 @@ program set_value_test
   call print_array(y, dims)
 
   write (*,"(a)", advance="no") "Finalizing..."
+  deallocate(z, y)
   s = m%finalize()
   write (*,*) "Done"
 
-end program set_value_test
+end program set_value_ex

@@ -559,22 +559,15 @@ contains
   function heat_get_int(self, var_name, dest) result (bmi_status)
     class (bmi_heat), intent(in) :: self
     character (len=*), intent(in) :: var_name
-    integer, pointer, intent(inout) :: dest(:)
+    integer, intent(inout) :: dest(:)
     integer :: bmi_status
-    integer :: status, grid_id, grid_size
-
-    status = self%get_var_grid(var_name, grid_id)
-    status = self%get_grid_size(grid_id, grid_size)
 
     select case(var_name)
     case("model__identification_number")
-       allocate(dest(grid_size))
        dest = [self%model%id]
        bmi_status = BMI_SUCCESS
     case default
-       grid_size = 1
-       allocate(dest(grid_size))
-       dest = -1
+       dest = [-1]
        bmi_status = BMI_FAILURE
     end select
   end function heat_get_int
@@ -583,26 +576,28 @@ contains
   function heat_get_float(self, var_name, dest) result (bmi_status)
     class (bmi_heat), intent(in) :: self
     character (len=*), intent(in) :: var_name
-    real, pointer, intent(inout) :: dest(:)
+    real, intent(inout) :: dest(:)
     integer :: bmi_status
-    integer :: status, grid_id, grid_size
-
-    status = self%get_var_grid(var_name, grid_id)
-    status = self%get_grid_size(grid_id, grid_size)
 
     select case(var_name)
     case("plate_surface__temperature")
-       allocate(dest(grid_size))
-       dest = reshape(self%model%temperature, [grid_size])
+       ! This would be safe, but subject to indexing errors.
+       ! do j = 1, self%model%n_y
+       !    do i = 1, self%model%n_x
+       !       k = j + self%model%n_y*(i-1)
+       !       dest(k) = self%model%temperature(j,i)
+       !    end do
+       ! end do
+
+       ! This is an equivalent, elementwise copy into `dest`.
+       ! See https://stackoverflow.com/a/11800068/1563298
+       dest = reshape(self%model%temperature, [self%model%n_x*self%model%n_y])
        bmi_status = BMI_SUCCESS
     case("plate_surface__thermal_diffusivity")
-       allocate(dest(grid_size))
        dest = [self%model%alpha]
        bmi_status = BMI_SUCCESS
     case default
-       grid_size = 1
-       allocate(dest(grid_size))
-       dest = -1.0
+       dest = [-1.0]
        bmi_status = BMI_FAILURE
     end select
   end function heat_get_float
@@ -611,18 +606,12 @@ contains
   function heat_get_double(self, var_name, dest) result (bmi_status)
     class (bmi_heat), intent(in) :: self
     character (len=*), intent(in) :: var_name
-    double precision, pointer, intent(inout) :: dest(:)
+    double precision, intent(inout) :: dest(:)
     integer :: bmi_status
-    integer :: status, grid_id, grid_size
-
-    status = self%get_var_grid(var_name, grid_id)
-    status = self%get_grid_size(grid_id, grid_size)
 
     select case(var_name)
     case default
-       grid_size = 1
-       allocate(dest(grid_size))
-       dest = -1.d0
+       dest = [-1.d0]
        bmi_status = BMI_FAILURE
     end select
   end function heat_get_double
@@ -682,7 +671,7 @@ contains
        result (bmi_status)
     class (bmi_heat), intent(in) :: self
     character (len=*), intent(in) :: var_name
-    integer, pointer, intent(inout) :: dest(:)
+    integer, intent(inout) :: dest(:)
     integer, intent(in) :: indices(:)
     integer :: bmi_status
     type (c_ptr) src
@@ -700,7 +689,7 @@ contains
        result (bmi_status)
     class (bmi_heat), intent(in) :: self
     character (len=*), intent(in) :: var_name
-    real, pointer, intent(inout) :: dest(:)
+    real, intent(inout) :: dest(:)
     integer, intent(in) :: indices(:)
     integer :: bmi_status
     type (c_ptr) src
@@ -711,8 +700,7 @@ contains
     case("plate_surface__temperature")
        src = c_loc(self%model%temperature(1,1))
        call c_f_pointer(src, src_flattened, [self%model%n_y * self%model%n_x])
-       n_elements = size (indices)
-       allocate(dest(n_elements))
+       n_elements = size(indices)
        do i = 1, n_elements
           dest(i) = src_flattened(indices(i))
        end do
@@ -727,7 +715,7 @@ contains
        result (bmi_status)
     class (bmi_heat), intent(in) :: self
     character (len=*), intent(in) :: var_name
-    double precision, pointer, intent(inout) :: dest(:)
+    double precision, intent(inout) :: dest(:)
     integer, intent(in) :: indices(:)
     integer :: bmi_status
     type (c_ptr) src

@@ -31,8 +31,9 @@ contains
     character (len=*), parameter :: &
          var_name = "plate_surface__temperature"
     integer, parameter :: rank = 2
+    integer, parameter :: size = 50
     integer, parameter :: shape(rank) = (/ 10, 5 /)
-    real, pointer :: x(:), y(:)
+    real :: x(size), y(size)
     integer :: i, code
 
     status = m%initialize(config_file)
@@ -54,17 +55,14 @@ contains
           exit
        end if
     end do
-
-    deallocate(x)
-    deallocate(y)
   end function test1
 
   function test2() result(code)
     character (len=*), parameter :: &
          var_name = "plate_surface__thermal_diffusivity"
-    integer, parameter :: rank = 1
-    real, parameter :: expected(rank) = (/ 0.75 /)
-    real, pointer :: x(:), y(:)
+    integer, parameter :: size = 1
+    real, parameter :: expected(size) = (/ 0.75 /)
+    real :: x(size), y(size)
     integer :: i, code
 
     status = m%initialize(config_file)
@@ -80,22 +78,19 @@ contains
     write(*,*) y
 
     code = BMI_SUCCESS
-    do i = 1, rank
+    do i = 1, size
        if (y(i).ne.expected(i)) then
           code = BMI_FAILURE
        end if
     end do
-
-    deallocate(x)
-    deallocate(y)
   end function test2
 
   function test3() result(code)
     character (len=*), parameter :: &
          var_name = "model__identification_number"
-    integer, parameter :: rank = 1
-    integer, parameter :: expected(rank) = (/ 42 /)
-    integer, pointer :: x(:), y(:)
+    integer, parameter :: size = 1
+    integer, parameter :: expected(size) = (/ 42 /)
+    integer :: x(size), y(size)
     integer :: i, code
 
     status = m%initialize(config_file)
@@ -111,14 +106,11 @@ contains
     write(*,*) y
 
     code = BMI_SUCCESS
-    do i = 1, rank
+    do i = 1, size
        if (y(i).ne.expected(i)) then
           code = BMI_FAILURE
        end if
     end do
-
-    deallocate(x)
-    deallocate(y)
   end function test3
 
 end program test_set_value

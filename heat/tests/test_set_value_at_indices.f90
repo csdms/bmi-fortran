@@ -9,6 +9,7 @@ program test_set_value_at_indices
   character (len=*), parameter :: config_file = "sample.cfg"
   character (len=*), parameter :: var_name = "plate_surface__temperature"
   integer, parameter :: rank = 2
+  integer, parameter :: size = 50
   integer, parameter, dimension(rank) :: shape = (/ 10, 5 /)
   integer, parameter, dimension(shape(2)) :: &
        indices = (/ 2, 12, 22, 32, 42 /)
@@ -25,9 +26,8 @@ contains
 
   function run_test() result(code)
     type (bmi_heat) :: m
-    real, pointer :: x(:)
-    integer :: i
-    integer :: code
+    real :: x(size)
+    integer :: i, code
 
     status = m%initialize(config_file)
     status = m%set_value_at_indices(var_name, indices, expected)
@@ -46,8 +46,6 @@ contains
           exit
        end if
     end do
-
-    deallocate(x)
   end function run_test
 
 end program test_set_value_at_indices

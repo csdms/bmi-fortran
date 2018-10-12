@@ -15,7 +15,7 @@ program change_diffusivity
   type (bmi_heat) :: m
   integer :: tgrid_id
   integer, dimension(2) :: tdims
-  real, pointer :: diffusivity(:), temperature(:)  
+  real :: diffusivity(1), temperature(50)  
   integer :: status
   
   ! Run model to the end with alpha=1.0 (from cfg file).
@@ -42,7 +42,4 @@ program change_diffusivity
   write(*,"(a)") "Run 2"
   write(*,"(a, f5.2)") "alpha =", diffusivity
   call print_array(temperature, tdims)
-
-  deallocate(diffusivity)
-  deallocate(temperature)
 end program change_diffusivity
