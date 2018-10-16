@@ -196,7 +196,7 @@ contains
     character (len=*), intent(out) :: time_units
     integer :: bmi_status
 
-    time_units = "-"
+    time_units = "s"
     bmi_status = BMI_SUCCESS
   end function heat_time_units
 
