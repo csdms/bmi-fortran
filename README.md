@@ -3,39 +3,15 @@
 # bmi-fortran
 
 Fortran bindings, created with Fortran 2003, for the
-[Basic Model Interface](http://csdms.colorado.edu/wiki/BMI_Description).
+[Basic Model Interface](http://csdms.colorado.edu/wiki/BMI_Description),
+following the [BMI specification](https://bmi-spec.readthedocs.io).
+The bindings themseleves are defined in the [bmi](./bmi) directory.
+A sample implementation,
+with tests and examples,
+is provided in the [heat](./heat) directory.
 
-The bindings are defined in the [bmi](./bmi) directory.
-A sample implementation is provided in the [heat](./heat) directory.
-
-## Build
-
-To build the BMI Fortran bindings, sample implementation, tests,
-and examples, execute
-
-    $ mkdir _build && cd _build
-    $ cmake .. -DCMAKE_INSTALL_PREFIX=<path-to-installation>
-    $ make
-
-where `<path-to-installation>` is the base directory where you want
-to install things (`/usr/local` is the default).
-
-## Install
-
-To install:
-
-    $ make install
-
-
-On macOS, update runtime paths after install with
-
-    $ source ../scripts/update_rpaths
-
-## Test
-
-Run some simple unit tests on the sample implementation with
-
-    $ ctest
+For a Fortran BMI that uses Fortran 90/95,
+see https://github.com/csdms/bmi-f90.
 
 ## Note
 
@@ -50,10 +26,11 @@ substituting their code for code in the example.
 This is somewhat cumbersome.
 The Fortran 2003 BMI implementation acts a true interface--it can be imported
 as a type from a module into a Fortran program and its methods overridden.
+
 The CSDMS IF software engineers recommend using the Fortran 2003 bindings;
 however, we will continue to support the Fortran 90/95 bindings
-for users in the CSDMS community who aren't comfortable
-using the object-oriented features of Fortran 2003.
+for users who aren't comfortable
+the object-oriented features of Fortran 2003.
 Further, both BMI implementations are backward-compatible with Fortran 77.
 All that is needed is a compiler that's capable of handling
 the more recent versions of Fortran;
