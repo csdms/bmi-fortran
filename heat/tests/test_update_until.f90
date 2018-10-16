@@ -6,10 +6,10 @@ program test_update_until
 
   implicit none
 
-  real, parameter :: expected_time = 10.0
+  double precision, parameter :: expected_time = 10.d0
 
   type (bmi_heat) :: m
-  real :: time
+  double precision :: time
 
   status = m%initialize(config_file)
   status = m%update_until(expected_time)

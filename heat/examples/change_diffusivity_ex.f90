@@ -10,7 +10,7 @@ program change_diffusivity
        dname = "plate_surface__thermal_diffusivity"
   character (len=*), parameter :: &
        tname = "plate_surface__temperature"
-  real, parameter :: end_time = 20.0
+  double precision, parameter :: end_time = 20.d0
 
   type (bmi_heat) :: m
   integer :: tgrid_id

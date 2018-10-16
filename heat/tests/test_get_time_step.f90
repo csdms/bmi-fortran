@@ -6,10 +6,10 @@ program test_get_time_step
 
   implicit none
 
-  integer, parameter :: expected_time_step = 1.0
+  double precision, parameter :: expected_time_step = 1.d0
 
   type (bmi_heat) :: m
-  real :: time_step
+  double precision :: time_step
 
   status = m%initialize(config_file)
   status = m%get_time_step(time_step)

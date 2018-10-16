@@ -6,10 +6,10 @@ program test_get_current_time
 
   implicit none
 
-  integer, parameter :: expected_time = 0.0
+  double precision, parameter :: expected_time = 0.d0
 
   type (bmi_heat) :: m
-  real :: current_time
+  double precision :: current_time
 
   status = m%initialize(config_file)
   status = m%get_current_time(current_time)

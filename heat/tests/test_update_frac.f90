@@ -6,10 +6,10 @@ program test_update_frac
 
   implicit none
 
-  real, parameter :: expected_time = 0.5
+  double precision, parameter :: expected_time = 0.d5
 
   type (bmi_heat) :: m
-  real :: time
+  double precision :: time
 
   status = m%initialize(config_file)
   status = m%update_frac(expected_time)
