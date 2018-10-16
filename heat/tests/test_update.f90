@@ -6,10 +6,10 @@ program test_update
 
   implicit none
 
-  integer, parameter :: expected_time = 1.0
+  double precision, parameter :: expected_time = 1.d0
 
   type (bmi_heat) :: m
-  real :: time
+  double precision :: time
 
   status = m%initialize(config_file)
   status = m%update()

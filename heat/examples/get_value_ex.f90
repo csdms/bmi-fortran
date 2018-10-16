@@ -12,7 +12,7 @@ program get_value_ex
   integer :: grid_size, dims(2), locations(3)
   real, allocatable :: z(:), y(:)
   real, pointer :: x(:)
-  real :: time
+  double precision :: time
 
   write (*,"(a)",advance="no") "Initializing..."
   s = m%initialize("")

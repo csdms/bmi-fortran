@@ -109,7 +109,7 @@ module bmif
      function bmif_get_start_time(self, time) result(bmi_status)
        import :: bmi
        class (bmi), intent(in) :: self
-       real, intent(out) :: time
+       double precision, intent(out) :: time
        integer :: bmi_status
      end function bmif_get_start_time
 
@@ -117,7 +117,7 @@ module bmif
      function bmif_get_end_time(self, time) result(bmi_status)
        import :: bmi
        class (bmi), intent(in) :: self
-       real, intent(out) :: time
+       double precision, intent(out) :: time
        integer :: bmi_status
      end function bmif_get_end_time
 
@@ -125,7 +125,7 @@ module bmif
      function bmif_get_current_time(self, time) result(bmi_status)
        import :: bmi
        class (bmi), intent(in) :: self
-       real, intent(out) :: time
+       double precision, intent(out) :: time
        integer :: bmi_status
      end function bmif_get_current_time
 
@@ -133,7 +133,7 @@ module bmif
      function bmif_get_time_step(self, time_step) result(bmi_status)
        import :: bmi
        class (bmi), intent(in) :: self
-       real, intent(out) :: time_step
+       double precision, intent(out) :: time_step
        integer :: bmi_status
      end function bmif_get_time_step
 
@@ -156,7 +156,7 @@ module bmif
      function bmif_update_frac(self, time_frac) result(bmi_status)
        import :: bmi
        class (bmi), intent(inout) :: self
-       real, intent(in) :: time_frac
+       double precision, intent(in) :: time_frac
        integer :: bmi_status
      end function bmif_update_frac
 
@@ -164,7 +164,7 @@ module bmif
      function bmif_update_until(self, time) result(bmi_status)
        import :: bmi
        class (bmi), intent(inout) :: self
-       real, intent(in) :: time
+       double precision, intent(in) :: time
        integer :: bmi_status
      end function bmif_update_until
 

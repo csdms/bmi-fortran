@@ -6,10 +6,10 @@ program test_get_end_time
 
   implicit none
 
-  integer, parameter :: expected_time = 20.0
+  double precision, parameter :: expected_time = 20.d0
 
   type (bmi_heat) :: m
-  real :: end_time
+  double precision :: end_time
 
   status = m%initialize(config_file)
   status = m%get_end_time(end_time)

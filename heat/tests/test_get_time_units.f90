@@ -6,7 +6,7 @@ program test_get_time_units
 
   implicit none
 
-  character (len=*), parameter :: expected_units = "-"
+  character (len=*), parameter :: expected_units = "s"
 
   type (bmi_heat) :: m
   character (len=BMI_MAX_UNITS_NAME) :: units
