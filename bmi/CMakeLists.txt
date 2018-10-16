@@ -1,4 +1,3 @@
-set(BMI_VERSION 0.3)
 set(pkg_name bmif)
 set(mod_name ${pkg_name})
 set(src_${pkg_name} bmi.f90)

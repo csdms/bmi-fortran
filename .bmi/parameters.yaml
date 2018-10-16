@@ -2,22 +2,22 @@ run_duration:
   description: Simulation run time
   value:
     type: float
-    default: 1.
+    default: 1.0
     units: s
     range:
-      min: 0.
-      max: 1000000.
+      min: 0.0
+      max: 1000000.0
 
 thermal_diffusivity:
   name: Thermal diffusivity
   description: Thermal diffusivity
   value:
     type: float
-    default: 1.
+    default: 1.0
     range:
-      min: 0.
-      max: 10.
-    units: 'm^2/s'
+      min: 0.0
+      max: 10.0
+    units: 'm2 s-1'
 
 number_of_rows:
   name: Number of rows

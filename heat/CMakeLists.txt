@@ -1,4 +1,3 @@
-set(HEAT_VERSION 0.3)
 set(pkg_name heatf)
 set(mod_name ${pkg_name})
 set(src_${pkg_name} heat.f90 bmi_heat.f90 main.f90)
