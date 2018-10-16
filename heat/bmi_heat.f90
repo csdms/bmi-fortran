@@ -288,257 +288,257 @@ contains
   end function heat_grid_type
 
   ! The number of dimensions of a grid.
-  function heat_grid_rank(self, grid_id, rank) result (bmi_status)
+  function heat_grid_rank(self, grid_id, grid_rank) result (bmi_status)
     class (bmi_heat), intent(in) :: self
     integer, intent(in) :: grid_id
-    integer, intent(out) :: rank
+    integer, intent(out) :: grid_rank
     integer :: bmi_status
 
     select case(grid_id)
     case(0)
-       rank = 2
+       grid_rank = 2
        bmi_status = BMI_SUCCESS
     case(1)
-       rank = 0
+       grid_rank = 0
        bmi_status = BMI_SUCCESS
     case default
-       rank = -1
+       grid_rank = -1
        bmi_status = BMI_FAILURE
     end select
   end function heat_grid_rank
 
   ! The dimensions of a grid.
-  function heat_grid_shape(self, grid_id, shape) result (bmi_status)
+  function heat_grid_shape(self, grid_id, grid_shape) result (bmi_status)
     class (bmi_heat), intent(in) :: self
     integer, intent(in) :: grid_id
-    integer, dimension(:), intent(out) :: shape
+    integer, dimension(:), intent(out) :: grid_shape
     integer :: bmi_status
 
     select case(grid_id)
     case(0)
-       shape = [self%model%n_y, self%model%n_x]
+       grid_shape = [self%model%n_y, self%model%n_x]
        bmi_status = BMI_SUCCESS
     case default
-       shape = [-1]
+       grid_shape = [-1]
        bmi_status = BMI_FAILURE
     end select
   end function heat_grid_shape
 
   ! The total number of elements in a grid.
-  function heat_grid_size(self, grid_id, size) result (bmi_status)
+  function heat_grid_size(self, grid_id, grid_size) result (bmi_status)
     class (bmi_heat), intent(in) :: self
     integer, intent(in) :: grid_id
-    integer, intent(out) :: size
+    integer, intent(out) :: grid_size
     integer :: bmi_status
 
     select case(grid_id)
     case(0)
-       size = self%model%n_y * self%model%n_x
+       grid_size = self%model%n_y * self%model%n_x
        bmi_status = BMI_SUCCESS
     case(1)
-       size = 1
+       grid_size = 1
        bmi_status = BMI_SUCCESS
     case default
-       size = -1
+       grid_size = -1
        bmi_status = BMI_FAILURE
     end select
   end function heat_grid_size
 
   ! The distance between nodes of a grid.
-  function heat_grid_spacing(self, grid_id, spacing) result (bmi_status)
+  function heat_grid_spacing(self, grid_id, grid_spacing) result (bmi_status)
     class (bmi_heat), intent(in) :: self
     integer, intent(in) :: grid_id
-    real, dimension(:), intent(out) :: spacing
+    real, dimension(:), intent(out) :: grid_spacing
     integer :: bmi_status
 
     select case(grid_id)
     case(0)
-       spacing = [self%model%dy, self%model%dx]
+       grid_spacing = [self%model%dy, self%model%dx]
        bmi_status = BMI_SUCCESS
     case default
-       spacing = -1
+       grid_spacing = -1
        bmi_status = BMI_FAILURE
     end select
   end function heat_grid_spacing
 
   ! Coordinates of grid origin.
-  function heat_grid_origin(self, grid_id, origin) result (bmi_status)
+  function heat_grid_origin(self, grid_id, grid_origin) result (bmi_status)
     class (bmi_heat), intent(in) :: self
     integer, intent(in) :: grid_id
-    real, dimension(:), intent(out) :: origin
+    real, dimension(:), intent(out) :: grid_origin
     integer :: bmi_status
 
     select case(grid_id)
     case(0)
-       origin = [0.0, 0.0]
+       grid_origin = [0.0, 0.0]
        bmi_status = BMI_SUCCESS
     case default
-       origin = [-1.0]
+       grid_origin = [-1.0]
        bmi_status = BMI_FAILURE
     end select
   end function heat_grid_origin
 
   ! X-coordinates of grid nodes.
-  function heat_grid_x(self, grid_id, x) result (bmi_status)
+  function heat_grid_x(self, grid_id, grid_x) result (bmi_status)
     class (bmi_heat), intent(in) :: self
     integer, intent(in) :: grid_id
-    real, dimension(:), intent(out) :: x
+    real, dimension(:), intent(out) :: grid_x
     integer :: bmi_status
 
     select case(grid_id)
     case(1)
-       x = [0.0]
+       grid_x = [0.0]
        bmi_status = BMI_SUCCESS
     case default
-       x = [-1.0]
+       grid_x = [-1.0]
        bmi_status = BMI_FAILURE
     end select
   end function heat_grid_x
 
   ! Y-coordinates of grid nodes.
-  function heat_grid_y(self, grid_id, y) result (bmi_status)
+  function heat_grid_y(self, grid_id, grid_y) result (bmi_status)
     class (bmi_heat), intent(in) :: self
     integer, intent(in) :: grid_id
-    real, dimension(:), intent(out) :: y
+    real, dimension(:), intent(out) :: grid_y
     integer :: bmi_status
 
     select case(grid_id)
     case(1)
-       y = [0.0]
+       grid_y = [0.0]
        bmi_status = BMI_SUCCESS
     case default
-       y = [-1.0]
+       grid_y = [-1.0]
        bmi_status = BMI_FAILURE
     end select
   end function heat_grid_y
 
   ! Z-coordinates of grid nodes.
-  function heat_grid_z(self, grid_id, z) result (bmi_status)
+  function heat_grid_z(self, grid_id, grid_z) result (bmi_status)
     class (bmi_heat), intent(in) :: self
     integer, intent(in) :: grid_id
-    real, dimension(:), intent(out) :: z
+    real, dimension(:), intent(out) :: grid_z
     integer :: bmi_status
 
     select case(grid_id)
     case(1)
-       z = [0.0]
+       grid_z = [0.0]
        bmi_status = BMI_SUCCESS
     case default
-       z = [-1.0]
+       grid_z = [-1.0]
        bmi_status = BMI_FAILURE
     end select
   end function heat_grid_z
 
   ! Connectivity array of unstructured grid nodes.
-  function heat_grid_connectivity(self, grid_id, connectivity) &
+  function heat_grid_connectivity(self, grid_id, grid_conn) &
        result (bmi_status)
     class (bmi_heat), intent(in) :: self
     integer, intent(in) :: grid_id
-    integer, dimension(:), intent(out) :: connectivity
+    integer, dimension(:), intent(out) :: grid_conn
     integer :: bmi_status
 
     select case(grid_id)
     case(1)
-       connectivity = [0]
+       grid_conn = [0]
        bmi_status = BMI_SUCCESS
     case default
-       connectivity = [-1]
+       grid_conn = [-1]
        bmi_status = BMI_FAILURE
     end select
   end function heat_grid_connectivity
 
   ! Offsets of unstructured grid nodes.
-  function heat_grid_offset(self, grid_id, offset) &
+  function heat_grid_offset(self, grid_id, grid_offset) &
        result (bmi_status)
     class (bmi_heat), intent(in) :: self
     integer, intent(in) :: grid_id
-    integer, dimension(:), intent(out) :: offset
+    integer, dimension(:), intent(out) :: grid_offset
     integer :: bmi_status
 
     select case(grid_id)
     case(1)
-       offset = [0]
+       grid_offset = [0]
        bmi_status = BMI_SUCCESS
     case default
-       offset = [-1]
+       grid_offset = [-1]
        bmi_status = BMI_FAILURE
     end select
   end function heat_grid_offset
 
   ! The data type of the variable, as a string.
-  function heat_var_type(self, var_name, type) result (bmi_status)
+  function heat_var_type(self, var_name, var_type) result (bmi_status)
     class (bmi_heat), intent(in) :: self
     character (len=*), intent(in) :: var_name
-    character (len=*), intent(out) :: type
+    character (len=*), intent(out) :: var_type
     integer :: bmi_status
 
     select case(var_name)
     case("plate_surface__temperature")
-       type = "real"
+       var_type = "real"
        bmi_status = BMI_SUCCESS
     case("plate_surface__thermal_diffusivity")
-       type = "real"
+       var_type = "real"
        bmi_status = BMI_SUCCESS
     case("model__identification_number")
-       type = "integer"
+       var_type = "integer"
        bmi_status = BMI_SUCCESS
     case default
-       type = "-"
+       var_type = "-"
        bmi_status = BMI_FAILURE
     end select
   end function heat_var_type
 
   ! The units of the given variable.
-  function heat_var_units(self, var_name, units) result (bmi_status)
+  function heat_var_units(self, var_name, var_units) result (bmi_status)
     class (bmi_heat), intent(in) :: self
     character (len=*), intent(in) :: var_name
-    character (len=*), intent(out) :: units
+    character (len=*), intent(out) :: var_units
     integer :: bmi_status
 
     select case(var_name)
     case("plate_surface__temperature")
-       units = "K"
+       var_units = "K"
        bmi_status = BMI_SUCCESS
     case("plate_surface__thermal_diffusivity")
-       units = "m2 s-1"
+       var_units = "m2 s-1"
        bmi_status = BMI_SUCCESS
     case("model__identification_number")
-       units = "-"
+       var_units = "-"
        bmi_status = BMI_SUCCESS
     case default
-       units = "-"
+       var_units = "-"
        bmi_status = BMI_FAILURE
     end select
   end function heat_var_units
 
   ! Memory use per array element.
-  function heat_var_itemsize(self, var_name, size) result (bmi_status)
+  function heat_var_itemsize(self, var_name, var_size) result (bmi_status)
     class (bmi_heat), intent(in) :: self
     character (len=*), intent(in) :: var_name
-    integer, intent(out) :: size
+    integer, intent(out) :: var_size
     integer :: bmi_status
 
     select case(var_name)
     case("plate_surface__temperature")
-       size = sizeof(self%model%temperature(1,1))  ! 'sizeof' in gcc & ifort
+       var_size = sizeof(self%model%temperature(1,1))  ! 'sizeof' in gcc & ifort
        bmi_status = BMI_SUCCESS
     case("plate_surface__thermal_diffusivity")
-       size = sizeof(self%model%alpha)             ! 'sizeof' in gcc & ifort
+       var_size = sizeof(self%model%alpha)             ! 'sizeof' in gcc & ifort
        bmi_status = BMI_SUCCESS
     case("model__identification_number")
-       size = sizeof(self%model%id)                ! 'sizeof' in gcc & ifort
+       var_size = sizeof(self%model%id)                ! 'sizeof' in gcc & ifort
        bmi_status = BMI_SUCCESS
     case default
-       size = -1
+       var_size = -1
        bmi_status = BMI_FAILURE
     end select
   end function heat_var_itemsize
 
   ! The size of the given variable.
-  function heat_var_nbytes(self, var_name, size) result (bmi_status)
+  function heat_var_nbytes(self, var_name, var_nbytes) result (bmi_status)
     class (bmi_heat), intent(in) :: self
     character (len=*), intent(in) :: var_name
-    integer, intent(out) :: size
+    integer, intent(out) :: var_nbytes
     integer :: bmi_status
     integer :: s1, s2, s3, grid_id, grid_size, item_size
 
@@ -547,10 +547,10 @@ contains
     s3 = self%get_var_itemsize(var_name, item_size)
 
     if ((s1 == BMI_SUCCESS).and.(s2 == BMI_SUCCESS).and.(s3 == BMI_SUCCESS)) then
-       size = item_size * grid_size
+       var_nbytes = item_size * grid_size
        bmi_status = BMI_SUCCESS
     else
-       size = -1
+       var_nbytes = -1
        bmi_status = BMI_FAILURE
     end if
   end function heat_var_nbytes

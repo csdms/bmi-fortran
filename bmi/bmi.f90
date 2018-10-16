@@ -187,130 +187,130 @@ module bmif
      end function bmif_get_grid_type
 
      ! Get number of dimensions of the computational grid.
-     function bmif_get_grid_rank(self, grid_id, rank) result(bmi_status)
+     function bmif_get_grid_rank(self, grid_id, grid_rank) result(bmi_status)
        import :: bmi
        class (bmi), intent(in) :: self
        integer, intent(in) :: grid_id
-       integer, intent(out) :: rank
+       integer, intent(out) :: grid_rank
        integer :: bmi_status
      end function bmif_get_grid_rank
 
      ! Get the dimensions of the computational grid.
-     function bmif_get_grid_shape(self, grid_id, shape) result(bmi_status)
+     function bmif_get_grid_shape(self, grid_id, grid_shape) result(bmi_status)
        import :: bmi
        class (bmi), intent(in) :: self
        integer, intent(in) :: grid_id
-       integer, dimension(:), intent(out) :: shape
+       integer, dimension(:), intent(out) :: grid_shape
        integer :: bmi_status
      end function bmif_get_grid_shape
 
      ! Get the total number of elements in the computational grid.
-     function bmif_get_grid_size(self, grid_id, size) result(bmi_status)
+     function bmif_get_grid_size(self, grid_id, grid_size) result(bmi_status)
        import :: bmi
        class (bmi), intent(in) :: self
        integer, intent(in) :: grid_id
-       integer, intent(out) :: size
+       integer, intent(out) :: grid_size
        integer :: bmi_status
      end function bmif_get_grid_size
 
      ! Get distance between nodes of the computational grid.
-     function bmif_get_grid_spacing(self, grid_id, spacing) result(bmi_status)
+     function bmif_get_grid_spacing(self, grid_id, grid_spacing) result(bmi_status)
        import :: bmi
        class (bmi), intent(in) :: self
        integer, intent(in) :: grid_id
-       real, dimension(:), intent(out) :: spacing
+       real, dimension(:), intent(out) :: grid_spacing
        integer :: bmi_status
      end function bmif_get_grid_spacing
 
      ! Get coordinates of the origin of the computational grid.
-     function bmif_get_grid_origin(self, grid_id, origin) result(bmi_status)
+     function bmif_get_grid_origin(self, grid_id, grid_origin) result(bmi_status)
        import :: bmi
        class (bmi), intent(in) :: self
        integer, intent(in) :: grid_id
-       real, dimension(:), intent(out) :: origin
+       real, dimension(:), intent(out) :: grid_origin
        integer :: bmi_status
      end function bmif_get_grid_origin
 
      ! Get the x-coordinates of the nodes of a computational grid.
-     function bmif_get_grid_x(self, grid_id, x) result(bmi_status)
+     function bmif_get_grid_x(self, grid_id, grid_x) result(bmi_status)
        import :: bmi
        class (bmi), intent(in) :: self
        integer, intent(in) :: grid_id
-       real, dimension(:), intent(out) :: x
+       real, dimension(:), intent(out) :: grid_x
        integer :: bmi_status
      end function bmif_get_grid_x
 
      ! Get the y-coordinates of the nodes of a computational grid.
-     function bmif_get_grid_y(self, grid_id, y) result(bmi_status)
+     function bmif_get_grid_y(self, grid_id, grid_y) result(bmi_status)
        import :: bmi
        class (bmi), intent(in) :: self
        integer, intent(in) :: grid_id
-       real, dimension(:), intent(out) :: y
+       real, dimension(:), intent(out) :: grid_y
        integer :: bmi_status
      end function bmif_get_grid_y
 
      ! Get the z-coordinates of the nodes of a computational grid.
-     function bmif_get_grid_z(self, grid_id, z) result(bmi_status)
+     function bmif_get_grid_z(self, grid_id, grid_z) result(bmi_status)
        import :: bmi
        class (bmi), intent(in) :: self
        integer, intent(in) :: grid_id
-       real, dimension(:), intent(out) :: z
+       real, dimension(:), intent(out) :: grid_z
        integer :: bmi_status
      end function bmif_get_grid_z
 
      ! Get the connectivity array of the nodes of an unstructured grid.
-     function bmif_get_grid_connectivity(self, grid_id, connectivity) &
+     function bmif_get_grid_connectivity(self, grid_id, grid_conn) &
           result(bmi_status)
        import :: bmi
        class (bmi), intent(in) :: self
        integer, intent(in) :: grid_id
-       integer, dimension(:), intent(out) :: connectivity
+       integer, dimension(:), intent(out) :: grid_conn
        integer :: bmi_status
      end function bmif_get_grid_connectivity
 
      ! Get the offsets of the nodes of an unstructured grid.
-     function bmif_get_grid_offset(self, grid_id, offset) &
+     function bmif_get_grid_offset(self, grid_id, grid_offset) &
           result(bmi_status)
        import :: bmi
        class (bmi), intent(in) :: self
        integer, intent(in) :: grid_id
-       integer, dimension(:), intent(out) :: offset
+       integer, dimension(:), intent(out) :: grid_offset
        integer :: bmi_status
      end function bmif_get_grid_offset
 
      ! Get the data type of the given variable as a string.
-     function bmif_get_var_type(self, var_name, type) result(bmi_status)
+     function bmif_get_var_type(self, var_name, var_type) result(bmi_status)
        import :: bmi
        class (bmi), intent(in) :: self
        character (len=*), intent(in) :: var_name
-       character (len=*), intent(out) :: type
+       character (len=*), intent(out) :: var_type
        integer :: bmi_status
      end function bmif_get_var_type
 
      ! Get the units of the given variable.
-     function bmif_get_var_units(self, var_name, units) result(bmi_status)
+     function bmif_get_var_units(self, var_name, var_units) result(bmi_status)
        import :: bmi
        class (bmi), intent(in) :: self
        character (len=*), intent(in) :: var_name
-       character (len=*), intent(out) :: units
+       character (len=*), intent(out) :: var_units
        integer :: bmi_status
      end function bmif_get_var_units
 
      ! Get memory use per array element, in bytes.
-     function bmif_get_var_itemsize(self, var_name, size) result(bmi_status)
+     function bmif_get_var_itemsize(self, var_name, var_size) result(bmi_status)
        import :: bmi
        class (bmi), intent(in) :: self
        character (len=*), intent(in) :: var_name
-       integer, intent(out) :: size
+       integer, intent(out) :: var_size
        integer :: bmi_status
      end function bmif_get_var_itemsize
 
      ! Get size of the given variable, in bytes.
-     function bmif_get_var_nbytes(self, var_name, size) result(bmi_status)
+     function bmif_get_var_nbytes(self, var_name, var_nbytes) result(bmi_status)
        import :: bmi
        class (bmi), intent(in) :: self
        character (len=*), intent(in) :: var_name
-       integer, intent(out) :: size
+       integer, intent(out) :: var_nbytes
        integer :: bmi_status
      end function bmif_get_var_nbytes
 
