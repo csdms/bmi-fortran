@@ -1,4 +1,4 @@
-program test_get_value_ref
+program test_get_value_ptr
 
   use bmif, only: BMI_SUCCESS, BMI_FAILURE
   use bmiheatf
@@ -28,7 +28,7 @@ contains
     integer :: code
 
     status = m%initialize(config_file)
-    status = m%get_value_ref(var_name, tref)
+    status = m%get_value_ptr(var_name, tref)
 
     ! Visual inspection.
     call print_array(tref, shape)
@@ -47,4 +47,4 @@ contains
     status = m%finalize()
   end function run_test
 
-end program test_get_value_ref
+end program test_get_value_ptr

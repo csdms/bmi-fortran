@@ -45,13 +45,13 @@ module bmiheatf
           get_value_int, &
           get_value_float, &
           get_value_double
-     procedure :: get_value_ref_int => heat_get_ref_int
-     procedure :: get_value_ref_float => heat_get_ref_float
-     procedure :: get_value_ref_double => heat_get_ref_double
-     generic :: get_value_ref => &
-          get_value_ref_int, &
-          get_value_ref_float, &
-          get_value_ref_double
+     procedure :: get_value_ptr_int => heat_get_ptr_int
+     procedure :: get_value_ptr_float => heat_get_ptr_float
+     procedure :: get_value_ptr_double => heat_get_ptr_double
+     generic :: get_value_ptr => &
+          get_value_ptr_int, &
+          get_value_ptr_float, &
+          get_value_ptr_double
      procedure :: get_value_at_indices_int => heat_get_at_indices_int
      procedure :: get_value_at_indices_float => heat_get_at_indices_float
      procedure :: get_value_at_indices_double => heat_get_at_indices_double
@@ -617,7 +617,7 @@ contains
   end function heat_get_double
 
   ! Get a reference to an integer-valued variable, flattened.
-  function heat_get_ref_int(self, var_name, dest) result (bmi_status)
+  function heat_get_ptr_int(self, var_name, dest) result (bmi_status)
     class (bmi_heat), intent(in) :: self
     character (len=*), intent(in) :: var_name
     integer, pointer, intent(inout) :: dest(:)
@@ -629,10 +629,10 @@ contains
     case default
        bmi_status = BMI_FAILURE
     end select
-  end function heat_get_ref_int
+  end function heat_get_ptr_int
 
   ! Get a reference to a real-valued variable, flattened.
-  function heat_get_ref_float(self, var_name, dest) result (bmi_status)
+  function heat_get_ptr_float(self, var_name, dest) result (bmi_status)
     class (bmi_heat), intent(in) :: self
     character (len=*), intent(in) :: var_name
     real, pointer, intent(inout) :: dest(:)
@@ -649,10 +649,10 @@ contains
     case default
        bmi_status = BMI_FAILURE
     end select
-  end function heat_get_ref_float
+  end function heat_get_ptr_float
 
   ! Get a reference to an double-valued variable, flattened.
-  function heat_get_ref_double(self, var_name, dest) result (bmi_status)
+  function heat_get_ptr_double(self, var_name, dest) result (bmi_status)
     class (bmi_heat), intent(in) :: self
     character (len=*), intent(in) :: var_name
     double precision, pointer, intent(inout) :: dest(:)
@@ -664,7 +664,7 @@ contains
     case default
        bmi_status = BMI_FAILURE
     end select
-  end function heat_get_ref_double
+  end function heat_get_ptr_double
 
   ! Get values of an integer variable at the given locations.
   function heat_get_at_indices_int(self, var_name, dest, indices) &
