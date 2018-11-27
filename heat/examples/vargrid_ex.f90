@@ -12,6 +12,7 @@ program vargrid_test
   character (len=BMI_MAX_VAR_NAME) :: astring
   integer :: asize
   real, dimension(2) :: rarray
+  double precision, dimension(2) :: darray
   integer, dimension(2) :: iarray
 
   write (*,"(a)",advance="no") "Initializing..."
@@ -37,8 +38,8 @@ program vargrid_test
   write (*,"(a30, 2(1x, i3))") "Grid shape:", iarray
   s = m%get_grid_size(grid_id, asize)
   write (*,"(a30, i8)") "Grid size:", asize
-  s = m%get_grid_spacing(grid_id, rarray)
-  write (*,"(a30, 1x, 2(f8.2))") "Grid spacing:", rarray
+  s = m%get_grid_spacing(grid_id, darray)
+  write (*,"(a30, 1x, 2(f8.2))") "Grid spacing:", darray
 
   s = m%get_var_itemsize(names(1), asize)
   write (*,"(a30, i8, 1x, a)") "Item size:", asize, "bytes"

@@ -348,7 +348,7 @@ contains
   function heat_grid_spacing(self, grid_id, grid_spacing) result (bmi_status)
     class (bmi_heat), intent(in) :: self
     integer, intent(in) :: grid_id
-    real, dimension(:), intent(out) :: grid_spacing
+    double precision, dimension(:), intent(out) :: grid_spacing
     integer :: bmi_status
 
     select case(grid_id)
@@ -356,7 +356,7 @@ contains
        grid_spacing = [self%model%dy, self%model%dx]
        bmi_status = BMI_SUCCESS
     case default
-       grid_spacing = -1
+       grid_spacing = -1.d0
        bmi_status = BMI_FAILURE
     end select
   end function heat_grid_spacing
