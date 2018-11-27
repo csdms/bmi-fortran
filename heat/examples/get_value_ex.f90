@@ -1,4 +1,4 @@
-! Test the get_value, get_value_ref, and get_value_at_indices functions.
+! Test the get_value, get_value_ptr, and get_value_at_indices functions.
 program get_value_ex
 
   use bmif, only: BMI_MAX_VAR_NAME
@@ -50,8 +50,8 @@ program get_value_ex
   s = m%get_value_at_indices("plate_surface__temperature", y, locations)
   write (*,*) "Values: ", y
 
-  write (*,"(a)") "Running (using get_value_ref)..."
-  s = m%get_value_ref("plate_surface__temperature", x)
+  write (*,"(a)") "Running (using get_value_ptr)..."
+  s = m%get_value_ptr("plate_surface__temperature", x)
   do j = 1, 4
      s = m%update()
      s = m%get_current_time(time)

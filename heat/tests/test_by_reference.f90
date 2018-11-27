@@ -36,7 +36,7 @@ contains
 
     ! Get initial temperature array, by value and by reference.
     status = m%get_value("plate_surface__temperature", tval)
-    status = m%get_value_ref("plate_surface__temperature", tref)
+    status = m%get_value_ptr("plate_surface__temperature", tref)
     write (*, "(a)") "Time = 0 (by value):"
     call print_array(tval, shape)
     write (*, "(a)") "Time = 0 (by reference):"
