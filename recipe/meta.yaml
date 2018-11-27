@@ -6,7 +6,7 @@ package:
   version: {{ version }}
 
 source:
-  git_url: https://github.com/csdms/bmi-fortran
+  git_url: https://github.com/csdms/{{ name }}
   git_rev: v{{ version }}-beta
 
 build:
