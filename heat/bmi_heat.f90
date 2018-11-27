@@ -365,15 +365,15 @@ contains
   function heat_grid_origin(self, grid_id, grid_origin) result (bmi_status)
     class (bmi_heat), intent(in) :: self
     integer, intent(in) :: grid_id
-    real, dimension(:), intent(out) :: grid_origin
+    double precision, dimension(:), intent(out) :: grid_origin
     integer :: bmi_status
 
     select case(grid_id)
     case(0)
-       grid_origin = [0.0, 0.0]
+       grid_origin = [0.d0, 0.d0]
        bmi_status = BMI_SUCCESS
     case default
-       grid_origin = [-1.0]
+       grid_origin = [-1.d0]
        bmi_status = BMI_FAILURE
     end select
   end function heat_grid_origin

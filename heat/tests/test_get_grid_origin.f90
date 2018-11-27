@@ -8,10 +8,11 @@ program test_get_grid_origin
 
   integer, parameter :: grid_id = 0
   integer, parameter :: rank = 2
-  real, dimension(rank), parameter :: expected_origin = [0.0, 0.0]
+  double precision, dimension(rank), parameter :: &
+       expected_origin = [0.0, 0.0]
 
   type (bmi_heat) :: m
-  real, dimension(2) :: grid_origin
+  double precision, dimension(2) :: grid_origin
   integer :: i
 
   status = m%initialize(config_file)

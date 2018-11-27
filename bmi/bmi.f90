@@ -227,7 +227,7 @@ module bmif
        import :: bmi
        class (bmi), intent(in) :: self
        integer, intent(in) :: grid_id
-       real, dimension(:), intent(out) :: grid_origin
+       double precision, dimension(:), intent(out) :: grid_origin
        integer :: bmi_status
      end function bmif_get_grid_origin
 
