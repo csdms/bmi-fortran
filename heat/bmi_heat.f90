@@ -356,7 +356,7 @@ contains
        grid_spacing = [self%model%dy, self%model%dx]
        bmi_status = BMI_SUCCESS
     case default
-       grid_spacing = -1.d0
+       grid_spacing = [-1.d0]
        bmi_status = BMI_FAILURE
     end select
   end function heat_grid_spacing
