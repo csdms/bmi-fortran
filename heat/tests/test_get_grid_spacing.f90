@@ -8,10 +8,11 @@ program test_get_grid_spacing
 
   integer, parameter :: grid_id = 0
   integer, parameter :: rank = 2
-  real, dimension(rank), parameter :: expected_spacing = [1.0, 1.0]
+  double precision, dimension(rank), parameter :: &
+       expected_spacing = [1.0, 1.0]
 
   type (bmi_heat) :: m
-  real, dimension(2) :: grid_spacing
+  double precision, dimension(2) :: grid_spacing
   integer :: i
 
   status = m%initialize(config_file)

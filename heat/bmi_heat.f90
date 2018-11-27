@@ -348,7 +348,7 @@ contains
   function heat_grid_spacing(self, grid_id, grid_spacing) result (bmi_status)
     class (bmi_heat), intent(in) :: self
     integer, intent(in) :: grid_id
-    real, dimension(:), intent(out) :: grid_spacing
+    double precision, dimension(:), intent(out) :: grid_spacing
     integer :: bmi_status
 
     select case(grid_id)
@@ -356,7 +356,7 @@ contains
        grid_spacing = [self%model%dy, self%model%dx]
        bmi_status = BMI_SUCCESS
     case default
-       grid_spacing = -1
+       grid_spacing = [-1.d0]
        bmi_status = BMI_FAILURE
     end select
   end function heat_grid_spacing
@@ -365,15 +365,15 @@ contains
   function heat_grid_origin(self, grid_id, grid_origin) result (bmi_status)
     class (bmi_heat), intent(in) :: self
     integer, intent(in) :: grid_id
-    real, dimension(:), intent(out) :: grid_origin
+    double precision, dimension(:), intent(out) :: grid_origin
     integer :: bmi_status
 
     select case(grid_id)
     case(0)
-       grid_origin = [0.0, 0.0]
+       grid_origin = [0.d0, 0.d0]
        bmi_status = BMI_SUCCESS
     case default
-       grid_origin = [-1.0]
+       grid_origin = [-1.d0]
        bmi_status = BMI_FAILURE
     end select
   end function heat_grid_origin
@@ -382,15 +382,15 @@ contains
   function heat_grid_x(self, grid_id, grid_x) result (bmi_status)
     class (bmi_heat), intent(in) :: self
     integer, intent(in) :: grid_id
-    real, dimension(:), intent(out) :: grid_x
+    double precision, dimension(:), intent(out) :: grid_x
     integer :: bmi_status
 
     select case(grid_id)
     case(1)
-       grid_x = [0.0]
+       grid_x = [0.d0]
        bmi_status = BMI_SUCCESS
     case default
-       grid_x = [-1.0]
+       grid_x = [-1.d0]
        bmi_status = BMI_FAILURE
     end select
   end function heat_grid_x
@@ -399,15 +399,15 @@ contains
   function heat_grid_y(self, grid_id, grid_y) result (bmi_status)
     class (bmi_heat), intent(in) :: self
     integer, intent(in) :: grid_id
-    real, dimension(:), intent(out) :: grid_y
+    double precision, dimension(:), intent(out) :: grid_y
     integer :: bmi_status
 
     select case(grid_id)
     case(1)
-       grid_y = [0.0]
+       grid_y = [0.d0]
        bmi_status = BMI_SUCCESS
     case default
-       grid_y = [-1.0]
+       grid_y = [-1.d0]
        bmi_status = BMI_FAILURE
     end select
   end function heat_grid_y
@@ -416,15 +416,15 @@ contains
   function heat_grid_z(self, grid_id, grid_z) result (bmi_status)
     class (bmi_heat), intent(in) :: self
     integer, intent(in) :: grid_id
-    real, dimension(:), intent(out) :: grid_z
+    double precision, dimension(:), intent(out) :: grid_z
     integer :: bmi_status
 
     select case(grid_id)
     case(1)
-       grid_z = [0.0]
+       grid_z = [0.d0]
        bmi_status = BMI_SUCCESS
     case default
-       grid_z = [-1.0]
+       grid_z = [-1.d0]
        bmi_status = BMI_FAILURE
     end select
   end function heat_grid_z

@@ -8,10 +8,10 @@ program test_get_grid_x
 
   integer, parameter :: grid_id = 1
   integer, parameter :: nx = 1
-  real, parameter, dimension(nx) :: expected_x = (/ 0.0 /)
+  double precision, parameter, dimension(nx) :: expected_x = (/ 0.0 /)
 
   type (bmi_heat) :: m
-  real, dimension(nx) :: grid_x
+  double precision, dimension(nx) :: grid_x
   integer :: i
 
   status = m%initialize(config_file)
