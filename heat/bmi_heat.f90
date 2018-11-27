@@ -45,13 +45,13 @@ module bmiheatf
           get_value_int, &
           get_value_float, &
           get_value_double
-     procedure :: get_value_ref_int => heat_get_ref_int
-     procedure :: get_value_ref_float => heat_get_ref_float
-     procedure :: get_value_ref_double => heat_get_ref_double
-     generic :: get_value_ref => &
-          get_value_ref_int, &
-          get_value_ref_float, &
-          get_value_ref_double
+     procedure :: get_value_ptr_int => heat_get_ref_int
+     procedure :: get_value_ptr_float => heat_get_ref_float
+     procedure :: get_value_ptr_double => heat_get_ref_double
+     generic :: get_value_ptr => &
+          get_value_ptr_int, &
+          get_value_ptr_float, &
+          get_value_ptr_double
      procedure :: get_value_at_indices_int => heat_get_at_indices_int
      procedure :: get_value_at_indices_float => heat_get_at_indices_float
      procedure :: get_value_at_indices_double => heat_get_at_indices_double
