@@ -279,7 +279,7 @@ contains
        grid_type = "uniform_rectilinear"
        bmi_status = BMI_SUCCESS
     case(1)
-       grid_type = "unstructured"
+       grid_type = "scalar"
        bmi_status = BMI_SUCCESS
     case default
        grid_type = "-"
