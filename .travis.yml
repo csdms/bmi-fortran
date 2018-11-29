@@ -44,7 +44,7 @@ script:
   - ctest
 after_success:
   - cd ..
-  - conda build ./recipe --old-build-string
+  - conda build ./recipe
 after_script:
   - curl https://raw.githubusercontent.com/csdms/ci-tools/master/anaconda_upload.py > $HOME/anaconda_upload.py
-  - echo $ANACONDA_TOKEN | python $HOME/anaconda_upload.py ./recipe --channel=main --org=csdms --old-build-string --token=-
+  - echo $ANACONDA_TOKEN | python $HOME/anaconda_upload.py ./recipe --channel=main --org=csdms --token=-
