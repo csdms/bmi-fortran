@@ -1,4 +1,4 @@
-! Run the heat model using its BMI.
+! Run the heat model.
 program main
 
   use heatf

@@ -11,7 +11,8 @@ Tests and examples of using the BMI are provided.
 Files and directories:
 
 * **heat.f90**: The diffusion model, `heatf`.
-* **main.f90**: A main program that runs `heatf`.
+* **main.f90**: An example main program that runs `heatf`.
 * **bmi_heat.f90**: A BMI that wraps `heatf`.
+* **bmi_main.f90**: An example main program that runs `heatf` through its BMI.
 * **examples/**: Examples of running the `heatf` BMI.
 * **tests/**: Unit tests for the `heatf` BMI.
