@@ -23,6 +23,10 @@ before_install:
   - conda install python=$TRAVIS_PYTHON_VERSION
   - conda install -q conda-build anaconda-client
   - conda install gfortran_$TRAVIS_OS_NAME-64 libgfortran cmake
+  - |
+    if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      export FC=$CONDA_PREFIX/bin/x86_64-conda_cos6-linux-gnu-gfortran
+    fi
 install:
   - mkdir _build && cd _build
   - cmake .. -DCMAKE_INSTALL_PREFIX=$(pwd)/../_install
