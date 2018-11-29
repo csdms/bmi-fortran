@@ -29,3 +29,8 @@ tests=`ls -1 ./heat/tests/ | egrep "test_"`
 for exe in $tests; do
     run_install_name_tool $exe tests
 done
+
+mains="run_heatf run_bmiheatf"
+for exe in $mains; do
+    run_install_name_tool $exe $pwd
+done
