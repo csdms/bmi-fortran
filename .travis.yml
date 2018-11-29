@@ -4,9 +4,9 @@ os:
   - osx
 env:
   global:
+    - TRAVIS_PYTHON_VERSION="3.6"
     - CONDA_PREFIX=$HOME/conda
-    - MINICONDA_URL_BASE="https://repo.continuum.io/miniconda/Miniconda2-latest"
-    - TRAVIS_PYTHON_VERSION="2.7"
+    - MINICONDA_URL_BASE="https://repo.continuum.io/miniconda/Miniconda3-latest"
 sudo: false
 before_install:
   - |
@@ -21,16 +21,11 @@ before_install:
   - hash -r
   - conda config --set always_yes yes --set changeps1 no
   - conda install python=$TRAVIS_PYTHON_VERSION
-  - |
-    if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-      conda install gcc libgfortran cmake
-    else
-      conda install gfortran_linux-64 cmake
-      export FC=$CONDA_PREFIX/bin/x86_64-conda_cos6-linux-gnu-gfortran
-    fi
+  - conda install -q conda-build anaconda-client
+  - conda install gfortran_$TRAVIS_OS_NAME-64 libgfortran cmake
 install:
   - mkdir _build && cd _build
-  - cmake .. -DCMAKE_INSTALL_PREFIX=$(pwd)/../_install -DCMAKE_VERBOSE_MAKEFILE=True
+  - cmake .. -DCMAKE_INSTALL_PREFIX=$(pwd)/../_install
   - make install
 before_script:
   - |
@@ -39,3 +34,6 @@ before_script:
     fi
 script:
   - ctest
+after_success:
+  - cd ..
+  - conda build ./recipe --old-build-string
