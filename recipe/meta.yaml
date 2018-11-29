@@ -7,10 +7,9 @@ package:
 
 source:
   git_url: https://github.com/csdms/{{ name }}
-  git_rev: v{{ version }}-beta
 
 build:
-  number: 2
+  number: 0
 
 requirements:
   build:
@@ -26,6 +25,7 @@ requirements:
 test:
   commands:
     - run_heatf
+    - run_bmiheatf
 
 about:
   home: https://csdms.colorado.edu/wiki/BMI_Description
