@@ -33,4 +33,4 @@ install(
 install(
   FILES ${CMAKE_Fortran_MODULE_DIRECTORY}/${mod_name}.mod
         ${CMAKE_Fortran_MODULE_DIRECTORY}/${bmiheat_lib}.mod
-  DESTINATION lib)
+  DESTINATION include)

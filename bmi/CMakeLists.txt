@@ -17,4 +17,4 @@ install(
   DESTINATION lib/pkgconfig)
 install(
   FILES ${CMAKE_Fortran_MODULE_DIRECTORY}/${mod_name}.mod
-  DESTINATION lib)
+  DESTINATION include)
