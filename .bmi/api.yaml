@@ -1,6 +1,0 @@
-name: heatf
-language: fortran
-cflags:
-  pkgconfig: heatf
-libs:
-  pkgconfig: heatf
