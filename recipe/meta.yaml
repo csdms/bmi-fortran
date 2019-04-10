@@ -1,5 +1,5 @@
 {% set name = "bmi-fortran" %}
-{% set version = "1.0" %}
+{% set version = "1.1" %}
 
 package:
   name: {{ name }}
@@ -16,20 +16,11 @@ requirements:
   build:
     - cmake
     - {{ compiler('fortran') }}
-    - pkg-config [osx]
-  host:
-    - libgfortran
   run:
     - {{ compiler('fortran') }}
-    - libgfortran
-
-test:
-  commands:
-    - run_heatf
-    - run_bmiheatf
 
 about:
-  home: https://csdms.colorado.edu/wiki/BMI_Description
+  home: https://bmi-spec.readthedocs.io
   license: MIT
   summary:
     Fortran bindings, created with Fortran 2003, for the Basic Model Interface.
