@@ -1,20 +1,15 @@
-set(pkg_name bmif)
-set(mod_name ${pkg_name})
-set(src_${pkg_name} bmi.f90)
-
 configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/${pkg_name}.pc.cmake
   ${CMAKE_CURRENT_SOURCE_DIR}/${pkg_name}.pc)
 
-add_library(${bmi_lib} SHARED ${src_${pkg_name}})
+add_library(${CMAKE_PROJECT_NAME} SHARED bmi.f90)
 
 install(
-  TARGETS ${bmi_lib}
-  DESTINATION lib
-  COMPONENT bmi)
+  TARGETS ${CMAKE_PROJECT_NAME}
+  DESTINATION lib)
 install(
-  FILES ${pkg_name}.pc
+  FILES ${CMAKE_PROJECT_NAME}.pc
   DESTINATION lib/pkgconfig)
 install(
-  FILES ${CMAKE_Fortran_MODULE_DIRECTORY}/${mod_name}.mod
+  FILES ${CMAKE_Fortran_MODULE_DIRECTORY}/${CMAKE_PROJECT_NAME}.mod
   DESTINATION include)
