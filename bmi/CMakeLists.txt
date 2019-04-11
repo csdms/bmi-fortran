@@ -1,8 +1,0 @@
-add_library(${CMAKE_PROJECT_NAME} SHARED bmi.f90)
-
-install(
-  TARGETS ${CMAKE_PROJECT_NAME}
-  DESTINATION lib)
-install(
-  FILES ${CMAKE_Fortran_MODULE_DIRECTORY}/${CMAKE_PROJECT_NAME}.mod
-  DESTINATION include)
