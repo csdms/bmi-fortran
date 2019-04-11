@@ -6,18 +6,58 @@
 
 # bmi-fortran
 
-Fortran bindings, created with Fortran 2003, for the
-[Basic Model Interface](http://csdms.colorado.edu/wiki/BMI_Description),
-following the [BMI specification](https://bmi-spec.readthedocs.io).
-The bindings themseleves are defined in the [bmi](./bmi) directory.
-A sample implementation,
-with tests and examples,
-is provided in the [heat](./heat) directory.
+Bindings, created with Fortran 2003,
+for the CSDMS [Basic Model Interface](https://bmi-spec.readthedocs.io).
+
+
+## Build/Install
+
+To build the BMI Fortran bindings from source with cmake, run
+
+    mkdir _build && cd _build
+    cmake .. -DCMAKE_INSTALL_PREFIX=<path-to-installation>
+    make
+
+where `<path-to-installation>` is the base directory
+in which to install the bindings (`/usr/local` is the default).
+
+Then, to install:
+
+    make install
+
+The installation will look (on Linux) like:
+
+```bash
+.
+|-- include
+|   `-- bmif.mod
+`-- lib
+    `-- libbmif.so
+```
+
+Alternately,
+[conda binaries](https://anaconda.org/csdms/bmi-fortran)
+have been built for Linux and macOS.
+Install the Fortran BMI bindings (no build needed)
+into an Anaconda distribution with
+
+    conda install bmi-fortran -c csdms
+
+
+## Use
+
+To write a BMI for a model,
+`use` the `bmif` module and implement all the BMI procedures
+included in the interface defined in `bmif`.
+A sample implementation is given in the
+https://github.com/csdms/bmi-example-fortran
+repository.
+
+
+## Note
 
 For a Fortran BMI that uses Fortran 90/95,
 see https://github.com/csdms/bmi-f90.
-
-## Note
 
 Why two different Fortran BMIs?
 Though Fortran 90/95 has the concept of an interface,
