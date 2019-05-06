@@ -20,8 +20,9 @@ requirements:
     - {{ compiler('fortran') }}
 
 about:
-  home: https://bmi-spec.readthedocs.io
+  home: https://bmi.readthedocs.io
   license: MIT
+  license_file: LICENSE
   summary:
     Fortran bindings, created with Fortran 2003, for the Basic Model Interface.
   dev_url: https://github.com/csdms/bmi-fortran
