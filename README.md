@@ -33,16 +33,16 @@ The installation will look (on Linux) like:
 |   `-- bmif_1_2.mod
 `-- lib
     |-- libbmif.so -> libbmif.so.1.2
-	    `-- libbmif.so.1.2
+    `-- libbmif.so.1.2
 ```
 
 Alternately,
-[conda binaries](https://anaconda.org/csdms/bmi-fortran)
+[conda binaries](https://anaconda.org/conda-forge/bmi-fortran)
 have been built for Linux and macOS.
 Install the Fortran BMI bindings (no build needed)
 into an Anaconda distribution with
 
-    conda install bmi-fortran -c csdms
+    conda install bmi-fortran -c conda-forge
 
 
 ## Use
