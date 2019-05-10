@@ -30,9 +30,10 @@ The installation will look (on Linux) like:
 ```bash
 .
 |-- include
-|   `-- bmif.mod
+|   `-- bmif_1_2.mod
 `-- lib
-    `-- libbmif.so
+    |-- libbmif.so -> libbmif.so.1.2
+	    `-- libbmif.so.1.2
 ```
 
 Alternately,
@@ -47,8 +48,8 @@ into an Anaconda distribution with
 ## Use
 
 To write a BMI for a model,
-`use` the `bmif` module and implement all the BMI procedures
-included in the interface defined in `bmif`.
+`use` the `bmif_1_2` module and implement all the BMI procedures
+included in the interface defined therein.
 A sample implementation is given in the
 https://github.com/csdms/bmi-example-fortran
 repository.

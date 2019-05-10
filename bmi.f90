@@ -1,4 +1,4 @@
-module bmif
+module bmif_1_2
 
   implicit none
 
@@ -466,4 +466,4 @@ module bmif
 
   end interface
 
-end module bmif
+end module bmif_1_2
