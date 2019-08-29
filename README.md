@@ -12,9 +12,15 @@ for the CSDMS [Basic Model Interface](https://bmi-spec.readthedocs.io).
 
 ## Build/Install
 
+The Fortran BMI bindings can be built on Linux, macOS, and Windows.
+
+**Prerequisites:**
+* A Fortran compiler
+* CMake
+
 ### Linux and macOS
 
-To build the BMI Fortran bindings from source with cmake, run
+To build the Fortran BMI bindings from source with cmake, run
 
     mkdir _build && cd _build
     cmake .. -DCMAKE_INSTALL_PREFIX=<path-to-installation>
@@ -48,7 +54,7 @@ into an Anaconda distribution with
 
 ### Windows
 
-To configure the BMI Fortran bindings from source with cmake, run
+To configure the Fortran BMI bindings from source with cmake, run
 
     mkdir _build && cd _build
     cmake .. ^
