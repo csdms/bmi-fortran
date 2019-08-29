@@ -6,11 +6,13 @@
 
 # bmi-fortran
 
-Bindings, created with Fortran 2003,
+The Fortran specification, created with Fortran 2003,
 for the CSDMS [Basic Model Interface](https://bmi-spec.readthedocs.io).
 
 
 ## Build/Install
+
+### Linux and macOS
 
 To build the BMI Fortran bindings from source with cmake, run
 
@@ -43,6 +45,23 @@ Install the Fortran BMI bindings (no build needed)
 into an Anaconda distribution with
 
     conda install bmi-fortran -c conda-forge
+
+### Windows
+
+To configure the BMI Fortran bindings from source with cmake, run
+
+    mkdir _build && cd _build
+    cmake .. ^
+	  -G "NMake Makefiles" ^
+	  -DCMAKE_INSTALL_PREFIX=<path-to-installation> ^
+	  -DCMAKE_BUILD_TYPE=Release
+
+where `<path-to-installation>` is the base directory
+in which to install the bindings (`C:\Program Files (x86)` is the default).
+
+Then, to build and install:
+
+	cmake --build . --target install --config Release
 
 
 ## Use
