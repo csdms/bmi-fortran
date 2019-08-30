@@ -63,7 +63,7 @@ To configure the Fortran BMI bindings from source with cmake, run
 	  -DCMAKE_BUILD_TYPE=Release
 
 where `<path-to-installation>` is the base directory
-in which to install the bindings (`C:\Program Files (x86)` is the default).
+in which to install the bindings (`"C:\Program Files (x86)"` is the default - need to use quotes owing to the space between Program and Files).
 
 Then, to build and install:
 
