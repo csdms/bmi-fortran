@@ -29,5 +29,12 @@ install:
   - make
   - make install
 script:
-  - test -f $CONDA_PREFIX/include/bmif_1_2.mod
-  - test -h $CONDA_PREFIX/lib/libbmif$SHLIB_EXT
+  - BMI_VERSION="1_2"
+  - test -f $CONDA_PREFIX/include/bmif_$BMI_VERSION.mod
+  - |
+    if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      SHLIB_EXT=".dylib"
+    else
+      SHLIB_EXT=".so"
+    fi
+  - test -L $CONDA_PREFIX/lib/libbmif$SHLIB_EXT
