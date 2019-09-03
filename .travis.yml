@@ -26,7 +26,7 @@ before_install:
 install:
   - mkdir _build && cd _build
   - cmake .. -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX -DCMAKE_BUILD_TYPE=Release
-  - make -j${CPU_COUNT}
+  - make
   - make install
 script:
   - test -f $CONDA_PREFIX/include/bmif_{{ version|replace(".","_") }}.mod
