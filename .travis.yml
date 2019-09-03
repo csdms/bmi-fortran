@@ -8,8 +8,7 @@ env:
   global:
     - CONDA_PREFIX=$HOME/conda
     - MINICONDA_URL_BASE="https://repo.continuum.io/miniconda/Miniconda3-latest"
-    - secure: "cyDcju3Edgnq0GXf5VLXPCaWYpOm/vbk01lhIpVEWun28opqrSdQ4qwyVUXgKtc4nh4bTvPqMaDEmvGFBoyAHFH/FQcETIwNMJOmRSXGSeIyZ/NPXDZVJUyeAt0Edj9WMUxvnNmGSDhpVrxWvL672O3STxSGXiLrp/qucIp9tmBAb6fT1DAggZEjDe6CZQ8t9OLalNYoGQ8YfC6KFccj9DYaB5JFPEpaWo/9F1xZuUf0JWs4fJbyHsrj8gs7oJQjNR0gKyh4+2JkE2JoVGIoPDU/1ISkrFSrnwppwE9CPfxD+2974n9iRzfYZLi9h6pvzDt27Cw0pziXG4ZP5+5Y7wgz31SAPUu6YkfmF5GVKFiaev0SLR6PXJQjAYa39k5eKAX8ENzIEF2ruE2Iqv2EPhJJyXtCnYcJicSL1Iq/69uCy9nAFxn4SlSbPYrg8lPTXhS/7rOzfqEwWapYxvklEqgbiK9MC30H5ejNgvUPlKya52iyYTm5H7ie97CIiF5Z5hZNcRd9K7RyHlLOehRf6yxt1jWt0k8HvC36ZDu1Po2OaMabMcI1t11y9w119ImzY9b6XfjWwDW1Ix0fcK3zfFFvLM7ennRf8hYtBuKIHcmX4a/ZK7q4rwWlxEgsbzElEOHO6aN/3lIE5qHclyE+bXLxJkbu7gAfcYYgZ16UQ2E="
-install:
+before_install:
   - |
     if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       OS="MacOSX-x86_64"
@@ -22,11 +21,21 @@ install:
   - hash -r
   - conda config --set always_yes yes --set changeps1 no
   - conda install python=$TRAVIS_PYTHON_VERSION
-  - conda install -q conda-build anaconda-client
   - conda install gfortran_$TRAVIS_OS_NAME-64 cmake
   - source activate root
+install:
+  - mkdir _build && cd _build
+  - cmake .. -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX -DCMAKE_BUILD_TYPE=Release
+  - make
+  - make install
 script:
-  - conda build ./recipe --old-build-string
-after_script:
-  - curl https://raw.githubusercontent.com/csdms/ci-tools/master/anaconda_upload.py > $HOME/anaconda_upload.py
-  - echo $ANACONDA_TOKEN | python $HOME/anaconda_upload.py ./recipe --channel=main --org=csdms --old-build-string --token=-
+  - BMI_VERSION="1_2"
+  - test -f $CONDA_PREFIX/include/bmif_$BMI_VERSION.mod
+  - |
+    if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      SHLIB_EXT=".dylib"
+    else
+      SHLIB_EXT=".so"
+    fi
+  - test -L $CONDA_PREFIX/lib/libbmif$SHLIB_EXT
+  - test -s $CONDA_PREFIX/lib/libbmif.a
