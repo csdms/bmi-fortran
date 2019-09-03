@@ -29,5 +29,5 @@ install:
   - make
   - make install
 script:
-  - test -f $CONDA_PREFIX/include/bmif_{{ version|replace(".","_") }}.mod
+  - test -f $CONDA_PREFIX/include/bmif_1_2.mod
   - test -h $CONDA_PREFIX/lib/libbmif$SHLIB_EXT
