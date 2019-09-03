@@ -1,8 +1,7 @@
 [![Build Status](https://travis-ci.org/csdms/bmi-fortran.svg?branch=master)](https://travis-ci.org/csdms/bmi-fortran)
-[![Anaconda-Server Badge](https://anaconda.org/csdms/bmi-fortran/badges/version.svg)](https://anaconda.org/csdms/bmi-fortran)
-[![Anaconda-Server Badge](https://anaconda.org/csdms/bmi-fortran/badges/platforms.svg)](https://anaconda.org/csdms/bmi-fortran)
-[![Anaconda-Server Badge](https://anaconda.org/csdms/bmi-fortran/badges/installer/conda.svg)](https://conda.anaconda.org/csdms)
-[![Anaconda-Server Badge](https://anaconda.org/csdms/bmi-fortran/badges/downloads.svg)](https://anaconda.org/csdms/bmi-fortran)
+[![Anaconda-Server Badge](https://anaconda.org/conda-forge/bmi-fortran/badges/version.svg)](https://anaconda.org/conda-forge/bmi-fortran)
+[![Anaconda-Server Badge](https://anaconda.org/conda-forge/bmi-fortran/badges/platforms.svg)](https://anaconda.org/conda-forge/bmi-fortran)
+[![Anaconda-Server Badge](https://anaconda.org/conda-forge/bmi-fortran/badges/downloads.svg)](https://anaconda.org/conda-forge/bmi-fortran)
 
 # bmi-fortran
 
