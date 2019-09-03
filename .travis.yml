@@ -38,3 +38,4 @@ script:
       SHLIB_EXT=".so"
     fi
   - test -L $CONDA_PREFIX/lib/libbmif$SHLIB_EXT
+  - test -s $CONDA_PREFIX/lib/libbmif.a
