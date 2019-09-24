@@ -12,10 +12,19 @@ for the CSDMS [Basic Model Interface](https://bmi-spec.readthedocs.io).
 ## Build/Install
 
 The Fortran BMI bindings can be built on Linux, macOS, and Windows.
+Instructions are given below.
 
 **Prerequisites:**
 * A Fortran compiler
 * CMake
+
+Alternately,
+[conda binaries](https://anaconda.org/conda-forge/bmi-fortran)
+have been built for Linux, macOS, and Windows.
+Install the Fortran BMI bindings (no build needed)
+into an Anaconda distribution with
+
+    conda install bmi-fortran -c conda-forge
 
 ### Linux and macOS
 
@@ -43,17 +52,14 @@ The installation will look (on Linux) like:
     `-- libbmif.so.1.2
 ```
 
-Alternately,
-[conda binaries](https://anaconda.org/conda-forge/bmi-fortran)
-have been built for Linux and macOS.
-Install the Fortran BMI bindings (no build needed)
-into an Anaconda distribution with
-
-    conda install bmi-fortran -c conda-forge
-
 ### Windows
 
-To configure the Fortran BMI bindings from source with cmake, run
+An additional prerequisite is needed for Windows:
+
+* Microsoft Visual Studio 2017 or Microsoft Build Tools for Visual Studio 2017
+
+To configure the Fortran BMI bindings from source with cmake,
+run the following in a [Developer Command Prompt](https://docs.microsoft.com/en-us/dotnet/framework/tools/developer-command-prompt-for-vs)
 
     mkdir _build && cd _build
     cmake .. ^
@@ -62,7 +68,8 @@ To configure the Fortran BMI bindings from source with cmake, run
 	  -DCMAKE_BUILD_TYPE=Release
 
 where `<path-to-installation>` is the base directory
-in which to install the bindings (`"C:\Program Files (x86)"` is the default - need to use quotes owing to the space between Program and Files).
+in which to install the bindings (`"C:\Program Files (x86)"` is the default;
+note that quotes and an absolute path are needed).
 
 Then, to build and install:
 
