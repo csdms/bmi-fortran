@@ -29,7 +29,7 @@ install:
   - make
   - make install
 script:
-  - BMI_VERSION="1_2"
+  - BMI_VERSION="2_0"
   - test -f $CONDA_PREFIX/include/bmif_$BMI_VERSION.mod
   - |
     if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then

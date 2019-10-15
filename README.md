@@ -46,10 +46,10 @@ The installation will look (on Linux) like:
 ```bash
 .
 |-- include
-|   `-- bmif_1_2.mod
+|   `-- bmif_2_0.mod
 `-- lib
-    |-- libbmif.so -> libbmif.so.1.2
-    `-- libbmif.so.1.2
+    |-- libbmif.so -> libbmif.so.2.0
+    `-- libbmif.so.2.0
 ```
 
 ### Windows
@@ -79,8 +79,11 @@ Then, to build and install:
 ## Use
 
 To write a BMI for a model,
-`use` the `bmif_1_2` module and implement all the BMI procedures
+`use` the `bmif_2_0` module and implement all the BMI procedures
 included in the interface defined therein.
+BMI methods that aren't used
+(e.g., `get_grid_x` for a uniform rectilinear grid)
+can simply return the BMI_FAILURE status code.
 A sample implementation is given in the
 https://github.com/csdms/bmi-example-fortran
 repository.
