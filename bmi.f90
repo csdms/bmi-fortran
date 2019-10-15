@@ -98,228 +98,228 @@ module bmif_2_0
   abstract interface
 
     ! Perform startup tasks for the model.
-    function bmif_initialize(self, config_file) result(bmi_status)
+    function bmif_initialize(this, config_file) result(bmi_status)
       import :: bmi
-      class(bmi), intent(out) :: self
+      class(bmi), intent(out) :: this
       character(len=*), intent(in) :: config_file
       integer :: bmi_status
     end function bmif_initialize
 
     ! Advance the model one time step.
-    function bmif_update(self) result(bmi_status)
+    function bmif_update(this) result(bmi_status)
       import :: bmi
-      class(bmi), intent(inout) :: self
+      class(bmi), intent(inout) :: this
       integer :: bmi_status
     end function bmif_update
 
     ! Advance the model until the given time.
-    function bmif_update_until(self, time) result(bmi_status)
+    function bmif_update_until(this, time) result(bmi_status)
       import :: bmi
-      class(bmi), intent(inout) :: self
+      class(bmi), intent(inout) :: this
       double precision, intent(in) :: time
       integer :: bmi_status
     end function bmif_update_until
 
     ! Perform teardown tasks for the model.
-    function bmif_finalize(self) result(bmi_status)
+    function bmif_finalize(this) result(bmi_status)
       import :: bmi
-      class(bmi), intent(inout) :: self
+      class(bmi), intent(inout) :: this
       integer :: bmi_status
     end function bmif_finalize
 
     ! Get the name of the model.
-    function bmif_get_component_name(self, name) result(bmi_status)
+    function bmif_get_component_name(this, name) result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       character(len=*), pointer, intent(out) :: name
       integer :: bmi_status
     end function bmif_get_component_name
 
     ! Count a model's input variables.
-    function bmif_get_input_item_count(self, count) result(bmi_status)
+    function bmif_get_input_item_count(this, count) result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       integer, intent(out) :: count
       integer :: bmi_status
     end function bmif_get_input_item_count
 
     ! Count a model's output variables.
-    function bmif_get_output_item_count(self, count) result(bmi_status)
+    function bmif_get_output_item_count(this, count) result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       integer, intent(out) :: count
       integer :: bmi_status
     end function bmif_get_output_item_count
 
     ! List a model's input variables.
-    function bmif_get_input_var_names(self, names) result(bmi_status)
+    function bmif_get_input_var_names(this, names) result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       character(len=*), pointer, intent(out) :: names(:)
       integer :: bmi_status
     end function bmif_get_input_var_names
 
     ! List a model's output variables.
-    function bmif_get_output_var_names(self, names) result(bmi_status)
+    function bmif_get_output_var_names(this, names) result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       character(len=*), pointer, intent(out) :: names(:)
       integer :: bmi_status
     end function bmif_get_output_var_names
 
     ! Get the grid identifier for the given variable.
-    function bmif_get_var_grid(self, name, grid) result(bmi_status)
+    function bmif_get_var_grid(this, name, grid) result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       character(len=*), intent(in) :: name
       integer, intent(out) :: grid
       integer :: bmi_status
     end function bmif_get_var_grid
 
     ! Get the data type of the given variable as a string.
-    function bmif_get_var_type(self, name, type) result(bmi_status)
+    function bmif_get_var_type(this, name, type) result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       character(len=*), intent(in) :: name
       character(len=*), intent(out) :: type
       integer :: bmi_status
     end function bmif_get_var_type
 
     ! Get the units of the given variable.
-    function bmif_get_var_units(self, name, units) result(bmi_status)
+    function bmif_get_var_units(this, name, units) result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       character(len=*), intent(in) :: name
       character(len=*), intent(out) :: units
       integer :: bmi_status
     end function bmif_get_var_units
 
     ! Get memory use per array element, in bytes.
-    function bmif_get_var_itemsize(self, name, size) result(bmi_status)
+    function bmif_get_var_itemsize(this, name, size) result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       character(len=*), intent(in) :: name
       integer, intent(out) :: size
       integer :: bmi_status
     end function bmif_get_var_itemsize
 
     ! Get size of the given variable, in bytes.
-    function bmif_get_var_nbytes(self, name, nbytes) result(bmi_status)
+    function bmif_get_var_nbytes(this, name, nbytes) result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       character(len=*), intent(in) :: name
       integer, intent(out) :: nbytes
       integer :: bmi_status
     end function bmif_get_var_nbytes
 
     ! Describe where a variable is located: node, edge, or face.
-    function bmif_get_var_location(self, name, location) result(bmi_status)
+    function bmif_get_var_location(this, name, location) result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       character(len=*), intent(in) :: name
       character(len=*), intent(out) :: location
       integer :: bmi_status
     end function bmif_get_var_location
 
     ! Current time of the model.
-    function bmif_get_current_time(self, time) result(bmi_status)
+    function bmif_get_current_time(this, time) result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       double precision, intent(out) :: time
       integer :: bmi_status
     end function bmif_get_current_time
 
     ! Start time of the model.
-    function bmif_get_start_time(self, time) result(bmi_status)
+    function bmif_get_start_time(this, time) result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       double precision, intent(out) :: time
       integer :: bmi_status
     end function bmif_get_start_time
 
     ! End time of the model.
-    function bmif_get_end_time(self, time) result(bmi_status)
+    function bmif_get_end_time(this, time) result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       double precision, intent(out) :: time
       integer :: bmi_status
     end function bmif_get_end_time
 
     ! Time units of the model.
-    function bmif_get_time_units(self, units) result(bmi_status)
+    function bmif_get_time_units(this, units) result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       character(len=*), intent(out) :: units
       integer :: bmi_status
     end function bmif_get_time_units
 
     ! Time step of the model.
-    function bmif_get_time_step(self, time_step) result(bmi_status)
+    function bmif_get_time_step(this, time_step) result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       double precision, intent(out) :: time_step
       integer :: bmi_status
     end function bmif_get_time_step
 
     ! Get a copy of values (flattened!) of the given integer variable.
-    function bmif_get_value_int(self, name, dest) result(bmi_status)
+    function bmif_get_value_int(this, name, dest) result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       character(len=*), intent(in) :: name
       integer, intent(inout) :: dest(:)
       integer :: bmi_status
     end function bmif_get_value_int
 
     ! Get a copy of values (flattened!) of the given real variable.
-    function bmif_get_value_float(self, name, dest) result(bmi_status)
+    function bmif_get_value_float(this, name, dest) result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       character(len=*), intent(in) :: name
       real, intent(inout) :: dest(:)
       integer :: bmi_status
     end function bmif_get_value_float
 
     ! Get a copy of values (flattened!) of the given double variable.
-    function bmif_get_value_double(self, name, dest) result(bmi_status)
+    function bmif_get_value_double(this, name, dest) result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       character(len=*), intent(in) :: name
       double precision, intent(inout) :: dest(:)
       integer :: bmi_status
     end function bmif_get_value_double
 
     ! Get a reference to the given integer variable.
-    function bmif_get_value_ptr_int(self, name, dest_ptr) result(bmi_status)
+    function bmif_get_value_ptr_int(this, name, dest_ptr) result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       character(len=*), intent(in) :: name
       integer, pointer, intent(inout) :: dest_ptr(:)
       integer :: bmi_status
     end function bmif_get_value_ptr_int
 
     ! Get a reference to the given real variable.
-    function bmif_get_value_ptr_float(self, name, dest_ptr) result(bmi_status)
+    function bmif_get_value_ptr_float(this, name, dest_ptr) result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       character(len=*), intent(in) :: name
       real, pointer, intent(inout) :: dest_ptr(:)
       integer :: bmi_status
     end function bmif_get_value_ptr_float
 
     ! Get a reference to the given double variable.
-    function bmif_get_value_ptr_double(self, name, dest_ptr) result(bmi_status)
+    function bmif_get_value_ptr_double(this, name, dest_ptr) result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       character(len=*), intent(in) :: name
       double precision, pointer, intent(inout) :: dest_ptr(:)
       integer :: bmi_status
     end function bmif_get_value_ptr_double
 
     ! Get integer values at particular (one-dimensional) indices.
-    function bmif_get_value_at_indices_int(self, name, dest, inds) &
+    function bmif_get_value_at_indices_int(this, name, dest, inds) &
       result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       character(len=*), intent(in) :: name
       integer, intent(inout) :: dest(:)
       integer, intent(in) :: inds(:)
@@ -327,10 +327,10 @@ module bmif_2_0
     end function bmif_get_value_at_indices_int
 
     ! Get real values at particular (one-dimensional) indices.
-    function bmif_get_value_at_indices_float(self, name, dest, inds) &
+    function bmif_get_value_at_indices_float(this, name, dest, inds) &
       result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       character(len=*), intent(in) :: name
       real, intent(inout) :: dest(:)
       integer, intent(in) :: inds(:)
@@ -338,10 +338,10 @@ module bmif_2_0
     end function bmif_get_value_at_indices_float
 
     ! Get double values at particular (one-dimensional) indices.
-    function bmif_get_value_at_indices_double(self, name, dest, inds) &
+    function bmif_get_value_at_indices_double(this, name, dest, inds) &
       result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       character(len=*), intent(in) :: name
       double precision, intent(inout) :: dest(:)
       integer, intent(in) :: inds(:)
@@ -349,37 +349,37 @@ module bmif_2_0
     end function bmif_get_value_at_indices_double
 
     ! Set new values for an integer model variable.
-    function bmif_set_value_int(self, name, src) result(bmi_status)
+    function bmif_set_value_int(this, name, src) result(bmi_status)
       import :: bmi
-      class(bmi), intent(inout) :: self
+      class(bmi), intent(inout) :: this
       character(len=*), intent(in) :: name
       integer, intent(in) :: src(:)
       integer :: bmi_status
     end function bmif_set_value_int
 
     ! Set new values for a real model variable.
-    function bmif_set_value_float(self, name, src) result(bmi_status)
+    function bmif_set_value_float(this, name, src) result(bmi_status)
       import :: bmi
-      class(bmi), intent(inout) :: self
+      class(bmi), intent(inout) :: this
       character(len=*), intent(in) :: name
       real, intent(in) :: src(:)
       integer :: bmi_status
     end function bmif_set_value_float
 
     ! Set new values for a double model variable.
-    function bmif_set_value_double(self, name, src) result(bmi_status)
+    function bmif_set_value_double(this, name, src) result(bmi_status)
       import :: bmi
-      class(bmi), intent(inout) :: self
+      class(bmi), intent(inout) :: this
       character(len=*), intent(in) :: name
       double precision, intent(in) :: src(:)
       integer :: bmi_status
     end function bmif_set_value_double
 
     ! Set integer values at particular (one-dimensional) indices.
-    function bmif_set_value_at_indices_int(self, name, inds, src) &
+    function bmif_set_value_at_indices_int(this, name, inds, src) &
       result(bmi_status)
       import :: bmi
-      class(bmi), intent(inout) :: self
+      class(bmi), intent(inout) :: this
       character(len=*), intent(in) :: name
       integer, intent(in) :: inds(:)
       integer, intent(in) :: src(:)
@@ -387,10 +387,10 @@ module bmif_2_0
     end function bmif_set_value_at_indices_int
 
     ! Set real values at particular (one-dimensional) indices.
-    function bmif_set_value_at_indices_float(self, name, inds, src) &
+    function bmif_set_value_at_indices_float(this, name, inds, src) &
       result(bmi_status)
       import :: bmi
-      class(bmi), intent(inout) :: self
+      class(bmi), intent(inout) :: this
       character(len=*), intent(in) :: name
       integer, intent(in) :: inds(:)
       real, intent(in) :: src(:)
@@ -398,10 +398,10 @@ module bmif_2_0
     end function bmif_set_value_at_indices_float
 
     ! Set double values at particular (one-dimensional) indices.
-    function bmif_set_value_at_indices_double(self, name, inds, src) &
+    function bmif_set_value_at_indices_double(this, name, inds, src) &
       result(bmi_status)
       import :: bmi
-      class(bmi), intent(inout) :: self
+      class(bmi), intent(inout) :: this
       character(len=*), intent(in) :: name
       integer, intent(in) :: inds(:)
       double precision, intent(in) :: src(:)
@@ -409,148 +409,148 @@ module bmif_2_0
     end function bmif_set_value_at_indices_double
 
     ! Get number of dimensions of the computational grid.
-    function bmif_get_grid_rank(self, grid, rank) result(bmi_status)
+    function bmif_get_grid_rank(this, grid, rank) result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       integer, intent(in) :: grid
       integer, intent(out) :: rank
       integer :: bmi_status
     end function bmif_get_grid_rank
 
     ! Get the total number of elements in the computational grid.
-    function bmif_get_grid_size(self, grid, size) result(bmi_status)
+    function bmif_get_grid_size(this, grid, size) result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       integer, intent(in) :: grid
       integer, intent(out) :: size
       integer :: bmi_status
     end function bmif_get_grid_size
 
     ! Get the grid type as a string.
-    function bmif_get_grid_type(self, grid, type) result(bmi_status)
+    function bmif_get_grid_type(this, grid, type) result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       integer, intent(in) :: grid
       character(len=*), intent(out) :: type
       integer :: bmi_status
     end function bmif_get_grid_type
 
     ! Get the dimensions of the computational grid.
-    function bmif_get_grid_shape(self, grid, shape) result(bmi_status)
+    function bmif_get_grid_shape(this, grid, shape) result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       integer, intent(in) :: grid
       integer, dimension(:), intent(out) :: shape
       integer :: bmi_status
     end function bmif_get_grid_shape
 
     ! Get distance between nodes of the computational grid.
-    function bmif_get_grid_spacing(self, grid, spacing) result(bmi_status)
+    function bmif_get_grid_spacing(this, grid, spacing) result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       integer, intent(in) :: grid
       double precision, dimension(:), intent(out) :: spacing
       integer :: bmi_status
     end function bmif_get_grid_spacing
 
     ! Get coordinates of the origin of the computational grid.
-    function bmif_get_grid_origin(self, grid, origin) result(bmi_status)
+    function bmif_get_grid_origin(this, grid, origin) result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       integer, intent(in) :: grid
       double precision, dimension(:), intent(out) :: origin
       integer :: bmi_status
     end function bmif_get_grid_origin
 
     ! Get the x-coordinates of the nodes of a computational grid.
-    function bmif_get_grid_x(self, grid, x) result(bmi_status)
+    function bmif_get_grid_x(this, grid, x) result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       integer, intent(in) :: grid
       double precision, dimension(:), intent(out) :: x
       integer :: bmi_status
     end function bmif_get_grid_x
 
     ! Get the y-coordinates of the nodes of a computational grid.
-    function bmif_get_grid_y(self, grid, y) result(bmi_status)
+    function bmif_get_grid_y(this, grid, y) result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       integer, intent(in) :: grid
       double precision, dimension(:), intent(out) :: y
       integer :: bmi_status
     end function bmif_get_grid_y
 
     ! Get the z-coordinates of the nodes of a computational grid.
-    function bmif_get_grid_z(self, grid, z) result(bmi_status)
+    function bmif_get_grid_z(this, grid, z) result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       integer, intent(in) :: grid
       double precision, dimension(:), intent(out) :: z
       integer :: bmi_status
     end function bmif_get_grid_z
 
     ! Get the number of nodes in an unstructured grid.
-    function bmif_get_grid_node_count(self, grid, count) result(bmi_status)
+    function bmif_get_grid_node_count(this, grid, count) result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       integer, intent(in) :: grid
       integer, intent(out) :: count
       integer :: bmi_status
     end function bmif_get_grid_node_count
 
     ! Get the number of edges in an unstructured grid.
-    function bmif_get_grid_edge_count(self, grid, count) result(bmi_status)
+    function bmif_get_grid_edge_count(this, grid, count) result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       integer, intent(in) :: grid
       integer, intent(out) :: count
       integer :: bmi_status
     end function bmif_get_grid_edge_count
 
     ! Get the number of faces in an unstructured grid.
-    function bmif_get_grid_face_count(self, grid, count) result(bmi_status)
+    function bmif_get_grid_face_count(this, grid, count) result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       integer, intent(in) :: grid
       integer, intent(out) :: count
       integer :: bmi_status
     end function bmif_get_grid_face_count
 
     ! Get the edge-node connectivity.
-    function bmif_get_grid_edge_nodes(self, grid, edge_nodes) &
+    function bmif_get_grid_edge_nodes(this, grid, edge_nodes) &
       result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       integer, intent(in) :: grid
       integer, dimension(:), intent(out) :: edge_nodes
       integer :: bmi_status
     end function bmif_get_grid_edge_nodes
 
     ! Get the face-edge connectivity.
-    function bmif_get_grid_face_edges(self, grid, face_edges) &
+    function bmif_get_grid_face_edges(this, grid, face_edges) &
       result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       integer, intent(in) :: grid
       integer, dimension(:), intent(out) :: face_edges
       integer :: bmi_status
     end function bmif_get_grid_face_edges
 
     ! Get the face-node connectivity.
-    function bmif_get_grid_face_nodes(self, grid, face_nodes) &
+    function bmif_get_grid_face_nodes(this, grid, face_nodes) &
       result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       integer, intent(in) :: grid
       integer, dimension(:), intent(out) :: face_nodes
       integer :: bmi_status
     end function bmif_get_grid_face_nodes
 
     ! Get the number of nodes for each face.
-    function bmif_get_grid_nodes_per_face(self, grid, nodes_per_face) &
+    function bmif_get_grid_nodes_per_face(this, grid, nodes_per_face) &
       result(bmi_status)
       import :: bmi
-      class(bmi), intent(in) :: self
+      class(bmi), intent(in) :: this
       integer, intent(in) :: grid
       integer, dimension(:), intent(out) :: nodes_per_face
       integer :: bmi_status
