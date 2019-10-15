@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.0)
 
 project(bmif Fortran)
-set(bmi_major_version 1)
-set(bmi_minor_version 2)
+set(bmi_major_version 2)
+set(bmi_minor_version 0)
 
 # Match the module name set in "bmi.f90".
 set(mod_name ${CMAKE_PROJECT_NAME}_${bmi_major_version}_${bmi_minor_version})
