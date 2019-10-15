@@ -15,43 +15,36 @@ module bmif_2_0
 
   type, abstract :: bmi
      contains
-       procedure (bmif_get_component_name), deferred :: get_component_name
-       procedure (bmif_get_input_var_names), deferred :: get_input_var_names
-       procedure (bmif_get_output_var_names), deferred :: get_output_var_names
-       procedure (bmif_get_input_item_count), deferred :: get_input_item_count
-       procedure (bmif_get_output_item_count), deferred :: get_output_item_count
+
+       ! Initialize, run, finalize (IRF)
        procedure (bmif_initialize), deferred :: initialize
-       procedure (bmif_finalize), deferred :: finalize
-       procedure (bmif_get_start_time), deferred :: get_start_time
-       procedure (bmif_get_end_time), deferred :: get_end_time
-       procedure (bmif_get_current_time), deferred :: get_current_time
-       procedure (bmif_get_time_step), deferred :: get_time_step
-       procedure (bmif_get_time_units), deferred :: get_time_units
        procedure (bmif_update), deferred :: update
        procedure (bmif_update_until), deferred :: update_until
+       procedure (bmif_finalize), deferred :: finalize
+
+       ! Exchange items
+       procedure (bmif_get_component_name), deferred :: get_component_name
+       procedure (bmif_get_input_item_count), deferred :: get_input_item_count
+       procedure (bmif_get_output_item_count), deferred :: get_output_item_count
+       procedure (bmif_get_input_var_names), deferred :: get_input_var_names
+       procedure (bmif_get_output_var_names), deferred :: get_output_var_names
+
+       ! Variable information
        procedure (bmif_get_var_grid), deferred :: get_var_grid
-       procedure (bmif_get_grid_type), deferred :: get_grid_type
-       procedure (bmif_get_grid_rank), deferred :: get_grid_rank
-       procedure (bmif_get_grid_shape), deferred :: get_grid_shape
-       procedure (bmif_get_grid_size), deferred :: get_grid_size
-       procedure (bmif_get_grid_spacing), deferred :: get_grid_spacing
-       procedure (bmif_get_grid_origin), deferred :: get_grid_origin
-       procedure (bmif_get_grid_x), deferred :: get_grid_x
-       procedure (bmif_get_grid_y), deferred :: get_grid_y
-       procedure (bmif_get_grid_z), deferred :: get_grid_z
-       procedure (bmif_get_grid_node_count), deferred :: get_grid_node_count
-       procedure (bmif_get_grid_edge_count), deferred :: get_grid_edge_count
-       procedure (bmif_get_grid_face_count), deferred :: get_grid_face_count
-       procedure (bmif_get_grid_edge_nodes), deferred :: get_grid_edge_nodes
-       procedure (bmif_get_grid_face_edges), deferred :: get_grid_face_edges
-       procedure (bmif_get_grid_face_nodes), deferred :: get_grid_face_nodes
-       procedure (bmif_get_grid_nodes_per_face), deferred :: &
-            get_grid_nodes_per_face
        procedure (bmif_get_var_type), deferred :: get_var_type
        procedure (bmif_get_var_units), deferred :: get_var_units
        procedure (bmif_get_var_itemsize), deferred :: get_var_itemsize
        procedure (bmif_get_var_nbytes), deferred :: get_var_nbytes
        procedure (bmif_get_var_location), deferred :: get_var_location
+
+       ! Time information
+       procedure (bmif_get_current_time), deferred :: get_current_time
+       procedure (bmif_get_start_time), deferred :: get_start_time
+       procedure (bmif_get_end_time), deferred :: get_end_time
+       procedure (bmif_get_time_units), deferred :: get_time_units
+       procedure (bmif_get_time_step), deferred :: get_time_step
+
+       ! Getters, by type
        procedure (bmif_get_value_int), deferred :: get_value_int
        procedure (bmif_get_value_float), deferred :: get_value_float
        procedure (bmif_get_value_double), deferred :: get_value_double
@@ -64,6 +57,8 @@ module bmif_2_0
             get_value_at_indices_float
        procedure (bmif_get_value_at_indices_double), deferred :: &
             get_value_at_indices_double
+
+       ! Setters, by type
        procedure (bmif_set_value_int), deferred :: set_value_int
        procedure (bmif_set_value_float), deferred :: set_value_float
        procedure (bmif_set_value_double), deferred :: set_value_double
@@ -73,9 +68,64 @@ module bmif_2_0
             set_value_at_indices_float
        procedure (bmif_set_value_at_indices_double), deferred :: &
             set_value_at_indices_double
+
+       ! Grid information
+       procedure (bmif_get_grid_rank), deferred :: get_grid_rank
+       procedure (bmif_get_grid_size), deferred :: get_grid_size
+       procedure (bmif_get_grid_type), deferred :: get_grid_type
+
+       ! Uniform rectilinear
+       procedure (bmif_get_grid_shape), deferred :: get_grid_shape
+       procedure (bmif_get_grid_spacing), deferred :: get_grid_spacing
+       procedure (bmif_get_grid_origin), deferred :: get_grid_origin
+
+       ! Non-uniform rectilinear, curvilinear
+       procedure (bmif_get_grid_x), deferred :: get_grid_x
+       procedure (bmif_get_grid_y), deferred :: get_grid_y
+       procedure (bmif_get_grid_z), deferred :: get_grid_z
+
+       ! Unstructured
+       procedure (bmif_get_grid_node_count), deferred :: get_grid_node_count
+       procedure (bmif_get_grid_edge_count), deferred :: get_grid_edge_count
+       procedure (bmif_get_grid_face_count), deferred :: get_grid_face_count
+       procedure (bmif_get_grid_edge_nodes), deferred :: get_grid_edge_nodes
+       procedure (bmif_get_grid_face_edges), deferred :: get_grid_face_edges
+       procedure (bmif_get_grid_face_nodes), deferred :: get_grid_face_nodes
+       procedure (bmif_get_grid_nodes_per_face), deferred :: &
+            get_grid_nodes_per_face
   end type bmi
 
   abstract interface
+
+     ! Perform startup tasks for the model.
+     function bmif_initialize(self, config_file) result(bmi_status)
+       import :: bmi
+       class (bmi), intent(out) :: self
+       character (len=*), intent(in) :: config_file
+       integer :: bmi_status
+     end function bmif_initialize
+
+     ! Advance the model one time step.
+     function bmif_update(self) result(bmi_status)
+       import :: bmi
+       class (bmi), intent(inout) :: self
+       integer :: bmi_status
+     end function bmif_update
+
+     ! Advance the model until the given time.
+     function bmif_update_until(self, time) result(bmi_status)
+       import :: bmi
+       class (bmi), intent(inout) :: self
+       double precision, intent(in) :: time
+       integer :: bmi_status
+     end function bmif_update_until
+
+     ! Perform teardown tasks for the model.
+     function bmif_finalize(self) result(bmi_status)
+       import :: bmi
+       class (bmi), intent(inout) :: self
+       integer :: bmi_status
+     end function bmif_finalize
 
      ! Get the name of the model.
      function bmif_get_component_name(self, name) result(bmi_status)
@@ -84,22 +134,6 @@ module bmif_2_0
        character (len=*), pointer, intent(out) :: name
        integer :: bmi_status
      end function bmif_get_component_name
-
-     ! List a model's input variables.
-     function bmif_get_input_var_names(self, names) result(bmi_status)
-       import :: bmi
-       class (bmi), intent(in) :: self
-       character (len=*), pointer, intent(out) :: names(:)
-       integer :: bmi_status
-     end function bmif_get_input_var_names
-
-     ! List a model's output variables.
-     function bmif_get_output_var_names(self, names) result(bmi_status)
-       import :: bmi
-       class (bmi), intent(in) :: self
-       character (len=*), pointer, intent(out) :: names(:)
-       integer :: bmi_status
-     end function bmif_get_output_var_names
 
      ! Count a model's input variables.
      function bmif_get_input_item_count(self, count) result(bmi_status)
@@ -117,75 +151,21 @@ module bmif_2_0
        integer :: bmi_status
      end function bmif_get_output_item_count
 
-     ! Perform startup tasks for the model.
-     function bmif_initialize(self, config_file) result(bmi_status)
-       import :: bmi
-       class (bmi), intent(out) :: self
-       character (len=*), intent(in) :: config_file
-       integer :: bmi_status
-     end function bmif_initialize
-
-     ! Perform teardown tasks for the model.
-     function bmif_finalize(self) result(bmi_status)
-       import :: bmi
-       class (bmi), intent(inout) :: self
-       integer :: bmi_status
-     end function bmif_finalize
-
-     ! Start time of the model.
-     function bmif_get_start_time(self, time) result(bmi_status)
+     ! List a model's input variables.
+     function bmif_get_input_var_names(self, names) result(bmi_status)
        import :: bmi
        class (bmi), intent(in) :: self
-       double precision, intent(out) :: time
+       character (len=*), pointer, intent(out) :: names(:)
        integer :: bmi_status
-     end function bmif_get_start_time
+     end function bmif_get_input_var_names
 
-     ! End time of the model.
-     function bmif_get_end_time(self, time) result(bmi_status)
+     ! List a model's output variables.
+     function bmif_get_output_var_names(self, names) result(bmi_status)
        import :: bmi
        class (bmi), intent(in) :: self
-       double precision, intent(out) :: time
+       character (len=*), pointer, intent(out) :: names(:)
        integer :: bmi_status
-     end function bmif_get_end_time
-
-     ! Current time of the model.
-     function bmif_get_current_time(self, time) result(bmi_status)
-       import :: bmi
-       class (bmi), intent(in) :: self
-       double precision, intent(out) :: time
-       integer :: bmi_status
-     end function bmif_get_current_time
-
-     ! Time step of the model.
-     function bmif_get_time_step(self, time_step) result(bmi_status)
-       import :: bmi
-       class (bmi), intent(in) :: self
-       double precision, intent(out) :: time_step
-       integer :: bmi_status
-     end function bmif_get_time_step
-
-     ! Time units of the model.
-     function bmif_get_time_units(self, time_units) result(bmi_status)
-       import :: bmi
-       class (bmi), intent(in) :: self
-       character (len=*), intent(out) :: time_units
-       integer :: bmi_status
-     end function bmif_get_time_units
-
-     ! Advance the model one time step.
-     function bmif_update(self) result(bmi_status)
-       import :: bmi
-       class (bmi), intent(inout) :: self
-       integer :: bmi_status
-     end function bmif_update
-
-     ! Advance the model until the given time.
-     function bmif_update_until(self, time) result(bmi_status)
-       import :: bmi
-       class (bmi), intent(inout) :: self
-       double precision, intent(in) :: time
-       integer :: bmi_status
-     end function bmif_update_until
+     end function bmif_get_output_var_names
 
      ! Get the grid identifier for the given variable.
      function bmif_get_var_grid(self, var_name, grid_id) result(bmi_status)
@@ -195,154 +175,6 @@ module bmif_2_0
        integer, intent(out) :: grid_id
        integer :: bmi_status
      end function bmif_get_var_grid
-
-     ! Get the grid type as a string.
-     function bmif_get_grid_type(self, grid_id, grid_type) result(bmi_status)
-       import :: bmi
-       class (bmi), intent(in) :: self
-       integer, intent(in) :: grid_id
-       character (len=*), intent(out) :: grid_type
-       integer :: bmi_status
-     end function bmif_get_grid_type
-
-     ! Get number of dimensions of the computational grid.
-     function bmif_get_grid_rank(self, grid_id, grid_rank) result(bmi_status)
-       import :: bmi
-       class (bmi), intent(in) :: self
-       integer, intent(in) :: grid_id
-       integer, intent(out) :: grid_rank
-       integer :: bmi_status
-     end function bmif_get_grid_rank
-
-     ! Get the dimensions of the computational grid.
-     function bmif_get_grid_shape(self, grid_id, grid_shape) result(bmi_status)
-       import :: bmi
-       class (bmi), intent(in) :: self
-       integer, intent(in) :: grid_id
-       integer, dimension(:), intent(out) :: grid_shape
-       integer :: bmi_status
-     end function bmif_get_grid_shape
-
-     ! Get the total number of elements in the computational grid.
-     function bmif_get_grid_size(self, grid_id, grid_size) result(bmi_status)
-       import :: bmi
-       class (bmi), intent(in) :: self
-       integer, intent(in) :: grid_id
-       integer, intent(out) :: grid_size
-       integer :: bmi_status
-     end function bmif_get_grid_size
-
-     ! Get distance between nodes of the computational grid.
-     function bmif_get_grid_spacing(self, grid_id, grid_spacing) result(bmi_status)
-       import :: bmi
-       class (bmi), intent(in) :: self
-       integer, intent(in) :: grid_id
-       double precision, dimension(:), intent(out) :: grid_spacing
-       integer :: bmi_status
-     end function bmif_get_grid_spacing
-
-     ! Get coordinates of the origin of the computational grid.
-     function bmif_get_grid_origin(self, grid_id, grid_origin) result(bmi_status)
-       import :: bmi
-       class (bmi), intent(in) :: self
-       integer, intent(in) :: grid_id
-       double precision, dimension(:), intent(out) :: grid_origin
-       integer :: bmi_status
-     end function bmif_get_grid_origin
-
-     ! Get the x-coordinates of the nodes of a computational grid.
-     function bmif_get_grid_x(self, grid_id, grid_x) result(bmi_status)
-       import :: bmi
-       class (bmi), intent(in) :: self
-       integer, intent(in) :: grid_id
-       double precision, dimension(:), intent(out) :: grid_x
-       integer :: bmi_status
-     end function bmif_get_grid_x
-
-     ! Get the y-coordinates of the nodes of a computational grid.
-     function bmif_get_grid_y(self, grid_id, grid_y) result(bmi_status)
-       import :: bmi
-       class (bmi), intent(in) :: self
-       integer, intent(in) :: grid_id
-       double precision, dimension(:), intent(out) :: grid_y
-       integer :: bmi_status
-     end function bmif_get_grid_y
-
-     ! Get the z-coordinates of the nodes of a computational grid.
-     function bmif_get_grid_z(self, grid_id, grid_z) result(bmi_status)
-       import :: bmi
-       class (bmi), intent(in) :: self
-       integer, intent(in) :: grid_id
-       double precision, dimension(:), intent(out) :: grid_z
-       integer :: bmi_status
-     end function bmif_get_grid_z
-
-     ! Get the number of nodes in an unstructured grid.
-     function bmif_get_grid_node_count(self, grid_id, count) result(bmi_status)
-       import :: bmi
-       class (bmi), intent(in) :: self
-       integer, intent(in) :: grid_id
-       integer, intent(out) :: count
-       integer :: bmi_status
-     end function bmif_get_grid_node_count
-
-     ! Get the number of edges in an unstructured grid.
-     function bmif_get_grid_edge_count(self, grid_id, count) result(bmi_status)
-       import :: bmi
-       class (bmi), intent(in) :: self
-       integer, intent(in) :: grid_id
-       integer, intent(out) :: count
-       integer :: bmi_status
-     end function bmif_get_grid_edge_count
-
-     ! Get the number of faces in an unstructured grid.
-     function bmif_get_grid_face_count(self, grid_id, count) result(bmi_status)
-       import :: bmi
-       class (bmi), intent(in) :: self
-       integer, intent(in) :: grid_id
-       integer, intent(out) :: count
-       integer :: bmi_status
-     end function bmif_get_grid_face_count
-
-     ! Get the edge-node connectivity.
-     function bmif_get_grid_edge_nodes(self, grid_id, edge_nodes) &
-          result(bmi_status)
-       import :: bmi
-       class (bmi), intent(in) :: self
-       integer, intent(in) :: grid_id
-       integer, dimension(:), intent(out) :: edge_nodes
-       integer :: bmi_status
-     end function bmif_get_grid_edge_nodes
-
-     ! Get the face-edge connectivity.
-     function bmif_get_grid_face_edges(self, grid_id, face_edges) &
-          result(bmi_status)
-       import :: bmi
-       class (bmi), intent(in) :: self
-       integer, intent(in) :: grid_id
-       integer, dimension(:), intent(out) :: face_edges
-       integer :: bmi_status
-     end function bmif_get_grid_face_edges
-
-     ! Get the face-node connectivity.
-     function bmif_get_grid_face_nodes(self, grid_id, face_nodes) &
-          result(bmi_status)
-       import :: bmi
-       class (bmi), intent(in) :: self
-       integer, intent(in) :: grid_id
-       integer, dimension(:), intent(out) :: face_nodes
-       integer :: bmi_status
-     end function bmif_get_grid_face_nodes
-
-     ! Get the number of nodes for each face.
-     function bmif_get_grid_nodes_per_face(self, grid_id, nodes_per_face) &
-          result(bmi_status)
-       import :: bmi
-       class (bmi), intent(in) :: self
-       integer, intent(in) :: grid_id
-       integer, dimension(:), intent(out) :: nodes_per_face
-       integer :: bmi_status
-     end function bmif_get_grid_nodes_per_face
 
      ! Get the data type of the given variable as a string.
      function bmif_get_var_type(self, var_name, var_type) result(bmi_status)
@@ -388,6 +220,46 @@ module bmif_2_0
        character (len=*), intent(out) :: location
        integer :: bmi_status
      end function bmif_get_var_location
+
+     ! Current time of the model.
+     function bmif_get_current_time(self, time) result(bmi_status)
+       import :: bmi
+       class (bmi), intent(in) :: self
+       double precision, intent(out) :: time
+       integer :: bmi_status
+     end function bmif_get_current_time
+
+     ! Start time of the model.
+     function bmif_get_start_time(self, time) result(bmi_status)
+       import :: bmi
+       class (bmi), intent(in) :: self
+       double precision, intent(out) :: time
+       integer :: bmi_status
+     end function bmif_get_start_time
+
+     ! End time of the model.
+     function bmif_get_end_time(self, time) result(bmi_status)
+       import :: bmi
+       class (bmi), intent(in) :: self
+       double precision, intent(out) :: time
+       integer :: bmi_status
+     end function bmif_get_end_time
+
+     ! Time units of the model.
+     function bmif_get_time_units(self, time_units) result(bmi_status)
+       import :: bmi
+       class (bmi), intent(in) :: self
+       character (len=*), intent(out) :: time_units
+       integer :: bmi_status
+     end function bmif_get_time_units
+
+     ! Time step of the model.
+     function bmif_get_time_step(self, time_step) result(bmi_status)
+       import :: bmi
+       class (bmi), intent(in) :: self
+       double precision, intent(out) :: time_step
+       integer :: bmi_status
+     end function bmif_get_time_step
 
      ! Get a copy of values (flattened!) of the given integer variable.
      function bmif_get_value_int(self, var_name, dest) result(bmi_status)
@@ -538,6 +410,154 @@ module bmif_2_0
        double precision, intent(in) :: src(:)
        integer :: bmi_status
      end function bmif_set_value_at_indices_double
+
+     ! Get number of dimensions of the computational grid.
+     function bmif_get_grid_rank(self, grid_id, grid_rank) result(bmi_status)
+       import :: bmi
+       class (bmi), intent(in) :: self
+       integer, intent(in) :: grid_id
+       integer, intent(out) :: grid_rank
+       integer :: bmi_status
+     end function bmif_get_grid_rank
+
+     ! Get the total number of elements in the computational grid.
+     function bmif_get_grid_size(self, grid_id, grid_size) result(bmi_status)
+       import :: bmi
+       class (bmi), intent(in) :: self
+       integer, intent(in) :: grid_id
+       integer, intent(out) :: grid_size
+       integer :: bmi_status
+     end function bmif_get_grid_size
+
+     ! Get the grid type as a string.
+     function bmif_get_grid_type(self, grid_id, grid_type) result(bmi_status)
+       import :: bmi
+       class (bmi), intent(in) :: self
+       integer, intent(in) :: grid_id
+       character (len=*), intent(out) :: grid_type
+       integer :: bmi_status
+     end function bmif_get_grid_type
+
+     ! Get the dimensions of the computational grid.
+     function bmif_get_grid_shape(self, grid_id, grid_shape) result(bmi_status)
+       import :: bmi
+       class (bmi), intent(in) :: self
+       integer, intent(in) :: grid_id
+       integer, dimension(:), intent(out) :: grid_shape
+       integer :: bmi_status
+     end function bmif_get_grid_shape
+
+     ! Get distance between nodes of the computational grid.
+     function bmif_get_grid_spacing(self, grid_id, grid_spacing) result(bmi_status)
+       import :: bmi
+       class (bmi), intent(in) :: self
+       integer, intent(in) :: grid_id
+       double precision, dimension(:), intent(out) :: grid_spacing
+       integer :: bmi_status
+     end function bmif_get_grid_spacing
+
+     ! Get coordinates of the origin of the computational grid.
+     function bmif_get_grid_origin(self, grid_id, grid_origin) result(bmi_status)
+       import :: bmi
+       class (bmi), intent(in) :: self
+       integer, intent(in) :: grid_id
+       double precision, dimension(:), intent(out) :: grid_origin
+       integer :: bmi_status
+     end function bmif_get_grid_origin
+
+     ! Get the x-coordinates of the nodes of a computational grid.
+     function bmif_get_grid_x(self, grid_id, grid_x) result(bmi_status)
+       import :: bmi
+       class (bmi), intent(in) :: self
+       integer, intent(in) :: grid_id
+       double precision, dimension(:), intent(out) :: grid_x
+       integer :: bmi_status
+     end function bmif_get_grid_x
+
+     ! Get the y-coordinates of the nodes of a computational grid.
+     function bmif_get_grid_y(self, grid_id, grid_y) result(bmi_status)
+       import :: bmi
+       class (bmi), intent(in) :: self
+       integer, intent(in) :: grid_id
+       double precision, dimension(:), intent(out) :: grid_y
+       integer :: bmi_status
+     end function bmif_get_grid_y
+
+     ! Get the z-coordinates of the nodes of a computational grid.
+     function bmif_get_grid_z(self, grid_id, grid_z) result(bmi_status)
+       import :: bmi
+       class (bmi), intent(in) :: self
+       integer, intent(in) :: grid_id
+       double precision, dimension(:), intent(out) :: grid_z
+       integer :: bmi_status
+     end function bmif_get_grid_z
+
+     ! Get the number of nodes in an unstructured grid.
+     function bmif_get_grid_node_count(self, grid_id, count) result(bmi_status)
+       import :: bmi
+       class (bmi), intent(in) :: self
+       integer, intent(in) :: grid_id
+       integer, intent(out) :: count
+       integer :: bmi_status
+     end function bmif_get_grid_node_count
+
+     ! Get the number of edges in an unstructured grid.
+     function bmif_get_grid_edge_count(self, grid_id, count) result(bmi_status)
+       import :: bmi
+       class (bmi), intent(in) :: self
+       integer, intent(in) :: grid_id
+       integer, intent(out) :: count
+       integer :: bmi_status
+     end function bmif_get_grid_edge_count
+
+     ! Get the number of faces in an unstructured grid.
+     function bmif_get_grid_face_count(self, grid_id, count) result(bmi_status)
+       import :: bmi
+       class (bmi), intent(in) :: self
+       integer, intent(in) :: grid_id
+       integer, intent(out) :: count
+       integer :: bmi_status
+     end function bmif_get_grid_face_count
+
+     ! Get the edge-node connectivity.
+     function bmif_get_grid_edge_nodes(self, grid_id, edge_nodes) &
+          result(bmi_status)
+       import :: bmi
+       class (bmi), intent(in) :: self
+       integer, intent(in) :: grid_id
+       integer, dimension(:), intent(out) :: edge_nodes
+       integer :: bmi_status
+     end function bmif_get_grid_edge_nodes
+
+     ! Get the face-edge connectivity.
+     function bmif_get_grid_face_edges(self, grid_id, face_edges) &
+          result(bmi_status)
+       import :: bmi
+       class (bmi), intent(in) :: self
+       integer, intent(in) :: grid_id
+       integer, dimension(:), intent(out) :: face_edges
+       integer :: bmi_status
+     end function bmif_get_grid_face_edges
+
+     ! Get the face-node connectivity.
+     function bmif_get_grid_face_nodes(self, grid_id, face_nodes) &
+          result(bmi_status)
+       import :: bmi
+       class (bmi), intent(in) :: self
+       integer, intent(in) :: grid_id
+       integer, dimension(:), intent(out) :: face_nodes
+       integer :: bmi_status
+     end function bmif_get_grid_face_nodes
+
+     ! Get the number of nodes for each face.
+     function bmif_get_grid_nodes_per_face(self, grid_id, nodes_per_face) &
+          result(bmi_status)
+       import :: bmi
+       class (bmi), intent(in) :: self
+       integer, intent(in) :: grid_id
+       integer, dimension(:), intent(out) :: nodes_per_face
+       integer :: bmi_status
+     end function bmif_get_grid_nodes_per_face
 
   end interface
 
