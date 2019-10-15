@@ -558,4 +558,4 @@ module bmif_2_0
 
   end interface
 
-end module bmif_1_2
+end module bmif_2_0
