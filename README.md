@@ -1,3 +1,4 @@
+[![DOI](https://zenodo.org/badge/84101233.svg)](https://zenodo.org/badge/latestdoi/84101233)
 [![Build Status](https://travis-ci.org/csdms/bmi-fortran.svg?branch=master)](https://travis-ci.org/csdms/bmi-fortran)
 [![Anaconda-Server Badge](https://anaconda.org/conda-forge/bmi-fortran/badges/version.svg)](https://anaconda.org/conda-forge/bmi-fortran)
 [![Anaconda-Server Badge](https://anaconda.org/conda-forge/bmi-fortran/badges/platforms.svg)](https://anaconda.org/conda-forge/bmi-fortran)
