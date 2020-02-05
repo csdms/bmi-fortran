@@ -7,7 +7,7 @@
 # bmi-fortran
 
 The Fortran specification, created with Fortran 2003,
-for the CSDMS [Basic Model Interface](https://bmi-spec.readthedocs.io).
+for the CSDMS [Basic Model Interface](https://bmi.readthedocs.io).
 
 
 ## Build/Install
