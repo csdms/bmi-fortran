@@ -1,6 +1,9 @@
+! The Basic Model Interface (BMI) Fortran specification.
 !
-! The Fortran specification for the CSDMS Basic Model Interface.
-!
+! This language specification is derived from the Scientific
+! Interface Definition Language (SIDL) file bmi.sidl located at
+! https://github.com/csdms/bmi.
+
 module bmif_2_0
 
   implicit none
