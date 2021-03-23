@@ -22,7 +22,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
         build-type: [Release]
 
     steps:
@@ -32,7 +32,7 @@ jobs:
         with:
           auto-update-conda: true
           mamba-version: "*"
-          channels: conda-forge,defaults
+          channels: conda-forge
           channel-priority: true
 
       - name: Show conda installation info
@@ -53,6 +53,17 @@ jobs:
           cmake .. \
           -DCMAKE_BUILD_TYPE=${{ matrix.build-type }} \
           -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX
+
+      - name: Configure cmake (windows)
+        if: matrix.os == 'windows-latest'
+        working-directory: ${{ github.workspace }}\build
+        shell: pwsh
+        run: |
+          & "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat" x86
+
+          cmake .. `
+            -DCMAKE_INSTALL_PREFIX:PATH=$env:CONDA_PREFIX `
+            -DCMAKE_BUILD_TYPE=${{ matrix.build-type }}
 
       - name: Build
         working-directory: ${{ github.workspace }}/build
