@@ -17,6 +17,9 @@ jobs:
       run:
         shell: bash -l {0}
 
+    env:
+      BMI_VERSION: 2_0
+
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
@@ -56,9 +59,14 @@ jobs:
         run: cmake --build . --target install --config ${{ matrix.build-type }}
 
       - name: Test
-        env:
-          BMI_VERSION: 2_0
         run: |
           test -f $CONDA_PREFIX/include/bmif_$BMI_VERSION.mod
           test -s $CONDA_PREFIX/lib/libbmif.a
-          test -h $CONDA_PREFIX/lib/libbmif$SHLIB_EXT
+
+      - name: Test (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        run: test -h $CONDA_PREFIX/lib/libbmif.so
+
+      - name: Test (macOS)
+        if: matrix.os == 'macos-latest'
+        run: test -h $CONDA_PREFIX/lib/libbmif.dylib
