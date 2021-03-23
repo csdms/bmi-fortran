@@ -60,3 +60,5 @@ jobs:
           BMI_VERSION: 2_0
         run: |
           test -f $CONDA_PREFIX/include/bmif_$BMI_VERSION.mod
+          test -s $CONDA_PREFIX/lib/libbmif.a
+          test -h $CONDA_PREFIX/lib/libbmif$SHLIB_EXT
