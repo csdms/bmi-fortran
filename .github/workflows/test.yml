@@ -22,9 +22,6 @@ jobs:
         os: [ubuntu-latest, macos-latest]
         build-type: [Release]
 
-    env:
-      BMI_VERSION: 2_0
-
     steps:
       - uses: actions/checkout@v2
 
@@ -59,5 +56,7 @@ jobs:
         run: cmake --build . --target install --config ${{ matrix.build-type }}
 
       - name: Test
+        env:
+          BMI_VERSION: 2_0
         run: |
-          test -f $CONDA_PREFIX/include/bmif_{{ env.BMI_VERSION }}.mod
+          test -f $CONDA_PREFIX/include/bmif_$BMI_VERSION.mod
