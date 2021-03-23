@@ -40,7 +40,7 @@ jobs:
 
       - name: Install build tools and dependencies into env
         run: |
-          mamba install --file=requirements.txt
+          mamba install make cmake fortran-compiler
           mamba list
 
       - name: Make cmake build directory
