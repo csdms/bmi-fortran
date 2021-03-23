@@ -1,0 +1,63 @@
+name: Build and Test
+
+on: [push, pull_request]
+
+jobs:
+  build-and-test:
+    # We want to run on external PRs, but not on our own internal PRs as they'll be run
+    # by the push to the branch. Without this if check, checks are duplicated since
+    # internal PRs match both the push and pull_request events.
+    if:
+      github.event_name == 'push' || github.event.pull_request.head.repo.full_name !=
+      github.repository
+
+    runs-on: ${{ matrix.os }}
+
+    defaults:
+      run:
+        shell: bash -l {0}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        build-type: [Release]
+
+    env:
+      BMI_VERSION: 2_0
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto-update-conda: true
+          mamba-version: "*"
+          channels: conda-forge,defaults
+          channel-priority: true
+
+      - name: Show conda installation info
+        run: conda info
+
+      - name: Install build tools and dependencies into env
+        run: |
+          mamba install --file=requirements.txt
+          mamba list
+
+      - name: Make cmake build directory
+        run: cmake -E make_directory build
+
+      - name: Configure cmake (unix)
+        if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
+        working-directory: ${{ github.workspace }}/build
+        run: |
+          cmake .. \
+          -DCMAKE_BUILD_TYPE=${{ matrix.build-type }} \
+          -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX
+
+      - name: Build
+        working-directory: ${{ github.workspace }}/build
+        run: cmake --build . --target install --config ${{ matrix.build-type }}
+
+      - name: Test
+        run: |
+          test -f $CONDA_PREFIX/include/bmif_{{ env.BMI_VERSION }}.mod
