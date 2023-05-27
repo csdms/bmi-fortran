@@ -1,4 +1,4 @@
-name = "bmi-fortran"
+name = "bmif"
 version = "2.0"
 license = "MIT"
 homepage = "https://bmi.readthedocs.io/"

@@ -94,6 +94,17 @@ in which to install the bindings. The default prefix
 on Unix systems is `$HOME/.local` and `%APPDATA%\local`
 on Windows. Note this differs from installs using CMake.
 
+The installation will look like (on Linux):
+
+.
+├── include
+│   └── bmif_2_0.mod
+└── lib
+    └── libbmif.a
+
+Note that fpm does not currently support the building
+of shared/dyanmic libraries (`.so` on Unix, `.dll` on Windows).
+
 
 ## Use
 
