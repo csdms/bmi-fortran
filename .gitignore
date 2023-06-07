@@ -36,5 +36,6 @@
 
 # Build and install directories for testing
 _build
+build
 _install
 

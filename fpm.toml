@@ -1,0 +1,10 @@
+name = "bmif"
+version = "2.0"
+license = "MIT"
+homepage = "https://bmi.readthedocs.io/"
+
+[library]
+source-dir = "./"
+
+[install]
+library = true

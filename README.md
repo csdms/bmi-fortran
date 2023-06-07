@@ -17,7 +17,7 @@ Instructions are given below.
 
 **Prerequisites:**
 * A Fortran compiler
-* CMake
+* CMake or [Fortran Package Manager](https://fpm.fortran-lang.org/)
 
 Alternately,
 [conda binaries](https://anaconda.org/conda-forge/bmi-fortran)
@@ -27,7 +27,7 @@ into an Anaconda distribution with
 
     conda install bmi-fortran -c conda-forge
 
-### Linux and macOS
+### CMake - Linux and macOS
 
 To build the Fortran BMI bindings from source with cmake, run
 
@@ -53,7 +53,7 @@ The installation will look (on Linux) like:
     `-- libbmif.so.2.0
 ```
 
-### Windows
+### CMake - Windows
 
 An additional prerequisite is needed for Windows:
 
@@ -75,6 +75,37 @@ note that quotes and an absolute path are needed).
 Then, to build and install:
 
 	cmake --build . --target install --config Release
+
+
+### Fortran Package Manager (fpm)
+
+If you don't already have fpm installed, you can do so via
+Conda:
+
+    conda install fpm -c conda-forge
+
+Then, to build and install:
+
+    fpm build --profile release
+    fpm install --prefix <path-to-installation>
+
+where `<path-to-installation>` is the base directory
+in which to install the bindings. The default prefix
+on Unix systems is `$HOME/.local` and `%APPDATA%\local`
+on Windows. Note this differs from installs using CMake.
+
+The installation will look like:
+
+```bash
+.
+|-- include
+|   `-- bmif_2_0.mod
+`-- lib
+    `-- libbmif.a
+```
+
+Note that fpm does not currently support the building
+of shared/dyanmic libraries (`.so` on Unix, `.dll` on Windows).
 
 
 ## Use
@@ -109,7 +140,7 @@ as a type from a module into a Fortran program and its methods overridden.
 
 The CSDMS IF software engineers recommend using the Fortran 2003 bindings;
 however, we will continue to support the Fortran 90/95 bindings
-for users who aren't comfortable
+for users who aren't comfortable with
 the object-oriented features of Fortran 2003.
 Further, both BMI implementations are backward-compatible with Fortran 77.
 All that is needed is a compiler that's capable of handling
