@@ -26,21 +26,23 @@ jobs:
         build-type: [Release]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      - uses: conda-incubator/setup-miniconda@v2
+      - uses: mamba-org/setup-micromamba@v1
         with:
-          auto-update-conda: true
-          mamba-version: "*"
-          channels: conda-forge,defaults
-          channel-priority: true
+          micromamba-version: latest
+          environment-name: testing
+          create-args: >-
+            make
+            cmake
+            fortran-compiler
+            c-compiler
+            cxx-compiler
+            mamba
 
       - name: Show conda installation info
-        run: conda info
-
-      - name: Install build tools and dependencies into env
         run: |
-          mamba install make cmake fortran-compiler
+          mamba info
           mamba list
 
       - name: Make cmake build directory
