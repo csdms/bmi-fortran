@@ -1,12 +1,12 @@
-cmake_minimum_required(VERSION 3.0)
-
-# Use system-specific install directories
-include(GNUInstallDirs)
+cmake_minimum_required(VERSION 3.12)
 
 project(bmif
   VERSION 2.0
   LANGUAGES Fortran
 )
+
+# Use system-specific install directories
+include(GNUInstallDirs)
 
 # Match the module name set in "bmi.f90".
 set(mod_name "${CMAKE_PROJECT_NAME}_\
