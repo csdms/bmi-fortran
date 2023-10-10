@@ -2,6 +2,9 @@ name: Build and Test
 
 on: [push, pull_request]
 
+env:
+  BMI_VERSION: 2_0
+
 jobs:
   build-test-unix:
 
@@ -14,9 +17,6 @@ jobs:
     defaults:
       run:
         shell: bash -l {0}
-
-    env:
-      BMI_VERSION: 2_0
 
     strategy:
       matrix:
@@ -66,9 +66,6 @@ jobs:
       github.repository
 
     runs-on: windows-latest
-
-    env:
-      BMI_VERSION: 2_0
 
     steps:
       - uses: actions/checkout@v4
