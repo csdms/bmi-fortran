@@ -59,3 +59,56 @@ jobs:
       - name: Test (macOS)
         if: matrix.os == 'macos-latest'
         run: test -h $CONDA_PREFIX/lib/libbmif.dylib
+
+  build-test-windows:
+    if:
+      github.event_name == 'push' || github.event.pull_request.head.repo.full_name !=
+      github.repository
+
+    runs-on: windows-latest
+
+    env:
+      BMI_VERSION: 2_0
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: mamba-org/setup-micromamba@v1
+        with:
+          micromamba-version: latest
+          environment-name: testing
+          create-args: >-
+            cmake
+            fortran-compiler
+            cxx-compiler
+            vs2019_win-64
+
+      - uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Make cmake build directory
+        run: cmake -E make_directory build
+
+      - name: Configure cmake
+        working-directory: ${{ github.workspace }}/build
+        run: |
+          cmake .. -G "NMake Makefiles" -DCMAKE_INSTALL_PREFIX=%CONDA_PREFIX% -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        working-directory: ${{ github.workspace }}/build
+        run: cmake --build . --target install --config Release
+
+      - name: Check (for humans)
+        working-directory: ${{ github.workspace }}/build
+        run: |
+          Test-Path -Path %CONDA_PREFIX%\lib\libbmif.a
+          Test-Path -Path %CONDA_PREFIX%\lib\libbmif_win.dll.a
+          Test-Path -Path %CONDA_PREFIX%\bin\libbmif_win.dll
+          Test-Path -Path %CONDA_PREFIX%\include\bmif_${{ env.BMI_VERSION }}.mod
+
+      - name: Test (for machines)
+        working-directory: ${{ github.workspace }}/build
+        run: |
+          if ( -not ( Test-Path -Path %CONDA_PREFIX%\lib\libbmif.a ) ){ exit 1 }
+          if ( -not ( Test-Path -Path %CONDA_PREFIX%\lib\libbmif_win.dll.a ) ){ exit 1 }
+          if ( -not ( Test-Path -Path %CONDA_PREFIX%\bin\libbmif_win.dll ) ){ exit 1 }
+          if ( -not ( Test-Path -Path %CONDA_PREFIX%\include\bmif_${{ env.BMI_VERSION }}.mod ) ){ exit 1 }
