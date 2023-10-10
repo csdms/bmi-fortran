@@ -33,7 +33,6 @@ jobs:
             make
             cmake
             fortran-compiler
-            mamba
 
       - name: Make cmake build directory
         run: cmake -E make_directory build
