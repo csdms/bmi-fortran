@@ -75,9 +75,9 @@ jobs:
           environment-name: testing
           create-args: >-
             cmake
-            fortran-compiler
             cxx-compiler
-            vs2019_win-64
+          init-shell: >-
+            powershell
 
       - name: Make cmake build directory
         run: cmake -E make_directory build
