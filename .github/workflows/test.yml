@@ -88,21 +88,21 @@ jobs:
       - name: Configure, build, and install
         working-directory: ${{ github.workspace }}/build
         run: |
-          cmake .. -G "NMake Makefiles" -DCMAKE_INSTALL_PREFIX="$env:LIBRARY_PREFIX" -DCMAKE_BUILD_TYPE=Release
+          cmake .. -G "NMake Makefiles" -DCMAKE_INSTALL_PREFIX="${{ env.LIBRARY_PREFIX }}" -DCMAKE_BUILD_TYPE=Release
           cmake --build . --target install --config Release
 
       - name: Check (for humans)
         working-directory: ${{ github.workspace }}/build
         run: |
-          Test-Path -Path $env:LIBRARY_PREFIX\lib\libbmif.a
-          Test-Path -Path $env:LIBRARY_PREFIX\lib\libbmif_win.dll.a
-          Test-Path -Path $env:LIBRARY_PREFIX\bin\libbmif_win.dll
-          Test-Path -Path $env:LIBRARY_PREFIX\include\bmif_${{ env.BMI_VERSION }}.mod
+          Test-Path -Path ${{ env.LIBRARY_PREFIX }}\lib\libbmif.a
+          Test-Path -Path ${{ env.LIBRARY_PREFIX }}\lib\libbmif_win.dll.a
+          Test-Path -Path ${{ env.LIBRARY_PREFIX }}\bin\libbmif_win.dll
+          Test-Path -Path ${{ env.LIBRARY_PREFIX }}\include\bmif_${{ env.BMI_VERSION }}.mod
 
       - name: Test (for machines)
         working-directory: ${{ github.workspace }}/build
         run: |
-          if ( -not ( Test-Path -Path $env:LIBRARY_PREFIX\lib\libbmif.a ) ){ exit 1 }
-          if ( -not ( Test-Path -Path $env:LIBRARY_PREFIX\lib\libbmif_win.dll.a ) ){ exit 1 }
-          if ( -not ( Test-Path -Path $env:LIBRARY_PREFIX\bin\libbmif_win.dll ) ){ exit 1 }
-          if ( -not ( Test-Path -Path $env:LIBRARY_PREFIX\include\bmif_${{ env.BMI_VERSION }}.mod ) ){ exit 1 }
+          if ( -not ( Test-Path -Path ${{ env.LIBRARY_PREFIX }}\lib\libbmif.a ) ){ exit 1 }
+          if ( -not ( Test-Path -Path ${{ env.LIBRARY_PREFIX }}\lib\libbmif_win.dll.a ) ){ exit 1 }
+          if ( -not ( Test-Path -Path ${{ env.LIBRARY_PREFIX }}\bin\libbmif_win.dll ) ){ exit 1 }
+          if ( -not ( Test-Path -Path ${{ env.LIBRARY_PREFIX }}\include\bmif_${{ env.BMI_VERSION }}.mod ) ){ exit 1 }
