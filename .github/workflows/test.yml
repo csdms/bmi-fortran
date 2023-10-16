@@ -68,7 +68,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
+      - uses: ilammy/msvc-dev-cmd@v1
       - uses: mamba-org/setup-micromamba@v1
         with:
           micromamba-version: latest
@@ -78,8 +78,6 @@ jobs:
             fortran-compiler
             cxx-compiler
             vs2019_win-64
-
-      - uses: ilammy/msvc-dev-cmd@v1
 
       - name: Make cmake build directory
         run: cmake -E make_directory build
