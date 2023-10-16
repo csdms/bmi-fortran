@@ -82,14 +82,11 @@ jobs:
       - name: Make cmake build directory
         run: cmake -E make_directory build
 
-      - name: Configure cmake
+      - name: Configure, build, and install
         working-directory: ${{ github.workspace }}/build
         run: |
-          cmake .. -G "NMake Makefiles" -DCMAKE_INSTALL_PREFIX=%CONDA_PREFIX% -DCMAKE_BUILD_TYPE=Release
-
-      - name: Build
-        working-directory: ${{ github.workspace }}/build
-        run: cmake --build . --target install --config Release
+          cmake .. -G "NMake Makefiles" -DCMAKE_INSTALL_PREFIX="$env:CONDA_PREFIX" -DCMAKE_BUILD_TYPE=Release
+          cmake --build . --target install --config Release
 
       - name: Check (for humans)
         working-directory: ${{ github.workspace }}/build
