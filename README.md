@@ -35,8 +35,10 @@ To build the Fortran BMI bindings from source with cmake, run
     cmake .. -DCMAKE_INSTALL_PREFIX=<path-to-installation>
     make
 
-where `<path-to-installation>` is the base directory
-in which to install the bindings (`/usr/local` is the default).
+where `<path-to-installation>` is the base directory in which to install the bindings.
+The default is`/usr/local`.
+When using a conda environment,
+use the `$CONDA_PREFIX` environment variable.
 
 Then, to install:
 
@@ -68,9 +70,10 @@ run the following in a [Developer Command Prompt](https://docs.microsoft.com/en-
 	  -DCMAKE_INSTALL_PREFIX=<path-to-installation> ^
 	  -DCMAKE_BUILD_TYPE=Release
 
-where `<path-to-installation>` is the base directory
-in which to install the bindings (`"C:\Program Files (x86)"` is the default;
-note that quotes and an absolute path are needed).
+where `<path-to-installation>` is the base directory in which to install the bindings.
+The default is `"C:\Program Files (x86)"`.
+Note that quotes and an absolute path are needed.
+When using a conda environment, use `"%CONDA_PREFIX%\Library"`.
 
 Then, to build and install:
 
