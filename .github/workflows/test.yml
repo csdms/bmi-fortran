@@ -32,6 +32,7 @@ jobs:
           create-args: >-
             make
             cmake
+            pkg-config
             fortran-compiler
 
       - name: Make cmake build directory
@@ -42,7 +43,7 @@ jobs:
         run: |
           cmake .. -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX -DCMAKE_BUILD_TYPE=Release
 
-      - name: Build
+      - name: Build and install
         working-directory: ${{ github.workspace }}/build
         run: cmake --build . --target install --config Release
 
@@ -50,6 +51,7 @@ jobs:
         run: |
           test -f $CONDA_PREFIX/include/bmif_$BMI_VERSION.mod
           test -s $CONDA_PREFIX/lib/libbmif.a
+          pkg-config bmif --exists
 
       - name: Test (Linux)
         if: matrix.os == 'ubuntu-latest'
