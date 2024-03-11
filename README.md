@@ -18,6 +18,7 @@ Instructions are given below.
 **Prerequisites:**
 * A Fortran compiler
 * CMake or [Fortran Package Manager](https://fpm.fortran-lang.org/)
+* pkg-config
 
 Alternately,
 [conda binaries](https://anaconda.org/conda-forge/bmi-fortran)
@@ -52,7 +53,9 @@ The installation will look (on Linux) like:
 |   `-- bmif_2_0.mod
 `-- lib
     |-- libbmif.so -> libbmif.so.2.0
-    `-- libbmif.so.2.0
+    |-- libbmif.so.2.0
+    `-- pkgconfig
+        `-- bmif.pc
 ```
 
 ### CMake - Windows
