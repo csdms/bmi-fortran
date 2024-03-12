@@ -51,7 +51,7 @@ jobs:
         run: |
           test -f $CONDA_PREFIX/include/bmif_$BMI_VERSION.mod
           test -s $CONDA_PREFIX/lib/libbmif.a
-          pkg-config bmif --exists
+          pkg-config --exists --print-errors bmif
 
       - name: Test (Linux)
         if: matrix.os == 'ubuntu-latest'
