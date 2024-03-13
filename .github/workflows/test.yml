@@ -32,6 +32,7 @@ jobs:
           create-args: >-
             make
             cmake
+            pkg-config
             fortran-compiler
 
       - name: Make cmake build directory
@@ -42,7 +43,7 @@ jobs:
         run: |
           cmake .. -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX -DCMAKE_BUILD_TYPE=Release
 
-      - name: Build
+      - name: Build and install
         working-directory: ${{ github.workspace }}/build
         run: cmake --build . --target install --config Release
 
@@ -50,6 +51,7 @@ jobs:
         run: |
           test -f $CONDA_PREFIX/include/bmif_$BMI_VERSION.mod
           test -s $CONDA_PREFIX/lib/libbmif.a
+          pkg-config --exists --print-errors bmif
 
       - name: Test (Linux)
         if: matrix.os == 'ubuntu-latest'
@@ -78,6 +80,7 @@ jobs:
           environment-name: testing
           create-args: >-
             cmake
+            pkg-config
             cxx-compiler
           init-shell: >-
             powershell
@@ -98,6 +101,7 @@ jobs:
           Test-Path -Path ${{ env.LIBRARY_PREFIX }}\lib\libbmif_win.dll.a
           Test-Path -Path ${{ env.LIBRARY_PREFIX }}\bin\libbmif_win.dll
           Test-Path -Path ${{ env.LIBRARY_PREFIX }}\include\bmif_${{ env.BMI_VERSION }}.mod
+          pkg-config --exists --print-errors bmif
 
       - name: Test (for machines)
         working-directory: ${{ github.workspace }}/build
@@ -106,3 +110,4 @@ jobs:
           if ( -not ( Test-Path -Path ${{ env.LIBRARY_PREFIX }}\lib\libbmif_win.dll.a ) ){ exit 1 }
           if ( -not ( Test-Path -Path ${{ env.LIBRARY_PREFIX }}\bin\libbmif_win.dll ) ){ exit 1 }
           if ( -not ( Test-Path -Path ${{ env.LIBRARY_PREFIX }}\include\bmif_${{ env.BMI_VERSION }}.mod ) ){ exit 1 }
+          if ( -not ( Test-Path -Path ${{ env.LIBRARY_PREFIX }}\lib\pkgconfig\bmif.pc ) ){ exit 1 }
