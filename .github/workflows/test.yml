@@ -80,6 +80,7 @@ jobs:
             cmake
             pkg-config
             cxx-compiler
+            fortran-compiler
           init-shell: >-
             powershell
 
