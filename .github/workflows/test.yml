@@ -68,7 +68,7 @@ jobs:
 
     env:
       LIBRARY_PREFIX: $env:CONDA_PREFIX\Library
-      FC: $env:LIBRARY_PREFIX\bin\flang-new.exe
+      FC: $env:CONDA_PREFIX\Library\bin\flang-new.exe
 
     steps:
       - uses: actions/checkout@v4
