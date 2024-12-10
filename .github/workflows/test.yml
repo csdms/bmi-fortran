@@ -95,17 +95,17 @@ jobs:
       - name: Check (for humans)
         working-directory: ${{ github.workspace }}/build
         run: |
-          Test-Path -Path ${{ env.LIBRARY_PREFIX }}\lib\libbmif.a
-          Test-Path -Path ${{ env.LIBRARY_PREFIX }}\lib\libbmif_win.dll.a
-          Test-Path -Path ${{ env.LIBRARY_PREFIX }}\bin\libbmif_win.dll
+          Test-Path -Path ${{ env.LIBRARY_PREFIX }}\lib\bmif.lib
+          Test-Path -Path ${{ env.LIBRARY_PREFIX }}\bin\bmif.dll
           Test-Path -Path ${{ env.LIBRARY_PREFIX }}\include\bmif_${{ env.BMI_VERSION }}.mod
+          Test-Path -Path ${{ env.LIBRARY_PREFIX }}\lib\bmif_static.lib
           pkg-config --exists --print-errors bmif
 
       - name: Test (for machines)
         working-directory: ${{ github.workspace }}/build
         run: |
-          if ( -not ( Test-Path -Path ${{ env.LIBRARY_PREFIX }}\lib\libbmif.a ) ){ exit 1 }
-          if ( -not ( Test-Path -Path ${{ env.LIBRARY_PREFIX }}\lib\libbmif_win.dll.a ) ){ exit 1 }
-          if ( -not ( Test-Path -Path ${{ env.LIBRARY_PREFIX }}\bin\libbmif_win.dll ) ){ exit 1 }
+          if ( -not ( Test-Path -Path ${{ env.LIBRARY_PREFIX }}\lib\bmif.lib ) ){ exit 1 }
+          if ( -not ( Test-Path -Path ${{ env.LIBRARY_PREFIX }}\bin\bmif.dll ) ){ exit 1 }
           if ( -not ( Test-Path -Path ${{ env.LIBRARY_PREFIX }}\include\bmif_${{ env.BMI_VERSION }}.mod ) ){ exit 1 }
+          if ( -not ( Test-Path -Path ${{ env.LIBRARY_PREFIX }}\lib\bmif_static.lib ) ){ exit 1 }
           if ( -not ( Test-Path -Path ${{ env.LIBRARY_PREFIX }}\lib\pkgconfig\bmif.pc ) ){ exit 1 }
