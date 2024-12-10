@@ -92,8 +92,8 @@ jobs:
         working-directory: ${{ github.workspace }}/build
         run: |
           cmake .. -G Ninja ^
-            -DCMAKE_Fortran_COMPILER="${{ env.FC }}" ^
-            -DCMAKE_INSTALL_PREFIX="${{ env.LIBRARY_PREFIX }}" ^
+            -DCMAKE_Fortran_COMPILER=$env.FC ^
+            -DCMAKE_INSTALL_PREFIX=$env.LIBRARY_PREFIX ^
             -DCMAKE_BUILD_TYPE=Release
           cmake --build . --target install --config Release
 
