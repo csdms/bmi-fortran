@@ -81,7 +81,7 @@ jobs:
 
       - name: Configure, build, and install project
         run: |
-          cmake -B _build -G "NMake Makefiles" -DCMAKE_INSTALL_PREFIX="${{ env.LIBRARY_PREFIX }}" -DCMAKE_BUILD_TYPE=Release
+          cmake -B _build -G Ninja -DCMAKE_INSTALL_PREFIX="${{ env.LIBRARY_PREFIX }}" -DCMAKE_BUILD_TYPE=Release
           cmake --build _build --target install --config Release
 
       - name: Check (for humans)
