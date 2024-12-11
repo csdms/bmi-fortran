@@ -71,8 +71,13 @@ jobs:
             cmake
             pkg-config
             cxx-compiler
+            fortran-compiler
           init-shell: >-
             powershell
+
+      - name: Set the FC environment variable to the Fortran conda compiler
+        run: |
+          echo "FC=$CONDA_PREFIX/Library/bin/flang-new.exe" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
 
       - name: Configure, build, and install project
         run: |
