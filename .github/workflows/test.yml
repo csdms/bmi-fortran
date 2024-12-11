@@ -17,6 +17,9 @@ jobs:
       run:
         shell: bash -l {0}
 
+    env:
+      SHLIB_EXT: ${{ matrix.os == 'ubuntu-latest' && '.so' || '.dylib' }}
+
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
@@ -45,15 +48,8 @@ jobs:
         run: |
           test -f $CONDA_PREFIX/include/bmif_$BMI_VERSION.mod
           test -s $CONDA_PREFIX/lib/libbmif.a
+          test -h $CONDA_PREFIX/lib/libbmif${{ env.SHLIB_EXT }}
           pkg-config --exists --print-errors bmif
-
-      - name: Test (Linux)
-        if: matrix.os == 'ubuntu-latest'
-        run: test -h $CONDA_PREFIX/lib/libbmif.so
-
-      - name: Test (macOS)
-        if: matrix.os == 'macos-latest'
-        run: test -h $CONDA_PREFIX/lib/libbmif.dylib
 
   build-test-windows:
     if:
