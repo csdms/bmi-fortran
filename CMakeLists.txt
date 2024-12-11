@@ -21,25 +21,25 @@ configure_file(
 # Create static and shared libraries.
 set(static_lib ${CMAKE_PROJECT_NAME}_static)
 set(shared_lib ${CMAKE_PROJECT_NAME}_shared)
-add_library(${static_lib} bmi.f90)
-add_library(${shared_lib} SHARED bmi.f90)
+add_library(obj_lib OBJECT bmi.f90)
+add_library(${static_lib} STATIC $<TARGET_OBJECTS:obj_lib>)
+add_library(${shared_lib} SHARED $<TARGET_OBJECTS:obj_lib>)
 
-# Change the output names of the libraries. On Windows, they can't
-# have the same name, so change the shared library name.
-set_target_properties(${static_lib} PROPERTIES
-  OUTPUT_NAME ${CMAKE_PROJECT_NAME})
-if(WIN32)
-  set_target_properties(${shared_lib} PROPERTIES
-    OUTPUT_NAME ${CMAKE_PROJECT_NAME}_win)
-else()
-  set_target_properties(${shared_lib} PROPERTIES
-    OUTPUT_NAME ${CMAKE_PROJECT_NAME})
-endif()
-
-set_target_properties(${static_lib} PROPERTIES
+set_target_properties(${static_lib}
+  PROPERTIES
+  OUTPUT_NAME ${CMAKE_PROJECT_NAME}
   VERSION ${CMAKE_PROJECT_VERSION}
 )
-set_target_properties(${shared_lib} PROPERTIES
+if(WIN32)
+  set_target_properties(${static_lib}
+    PROPERTIES
+    OUTPUT_NAME ${CMAKE_PROJECT_NAME}_static
+  )
+endif()
+
+set_target_properties(${shared_lib}
+  PROPERTIES
+  OUTPUT_NAME ${CMAKE_PROJECT_NAME}
   VERSION ${CMAKE_PROJECT_VERSION}
   PUBLIC_HEADER ${CMAKE_BINARY_DIR}/${mod_name}.mod
 )
