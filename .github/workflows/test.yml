@@ -4,6 +4,7 @@ on: [push, pull_request]
 
 env:
   BMI_VERSION: 2_0
+  BUILD_DIR: _build
 
 jobs:
   build-test-unix:
@@ -39,10 +40,10 @@ jobs:
 
       - name: Configure project
         run: |
-          cmake -B _build -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX -DCMAKE_BUILD_TYPE=Release
+          cmake -B ${{ env.BUILD_DIR }} -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX -DCMAKE_BUILD_TYPE=Release
 
       - name: Build and install
-        run: cmake --build _build --target install --config Release
+        run: cmake --build ${{ env.BUILD_DIR }} --target install --config Release
 
       - name: Test
         run: |
@@ -81,8 +82,8 @@ jobs:
 
       - name: Configure, build, and install project
         run: |
-          cmake -B _build -G Ninja -DCMAKE_INSTALL_PREFIX="${{ env.LIBRARY_PREFIX }}" -DCMAKE_BUILD_TYPE=Release
-          cmake --build _build --target install --config Release
+          cmake -B ${{ env.BUILD_DIR }} -G Ninja -DCMAKE_INSTALL_PREFIX="${{ env.LIBRARY_PREFIX }}" -DCMAKE_BUILD_TYPE=Release
+          cmake --build ${{ env.BUILD_DIR }} --target install --config Release
 
       - name: Check (for humans)
         run: |
