@@ -4,19 +4,22 @@ on: [push, pull_request]
 
 env:
   BMI_VERSION: 2_0
+  BUILD_DIR: _build
 
 jobs:
   build-test-unix:
 
     if:
-      github.event_name == 'push' || github.event.pull_request.head.repo.full_name !=
-      github.repository
+      github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
 
     runs-on: ${{ matrix.os }}
 
     defaults:
       run:
         shell: bash -l {0}
+
+    env:
+      SHLIB_EXT: ${{ matrix.os == 'ubuntu-latest' && '.so' || '.dylib' }}
 
     strategy:
       matrix:
@@ -35,36 +38,23 @@ jobs:
             pkg-config
             fortran-compiler
 
-      - name: Make cmake build directory
-        run: cmake -E make_directory build
-
-      - name: Configure cmake
-        working-directory: ${{ github.workspace }}/build
+      - name: Configure project
         run: |
-          cmake .. -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX -DCMAKE_BUILD_TYPE=Release
+          cmake -B ${{ env.BUILD_DIR }} -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX -DCMAKE_BUILD_TYPE=Release
 
       - name: Build and install
-        working-directory: ${{ github.workspace }}/build
-        run: cmake --build . --target install --config Release
+        run: cmake --build ${{ env.BUILD_DIR }} --target install --config Release
 
       - name: Test
         run: |
           test -f $CONDA_PREFIX/include/bmif_$BMI_VERSION.mod
           test -s $CONDA_PREFIX/lib/libbmif.a
+          test -h $CONDA_PREFIX/lib/libbmif${{ env.SHLIB_EXT }}
           pkg-config --exists --print-errors bmif
-
-      - name: Test (Linux)
-        if: matrix.os == 'ubuntu-latest'
-        run: test -h $CONDA_PREFIX/lib/libbmif.so
-
-      - name: Test (macOS)
-        if: matrix.os == 'macos-latest'
-        run: test -h $CONDA_PREFIX/lib/libbmif.dylib
 
   build-test-windows:
     if:
-      github.event_name == 'push' || github.event.pull_request.head.repo.full_name !=
-      github.repository
+      github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
 
     runs-on: windows-latest
 
@@ -82,32 +72,31 @@ jobs:
             cmake
             pkg-config
             cxx-compiler
+            fortran-compiler
           init-shell: >-
             powershell
 
-      - name: Make cmake build directory
-        run: cmake -E make_directory build
-
-      - name: Configure, build, and install
-        working-directory: ${{ github.workspace }}/build
+      - name: Set the FC environment variable to the Fortran conda compiler
         run: |
-          cmake .. -G "NMake Makefiles" -DCMAKE_INSTALL_PREFIX="${{ env.LIBRARY_PREFIX }}" -DCMAKE_BUILD_TYPE=Release
-          cmake --build . --target install --config Release
+          echo "FC=$CONDA_PREFIX/Library/bin/flang-new.exe" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Configure, build, and install project
+        run: |
+          cmake -B ${{ env.BUILD_DIR }} -G Ninja -DCMAKE_INSTALL_PREFIX="${{ env.LIBRARY_PREFIX }}" -DCMAKE_BUILD_TYPE=Release
+          cmake --build ${{ env.BUILD_DIR }} --target install --config Release
 
       - name: Check (for humans)
-        working-directory: ${{ github.workspace }}/build
         run: |
-          Test-Path -Path ${{ env.LIBRARY_PREFIX }}\lib\libbmif.a
-          Test-Path -Path ${{ env.LIBRARY_PREFIX }}\lib\libbmif_win.dll.a
-          Test-Path -Path ${{ env.LIBRARY_PREFIX }}\bin\libbmif_win.dll
+          Test-Path -Path ${{ env.LIBRARY_PREFIX }}\lib\bmif.lib
+          Test-Path -Path ${{ env.LIBRARY_PREFIX }}\bin\bmif.dll
           Test-Path -Path ${{ env.LIBRARY_PREFIX }}\include\bmif_${{ env.BMI_VERSION }}.mod
+          Test-Path -Path ${{ env.LIBRARY_PREFIX }}\lib\bmif_static.lib
           pkg-config --exists --print-errors bmif
 
       - name: Test (for machines)
-        working-directory: ${{ github.workspace }}/build
         run: |
-          if ( -not ( Test-Path -Path ${{ env.LIBRARY_PREFIX }}\lib\libbmif.a ) ){ exit 1 }
-          if ( -not ( Test-Path -Path ${{ env.LIBRARY_PREFIX }}\lib\libbmif_win.dll.a ) ){ exit 1 }
-          if ( -not ( Test-Path -Path ${{ env.LIBRARY_PREFIX }}\bin\libbmif_win.dll ) ){ exit 1 }
+          if ( -not ( Test-Path -Path ${{ env.LIBRARY_PREFIX }}\lib\bmif.lib ) ){ exit 1 }
+          if ( -not ( Test-Path -Path ${{ env.LIBRARY_PREFIX }}\bin\bmif.dll ) ){ exit 1 }
           if ( -not ( Test-Path -Path ${{ env.LIBRARY_PREFIX }}\include\bmif_${{ env.BMI_VERSION }}.mod ) ){ exit 1 }
+          if ( -not ( Test-Path -Path ${{ env.LIBRARY_PREFIX }}\lib\bmif_static.lib ) ){ exit 1 }
           if ( -not ( Test-Path -Path ${{ env.LIBRARY_PREFIX }}\lib\pkgconfig\bmif.pc ) ){ exit 1 }
