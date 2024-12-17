@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.12)
 
 project(bmif
-  VERSION 2.0.2
+  VERSION 2.0.3
   LANGUAGES Fortran
 )
 
